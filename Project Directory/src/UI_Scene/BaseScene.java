@@ -20,12 +20,11 @@ abstract class BaseScene extends JPanel {
     //  Scene UI Set
     public JPanel sceneUI;
 
-
     //  Non-Abstract Functions
-    public int getWidth(){
+    public int getAndSetWidth(){
         return width;
     }
-    public int getHeight(){
+    public int getAndSetHeight(){
         return height;
     }
 
@@ -39,7 +38,6 @@ abstract class BaseScene extends JPanel {
 
     //  TODO : Scene 내에 존재해야 하는 UI Set에 대한 설정
     public abstract void setUISet();
-
 
 
 
