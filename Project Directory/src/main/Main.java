@@ -12,6 +12,8 @@ public class Main {
         window.setTitle("Shooting Game");
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
+
+        window.pack();//set size of window by GamePanel
         window.setLocationRelativeTo(null);
         window.setVisible(true);
 
