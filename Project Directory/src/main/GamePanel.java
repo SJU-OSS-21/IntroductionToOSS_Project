@@ -35,5 +35,6 @@ public class GamePanel extends JPanel implements Runnable {
     public void Update(){}
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
     }
 }
