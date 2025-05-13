@@ -1,6 +1,8 @@
-package Player_Item/Model;
+package Player_Item.Model;//package Player_Item/Model;
 
+import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class Player {
     private int x, y; // 플레이어 위치
@@ -27,5 +29,6 @@ public class Player {
     // 경계값
     public Rectangle getBounds() {
 
+        return null;
     }
 }
