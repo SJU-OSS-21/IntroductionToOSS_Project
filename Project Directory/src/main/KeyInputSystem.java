@@ -3,7 +3,7 @@ package main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyInputDetect implements KeyListener {
+public class KeyInputSystem implements KeyListener {
     public boolean isUp, isDown, isLeft, isRight;
     @Override
     public void keyTyped(KeyEvent e) {

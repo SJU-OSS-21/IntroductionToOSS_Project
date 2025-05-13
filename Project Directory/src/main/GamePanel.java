@@ -11,13 +11,18 @@ public class GamePanel extends JPanel implements Runnable {
     final int maxScreenRow = 12;//(세로 타일 개수)
     final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
     final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
-
+    final double FPS = 60.0;
+    KeyInputSystem keyIS = new KeyInputSystem();
     Thread gameThread;
 
+    //Player Default Pos
+    int playerX = 100, playerY = 100, playerSpeed = 5;
     public GamePanel() {//constructor
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);//better rendering performance
+        this.addKeyListener(keyIS);
+        this.setFocusable(true);
     }
     public void startGameThread(){
         gameThread = new Thread(this);
@@ -26,15 +31,36 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
+        double drawInterval = 1000000000/FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long now;
         while(gameThread != null){
+            now = System.nanoTime();
+
+            delta += (now - lastTime)/drawInterval;
+            lastTime = now;
+            if(delta >= 1){
+                Update();
+                repaint();
+                delta--;
+            }
 //            System.out.println("Game Thread Running");
-            Update();
-            repaint();
+//            Update();
+//            repaint();
         }
     }
-    public void Update(){}
+    public void Update(){
+        if(keyIS.isUp){playerY-=playerSpeed;}
+        if(keyIS.isDown){playerY+=playerSpeed;}
+        if(keyIS.isLeft){playerX-=playerSpeed;}
+        if(keyIS.isRight){playerX+=playerSpeed;}
+    }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.white);
+        g2d.fillRect(playerX, playerY, tileSize, tileSize);
+        g2d.dispose();//save memory
     }
 }
