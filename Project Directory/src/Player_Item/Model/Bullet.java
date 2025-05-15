@@ -29,5 +29,5 @@ public class Bullet {
                 image.getWidth(null),
                 image.getHeight(null));
     }
-    public boolean isActive() {return active; }
+    public boolean isActive() {return active;}
 }
