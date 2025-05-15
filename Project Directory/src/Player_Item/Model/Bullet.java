@@ -8,7 +8,7 @@ public class Bullet {
     private int x, y;
     private final int speed = 10;
     private final Image image;
-    private boolean isActive = true;
+    private boolean active = true;
 
     public Bullet(String resourceName, int startX, int startY) {
         // 이미지 불러오기
@@ -22,6 +22,12 @@ public class Bullet {
     }
     public void draw(Graphics g) {
         // 활성화 중일 시 그리기
-        if (isActive) g.drawImage(image, x, y, null);
+        if (active) g.drawImage(image, x, y, null);
     }
+    public Rectangle getBounds() {
+        return new Rectangle(x, y,
+                image.getWidth(null),
+                image.getHeight(null));
+    }
+    public boolean isActive() {return active; }
 }
