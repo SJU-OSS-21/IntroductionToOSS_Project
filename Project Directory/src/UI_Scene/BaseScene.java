@@ -3,7 +3,7 @@ package UI_Scene;
 import javax.swing.*;
 import java.util.Vector;
 
-abstract class BaseScene extends JPanel {
+public abstract class BaseScene extends JPanel {
     //  Properties
     private int width;
     private int height;
