@@ -1,7 +1,6 @@
 package Player_Item.Model;
 
-import java.awt.Image;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.net.URL;
 import javax.swing.ImageIcon;
 
@@ -21,5 +20,8 @@ public class Bullet {
         this.x = startX;
         this.y = startY;
     }
-
+    public void draw(Graphics g) {
+        // 활성화 중일 시 그리기
+        if (isActive) g.drawImage(image, x, y, null);
+    }
 }
