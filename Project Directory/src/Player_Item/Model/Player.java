@@ -1,4 +1,4 @@
-package Player_Item.Model;
+package Player_Item.Model;//package Player_Item/Model
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +29,7 @@ public class Player {
     }
     // 경계값
     public Rectangle getBounds() {
-        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+
+        return null;
     }
 }
