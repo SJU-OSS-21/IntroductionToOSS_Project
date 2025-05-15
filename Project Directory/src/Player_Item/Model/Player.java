@@ -1,4 +1,4 @@
-package Player_Item.Model;//package Player_Item/Model
+package Player_Item.Model;//package Player_Item/Model;
 
 import javax.swing.*;
 import java.awt.*;
