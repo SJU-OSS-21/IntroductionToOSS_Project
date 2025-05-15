@@ -35,8 +35,6 @@ public class GameManager {
     public double timer;
     public int score;
 
-
-
     GameManager(){
         sceneList = new Vector<>();
 
