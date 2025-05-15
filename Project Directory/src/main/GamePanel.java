@@ -2,8 +2,9 @@ package main;
 
 import javax.swing.JPanel;
 import java.awt.*;
+//import UI_Scene.*;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends UI_Scene.BaseScene implements Runnable {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
@@ -72,5 +73,20 @@ public class GamePanel extends JPanel implements Runnable {
         g2d.setColor(Color.white);
         g2d.fillRect(playerX, playerY, tileSize, tileSize);
         g2d.dispose();//save memory
+    }
+
+    @Override
+    public void setScene() {
+
+    }
+
+    @Override
+    public void setGameObjectList() {
+
+    }
+
+    @Override
+    public void setUISet() {
+
     }
 }
