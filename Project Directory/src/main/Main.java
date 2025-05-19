@@ -10,7 +10,7 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("Shooting Game");
-        GamePanel gamePanel = new GamePanel();
+        GameScene gamePanel = new GameScene();
         window.add(gamePanel);
 
         window.pack();//set size of window by GamePanel

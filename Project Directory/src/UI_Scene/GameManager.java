@@ -10,8 +10,8 @@ public class GameManager {
     private static GameManager instance;
 
     //  수정을 방지하기 위한 final 키워드 사용
-    public static final GameManager getInstance(){
-        if(instance == null){
+    public static final GameManager getInstance() {
+        if (instance == null) {
             instance = new GameManager();
 
             return instance;
@@ -22,7 +22,7 @@ public class GameManager {
     //  endregion
 
     //  Scenes
-    private Vector<BaseScene> sceneList;
+    public Vector<BaseScene> sceneList;
     public int curSceneNum;
     public String curSceneName;
 
@@ -35,7 +35,7 @@ public class GameManager {
     public double timer;
     public int score;
 
-    GameManager(){
+    GameManager() {
         sceneList = new Vector<>();
 
     }
