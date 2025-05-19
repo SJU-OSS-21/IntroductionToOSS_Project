@@ -4,7 +4,6 @@ import UI_Scene.GameManager;
 import UI_Scene.SceneManager;
 
 import javax.swing.*;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,26 +14,18 @@ public class Main {
         mainFrame.setTitle("Shooting Game");
 
         //  region Register in GM
+
         GameManager.getInstance().setMainFrame(mainFrame);
-
-        GameScene gamePanel = new GameScene("Main", 0);
-        mainFrame.add(gamePanel);
-
-        gamePanel = new GameScene("InGame", 1);
-        mainFrame.add(gamePanel);
-
-        gamePanel = new GameScene("GameOver", 2);
-        mainFrame.add(gamePanel);
 
         //  endregion
 
-        SceneManager.getInstance().changeScene(0);
+        SceneManager.changeScene(SceneManager.Scene.Main);
 
-        mainFrame.pack();//set size of window by GamePanel
+        mainFrame.pack();   // set size of window by GamePanel
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
 
-        gamePanel.startGameThread();
-
+        //  Start
+        SceneManager.curScene.startGameThread();
     }
 }

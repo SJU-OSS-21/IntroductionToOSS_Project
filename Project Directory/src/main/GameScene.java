@@ -24,14 +24,11 @@ public class GameScene extends BaseScene implements Runnable {
     //Player Default Pos
     int playerX = 100, playerY = 100, playerSpeed = 5;
 
-    public GameScene(String name, int sid) {    //  constructor
+    public GameScene() {    //  constructor
 
-        //  Initialize
-        this.name = name;
-        this.sid = sid;
-
-        //  Add Scene in GameManager
-        SceneManager.getInstance().sceneList.add(this);
+//        //  Initialize
+//        this.name = name;
+//        this.sid = sid;
 
         //  Setting
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
