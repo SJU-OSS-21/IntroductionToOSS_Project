@@ -2,12 +2,10 @@ package Enemies;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class EnemyPanel extends JPanel implements Runnable, KeyListener {
+public class EnemyPanel extends JPanel implements Runnable {
     LinkedList<Enemy> enemies;
 
     EnemyPanel() {
@@ -16,8 +14,6 @@ public class EnemyPanel extends JPanel implements Runnable, KeyListener {
 
         Thread t = new Thread(this);
         t.start();
-
-        addKeyListener(this);
     }
 
     public void paintComponent(Graphics g) {
@@ -44,12 +40,4 @@ public class EnemyPanel extends JPanel implements Runnable, KeyListener {
             }
         }
     }
-
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE)
-            enemies.add(new Enemy());
-    }
-
-    public void keyTyped(KeyEvent e) {}
-    public void keyReleased(KeyEvent e) {}
 }
