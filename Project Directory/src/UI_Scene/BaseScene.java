@@ -3,14 +3,14 @@ package UI_Scene;
 import javax.swing.*;
 import java.util.Vector;
 
-public abstract class BaseScene extends JPanel {
-    //  Properties
-    private int width;
-    private int height;
-
-    //  Identifier - NOTE : Be careful to use public var.
-    public int sid;
-    public String name;
+public abstract class BaseScene extends JLayeredPane {
+//    //  Properties
+//    private int width;
+//    private int height;
+//
+//    //  Identifier - NOTE : Be careful to use public var.
+//    public int sid;
+//    public String name;
 
     //  Objects
     public Vector<Object> gameObjectList;
@@ -20,14 +20,14 @@ public abstract class BaseScene extends JPanel {
     //  Scene UI Set
     public JPanel sceneUI;
 
-    //  Non-Abstract Functions
-    public int getAndSetWidth() {
-        return width;
-    }
-
-    public int getAndSetHeight() {
-        return height;
-    }
+//    //  Non-Abstract Functions
+//    public int getAndSetWidth() {
+//        return width;
+//    }
+//
+//    public int getAndSetHeight() {
+//        return height;
+//    }
 
     //  Abstract Functions
 
