@@ -19,12 +19,15 @@ public class Main {
         GameManager.getInstance().setMainFrame(mainFrame);
 
         GameScene gamePanel = new GameScene("Main", 0);
+        SceneManager.getInstance().sceneList.add(gamePanel);
         mainFrame.add(gamePanel);
 
         gamePanel = new GameScene("InGame", 1);
+        SceneManager.getInstance().sceneList.add(gamePanel);
         mainFrame.add(gamePanel);
 
         gamePanel = new GameScene("GameOver", 2);
+        SceneManager.getInstance().sceneList.add(gamePanel);
         mainFrame.add(gamePanel);
 
         //  endregion
