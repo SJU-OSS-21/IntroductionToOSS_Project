@@ -2,10 +2,11 @@ package main;
 
 import UI_Scene.BaseScene;
 
+import javax.swing.*;
 import java.awt.*;
 //import UI_Scene.*;
 
-public class GameLayeredPane extends BaseScene implements Runnable {
+public class GamePanel extends JPanel implements Runnable {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
@@ -21,11 +22,13 @@ public class GameLayeredPane extends BaseScene implements Runnable {
     //Player Default Pos
     int playerX = 100, playerY = 100, playerSpeed = 5;
 
-    public GameLayeredPane() {    //  constructor
+    public GamePanel() {    //  constructor
 
 //        //  Initialize
 //        this.name = name;
 //        this.sid = sid;
+
+
 
         //  Setting
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -33,6 +36,7 @@ public class GameLayeredPane extends BaseScene implements Runnable {
         this.setDoubleBuffered(true);//better rendering performance
         this.addKeyListener(keyIS);
         this.setFocusable(true);
+        this.startGameThread();
     }
 
     public void startGameThread() {
@@ -90,23 +94,8 @@ public class GameLayeredPane extends BaseScene implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.white);
+        g2d.setColor(Color.black);
         g2d.fillRect(playerX, playerY, tileSize, tileSize);
         g2d.dispose();//save memory
-    }
-
-    @Override
-    public void setScene() {
-
-    }
-
-    @Override
-    public void setGameObjectList() {
-
-    }
-
-    @Override
-    public void setUISet() {
-
     }
 }

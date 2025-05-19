@@ -23,6 +23,6 @@ public class MyFrame extends JFrame {
         mainFrame.setVisible(true);
 
         // Start
-        SceneManager.curScene.startGameThread();
+
     }
 }
