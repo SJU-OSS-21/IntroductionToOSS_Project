@@ -26,7 +26,6 @@ public class GameManager {
     public boolean isPlaying;
     public boolean isInGame;
 
-    //  TODO : Player instance
 
     //  Counters
     public double timer;
