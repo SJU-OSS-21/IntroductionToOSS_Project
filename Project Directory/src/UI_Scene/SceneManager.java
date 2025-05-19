@@ -1,24 +1,82 @@
 package UI_Scene;
 
-import main.GameScene;
+import main.GamePanel;
 
-class MainScene extends GameScene {
+import java.awt.*;
+
+class MainScene extends BaseScene {
 
     public MainScene() {
+        setPreferredSize(new Dimension(900,1600));
+        setLayout(null);
+
+        GamePanel game1 = new GamePanel();
+//        GamePanel game2 = new GamePanel();
+
+        this.add(game1,Integer.valueOf(0));
+
+//        this.add(game2,Integer.valueOf(1));
+
+    }
+
+    @Override
+    public void setScene() {
+
+    }
+
+    @Override
+    public void setGameObjectList() {
+
+    }
+
+    @Override
+    public void setUISet() {
 
     }
 }
 
-class InGameScene extends GameScene {
+class InGameScene extends BaseScene {
 
     public InGameScene() {
+        setPreferredSize(new Dimension(900,1600));
+        setLayout(null);
+    }
+
+    @Override
+    public void setScene() {
+
+    }
+
+    @Override
+    public void setGameObjectList() {
+
+    }
+
+    @Override
+    public void setUISet() {
 
     }
 }
 
-class GameOverScene extends GameScene {
+class GameOverScene extends BaseScene {
 
     public GameOverScene() {
+        setPreferredSize(new Dimension(900,1600));
+        setLayout(null);
+    }
+
+    @Override
+    public void setScene() {
+
+    }
+
+    @Override
+    public void setGameObjectList() {
+
+    }
+
+    @Override
+    public void setUISet() {
 
     }
 }
@@ -41,13 +99,13 @@ public class SceneManager {
     //  endregion
 
     //  Scenes
-    public static GameScene mainScene = null;
-    public static GameScene gameScene = null;
-    public static GameScene gameOverScene = null;
+    public static BaseScene mainScene = null;
+    public static BaseScene gameScene = null;
+    public static BaseScene gameOverScene = null;
 
     public static int curSceneNum;
     public static String curSceneName = null;
-    public static GameScene curScene = null;
+    public static BaseScene curScene = null;
 
     //  Scene Names
     public enum Scene{
@@ -71,14 +129,14 @@ public class SceneManager {
 
     //  To prevent Duplicated snippet
     private static void innerChangeScene(){
-        GameScene newGameScene = null;
+        BaseScene newGameScene = null;
 
         switch (curSceneNum){
             case 0 :
                 newGameScene = new MainScene();
                 break;
             case 1 :
-                newGameScene = new GameScene();
+                newGameScene = new InGameScene();
                 break;
             case 2 :
                 newGameScene = new GameOverScene();
@@ -93,7 +151,7 @@ public class SceneManager {
         curScene = newGameScene;
 
         //  Add Scene
-        GameManager.getInstance().getMainFrame().add(newGameScene);
+        GameManager.getInstance().getMainFrame().setContentPane(newGameScene);
 
         //  Remove Game Scene
         if(gameScene != null){
