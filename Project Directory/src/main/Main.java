@@ -15,6 +15,7 @@ public class Main {
         mainFrame.setTitle("Shooting Game");
 
         //  region Register in GM
+
         GameManager.getInstance().setMainFrame(mainFrame);
 
         GameScene gamePanel = new GameScene("Main", 0);
