@@ -1,22 +1,22 @@
 package UI_Scene;
 
-import main.GameScene;
+import main.GameLayeredPane;
 
-class MainScene extends GameScene {
+class MainScene extends GameLayeredPane {
 
     public MainScene() {
 
     }
 }
 
-class InGameScene extends GameScene {
+class InGameScene extends GameLayeredPane {
 
     public InGameScene() {
 
     }
 }
 
-class GameOverScene extends GameScene {
+class GameOverScene extends GameLayeredPane {
 
     public GameOverScene() {
 
@@ -41,13 +41,13 @@ public class SceneManager {
     //  endregion
 
     //  Scenes
-    public static GameScene mainScene = null;
-    public static GameScene gameScene = null;
-    public static GameScene gameOverScene = null;
+    public static GameLayeredPane mainScene = null;
+    public static GameLayeredPane gameScene = null;
+    public static GameLayeredPane gameOverScene = null;
 
     public static int curSceneNum;
     public static String curSceneName = null;
-    public static GameScene curScene = null;
+    public static GameLayeredPane curScene = null;
 
     //  Scene Names
     public enum Scene{
@@ -71,14 +71,14 @@ public class SceneManager {
 
     //  To prevent Duplicated snippet
     private static void innerChangeScene(){
-        GameScene newGameScene = null;
+        GameLayeredPane newGameScene = null;
 
         switch (curSceneNum){
             case 0 :
                 newGameScene = new MainScene();
                 break;
             case 1 :
-                newGameScene = new GameScene();
+                newGameScene = new GameLayeredPane();
                 break;
             case 2 :
                 newGameScene = new GameOverScene();
