@@ -9,8 +9,8 @@ public abstract class BaseScene extends JPanel {
     private int height;
 
     //  Identifier - NOTE : Be careful to use public var.
-    public int sceneNum;
-    public String sceneName;
+    public int sid;
+    public String name;
 
     //  Objects
     public Vector<Object> gameObjectList;

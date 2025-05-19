@@ -2,6 +2,7 @@ package main;
 
 import UI_Scene.BaseScene;
 import UI_Scene.GameManager;
+import UI_Scene.SceneManager;
 
 import javax.swing.JPanel;
 import java.awt.*;
@@ -23,11 +24,16 @@ public class GameScene extends BaseScene implements Runnable {
     //Player Default Pos
     int playerX = 100, playerY = 100, playerSpeed = 5;
 
-    public GameScene() {    //  constructor
+    public GameScene(String name, int sid) {    //  constructor
+
+        //  Initialize
+        this.name = name;
+        this.sid = sid;
 
         //  Add Scene in GameManager
-        GameManager.getInstance().sceneList.add(this);
+        SceneManager.getInstance().sceneList.add(this);
 
+        //  Setting
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);//better rendering performance
