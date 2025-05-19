@@ -1,12 +1,10 @@
 package main;
 
-import UI_Scene.BaseScene;
-
 import javax.swing.*;
 import java.awt.*;
 //import UI_Scene.*;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel2 extends JPanel implements Runnable {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
@@ -20,9 +18,9 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread;
 
     //Player Default Pos
-    int playerX = 100, playerY = 100, playerSpeed = 5;
+    int playerX = 300, playerY = 300, playerSpeed = 5;
 
-    public GamePanel() {    //  constructor
+    public GamePanel2() {    //  constructor
 
 //        //  Initialize
 //        this.name = name;
@@ -32,11 +30,12 @@ public class GamePanel extends JPanel implements Runnable {
 
         //  Setting
         this.setPreferredSize(new Dimension(900, 1600));
-        this.setBackground(Color.BLACK);
+//        this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);//better rendering performance
         this.addKeyListener(keyIS);
         this.setFocusable(true);
         this.startGameThread();
+        setOpaque(false);
     }
 
     public void startGameThread() {
@@ -94,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.red);
+        g2d.setColor(Color.green);
         g2d.fillRect(playerX, playerY, tileSize, tileSize);
         g2d.dispose();//save memory
     }
