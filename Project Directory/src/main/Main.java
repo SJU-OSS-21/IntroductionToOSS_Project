@@ -1,21 +1,38 @@
 package main;
 
-import javax.swing.*;
+import UI_Scene.GameManager;
+import UI_Scene.SceneManager;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import javax.swing.*;
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        JFrame window = new JFrame("My Window");
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
-        window.setTitle("Shooting Game");
-        GamePanel gamePanel = new GamePanel();
-        window.add(gamePanel);
 
-        window.pack();//set size of window by GamePanel
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
+        JFrame mainFrame = new JFrame("My Window");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setResizable(false);
+        mainFrame.setTitle("Shooting Game");
+
+        //  region Register in GM
+        GameManager.getInstance().setMainFrame(mainFrame);
+
+        GameScene gamePanel = new GameScene("Main", 0);
+        mainFrame.add(gamePanel);
+
+        gamePanel = new GameScene("InGame", 1);
+        mainFrame.add(gamePanel);
+
+        gamePanel = new GameScene("GameOver", 2);
+        mainFrame.add(gamePanel);
+
+        //  endregion
+
+        SceneManager.getInstance().changeScene(0);
+
+        mainFrame.pack();//set size of window by GamePanel
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
 
         gamePanel.startGameThread();
 
