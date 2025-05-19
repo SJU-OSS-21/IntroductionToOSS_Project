@@ -1,14 +1,11 @@
 package main;
 
 import UI_Scene.BaseScene;
-import UI_Scene.GameManager;
-import UI_Scene.SceneManager;
 
-import javax.swing.JPanel;
 import java.awt.*;
 //import UI_Scene.*;
 
-public class GameScene extends BaseScene implements Runnable {
+public class GameLayeredPane extends BaseScene implements Runnable {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
@@ -24,7 +21,7 @@ public class GameScene extends BaseScene implements Runnable {
     //Player Default Pos
     int playerX = 100, playerY = 100, playerSpeed = 5;
 
-    public GameScene() {    //  constructor
+    public GameLayeredPane() {    //  constructor
 
 //        //  Initialize
 //        this.name = name;
