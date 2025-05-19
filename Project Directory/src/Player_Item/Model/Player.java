@@ -37,4 +37,5 @@ public class Player {
                 image.getWidth(null),
                 image.getHeight(null));
     }
+    // 1
 }
