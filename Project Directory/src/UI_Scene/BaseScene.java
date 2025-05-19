@@ -9,8 +9,8 @@ public abstract class BaseScene extends JPanel {
     private int height;
 
     //  Identifier - NOTE : Be careful to use public var.
-    public int sceneNum;
-    public String sceneName;
+    public int sid;
+    public String name;
 
     //  Objects
     public Vector<Object> gameObjectList;
@@ -21,10 +21,11 @@ public abstract class BaseScene extends JPanel {
     public JPanel sceneUI;
 
     //  Non-Abstract Functions
-    public int getAndSetWidth(){
+    public int getAndSetWidth() {
         return width;
     }
-    public int getAndSetHeight(){
+
+    public int getAndSetHeight() {
         return height;
     }
 
@@ -38,8 +39,6 @@ public abstract class BaseScene extends JPanel {
 
     //  TODO : Scene 내에 존재해야 하는 UI Set에 대한 설정
     public abstract void setUISet();
-
-
 
 
 }
