@@ -1,4 +1,40 @@
 package Player_Item.Panel;
 
-public class PlayerPanel {
+import Player_Item.Model.Player;
+import main.KeyInputSystem;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class PlayerPanel extends JPanel implements ActionListener {
+    private final Player player;            // 플레이어
+    private final KeyInputSystem input;     // 키 입력 시스템
+
+    // 총알 관련
+
+    PlayerPanel(int width, int height) {
+        setOpaque(false);
+        setPreferredSize(new Dimension(width, height));
+
+        // 플레이어 생성
+        player = new Player("player.png", width/2, height-100);
+
+        // 키보드 입력 설정
+        input = new KeyInputSystem();
+        setFocusable(true);
+        addKeyListener(input);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        // 입력 및 플레이어 이동 처리
+
+        // 총알 발사 처리
+
+        // 총알 업데이트 및 비활성 총알 제거
+
+        // 아이템 접촉 시 아이템 제거 및 효과 적용
+    }
 }
