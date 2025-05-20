@@ -1,24 +1,89 @@
 package UI_Scene;
 
-import main.GameLayeredPane;
+import main.GamePanel;
+import main.GamePanel2;
 
-class MainScene extends GameLayeredPane {
+import java.awt.*;
+
+class MainScene extends BaseScene {
 
     public MainScene() {
 
+
+        GamePanel game1 = new GamePanel();
+        GamePanel2 game2 = new GamePanel2();
+
+        game1.setBounds(new Rectangle(0,0,900,1600));
+        game2.setBounds(new Rectangle(0,0,900,1600));
+        this.add(game1,Integer.valueOf(0));
+        this.add(game2,Integer.valueOf(1));
+
+        setPreferredSize(new Dimension(900,1600));
+        setLayout(null);
+
+
+//        this.add(game2,Integer.valueOf(1));
+
+    }
+
+    @Override
+    public void setScene() {
+
+    }
+
+    @Override
+    public void setGameObjectList() {
+
+    }
+
+    @Override
+    public void setUISet() {
+
     }
 }
 
-class InGameScene extends GameLayeredPane {
+class InGameScene extends BaseScene {
 
     public InGameScene() {
+        setPreferredSize(new Dimension(900,1600));
+        setLayout(null);
+    }
+
+    @Override
+    public void setScene() {
+
+    }
+
+    @Override
+    public void setGameObjectList() {
+
+    }
+
+    @Override
+    public void setUISet() {
 
     }
 }
 
-class GameOverScene extends GameLayeredPane {
+class GameOverScene extends BaseScene {
 
     public GameOverScene() {
+        setPreferredSize(new Dimension(900,1600));
+        setLayout(null);
+    }
+
+    @Override
+    public void setScene() {
+
+    }
+
+    @Override
+    public void setGameObjectList() {
+
+    }
+
+    @Override
+    public void setUISet() {
 
     }
 }
@@ -41,13 +106,13 @@ public class SceneManager {
     //  endregion
 
     //  Scenes
-    public static GameLayeredPane mainScene = null;
-    public static GameLayeredPane gameScene = null;
-    public static GameLayeredPane gameOverScene = null;
+    public static BaseScene mainScene = null;
+    public static BaseScene gameScene = null;
+    public static BaseScene gameOverScene = null;
 
     public static int curSceneNum;
     public static String curSceneName = null;
-    public static GameLayeredPane curScene = null;
+    public static BaseScene curScene = null;
 
     //  Scene Names
     public enum Scene{
@@ -71,14 +136,14 @@ public class SceneManager {
 
     //  To prevent Duplicated snippet
     private static void innerChangeScene(){
-        GameLayeredPane newGameScene = null;
+        BaseScene newGameScene = null;
 
         switch (curSceneNum){
             case 0 :
                 newGameScene = new MainScene();
                 break;
             case 1 :
-                newGameScene = new GameLayeredPane();
+                newGameScene = new InGameScene();
                 break;
             case 2 :
                 newGameScene = new GameOverScene();
@@ -93,7 +158,7 @@ public class SceneManager {
         curScene = newGameScene;
 
         //  Add Scene
-        GameManager.getInstance().getMainFrame().add(newGameScene);
+        GameManager.getInstance().getMainFrame().setContentPane(newGameScene);
 
         //  Remove Game Scene
         if(gameScene != null){

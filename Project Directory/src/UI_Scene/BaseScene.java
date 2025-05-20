@@ -1,6 +1,7 @@
 package UI_Scene;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Vector;
 
 public abstract class BaseScene extends JLayeredPane {
@@ -19,6 +20,7 @@ public abstract class BaseScene extends JLayeredPane {
 
     //  Scene UI Set
     public JPanel sceneUI;
+
 
 //    //  Non-Abstract Functions
 //    public int getAndSetWidth() {
@@ -40,5 +42,5 @@ public abstract class BaseScene extends JLayeredPane {
     //  TODO : Scene 내에 존재해야 하는 UI Set에 대한 설정
     public abstract void setUISet();
 
-
+//SceneManager.curScene.startGameThread();
 }
