@@ -28,6 +28,16 @@ public class PlayerPanel extends JPanel implements ActionListener {
     }
 
     @Override
+    void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        // 1. 플레이어 그리기
+        player.draw(g);
+
+        // 2. 총알 그리기
+    }
+
+    @Override
     public void actionPerformed(ActionEvent e) {
         // 입력 및 플레이어 이동 처리
 
