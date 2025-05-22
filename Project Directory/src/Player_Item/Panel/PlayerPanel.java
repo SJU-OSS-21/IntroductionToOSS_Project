@@ -28,7 +28,7 @@ public class PlayerPanel extends JPanel implements ActionListener {
     }
 
     @Override
-    void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         // 1. 플레이어 그리기
@@ -39,7 +39,10 @@ public class PlayerPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // 입력 및 플레이어 이동 처리
+        // 1) 플레이어 이동
+        int dx = input.isLeft  ? -1 : input.isRight ? 1 : 0;
+        int dy = input.isUp    ? -1 : input.isDown  ? 1 : 0;
+        player.move(dx, dy, getWidth(), getHeight());
 
         // 총알 발사 처리
 
