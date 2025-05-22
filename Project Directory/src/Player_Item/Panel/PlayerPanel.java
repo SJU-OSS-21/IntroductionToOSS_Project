@@ -49,5 +49,7 @@ public class PlayerPanel extends JPanel implements ActionListener {
         // 총알 업데이트 및 비활성 총알 제거
 
         // 아이템 접촉 시 아이템 제거 및 효과 적용
+
+        repaint();
     }
 }
