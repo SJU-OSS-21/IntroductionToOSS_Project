@@ -5,11 +5,24 @@ import main.GamePanel2;
 
 import java.awt.*;
 
+//  아래에 있는 MainScene, InGameScene, BaseScene에 Object(Panel)을 넣어주세요
+
 class MainScene extends BaseScene {
 
     public MainScene() {
+        super();
+    }
 
+    //  TODO : Scene JLayeredPane에 대한 설정 기입
+    @Override
+    public void setScene() {
+        setPreferredSize(new Dimension(900,1600));
+        setLayout(null);
+    }
 
+    // TODO :  Panel 여기에 설치
+    @Override
+    public void setGameObjectList() {
         GamePanel game1 = new GamePanel();
         GamePanel2 game2 = new GamePanel2();
 
@@ -17,25 +30,9 @@ class MainScene extends BaseScene {
         game2.setBounds(new Rectangle(0,0,900,1600));
         this.add(game1,Integer.valueOf(0));
         this.add(game2,Integer.valueOf(1));
-
-        setPreferredSize(new Dimension(900,1600));
-        setLayout(null);
-
-
-//        this.add(game2,Integer.valueOf(1));
-
     }
 
-    @Override
-    public void setScene() {
-
-    }
-
-    @Override
-    public void setGameObjectList() {
-
-    }
-
+    //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
 
@@ -45,20 +42,23 @@ class MainScene extends BaseScene {
 class InGameScene extends BaseScene {
 
     public InGameScene() {
+        super();
+    }
+
+    //  TODO : Scene JLayeredPane에 대한 설정 기입
+    @Override
+    public void setScene() {
         setPreferredSize(new Dimension(900,1600));
         setLayout(null);
     }
 
-    @Override
-    public void setScene() {
-
-    }
-
+    //  TODO : Panel 여기에 설치
     @Override
     public void setGameObjectList() {
 
     }
 
+    //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
 
@@ -68,20 +68,23 @@ class InGameScene extends BaseScene {
 class GameOverScene extends BaseScene {
 
     public GameOverScene() {
+        super();
+    }
+
+    //  TODO : Scene JLayeredPane에 대한 설정 기입
+    @Override
+    public void setScene() {
         setPreferredSize(new Dimension(900,1600));
         setLayout(null);
     }
 
-    @Override
-    public void setScene() {
-
-    }
-
+    //  TODO : Panel 여기에 설치
     @Override
     public void setGameObjectList() {
 
     }
 
+    //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
 
@@ -90,20 +93,6 @@ class GameOverScene extends BaseScene {
 
 //  Non-SingleTon -> Static Class
 public class SceneManager {
-    //  region SingleTon
-//    private static SceneManager instance;
-//
-//    //  수정을 방지하기 위한 final 키워드 사용
-//    public static final SceneManager getInstance() {
-//        if (instance == null) {
-//            instance = new SceneManager();
-//
-//            return instance;
-//        }
-//
-//        return instance;
-//    }
-    //  endregion
 
     //  Scenes
     public static BaseScene mainScene = null;
@@ -121,6 +110,7 @@ public class SceneManager {
         GameOver
     }
 
+    //  Scene을 불러오는 함수
     //  Overloading Functions
     //  idx나 enum을 통해 접근
     public static void changeScene(int sid){
