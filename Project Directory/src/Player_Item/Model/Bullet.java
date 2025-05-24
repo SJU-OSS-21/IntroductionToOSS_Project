@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Bullet {
     private int x, y;
-    private final int speed = 10;
+    private final int speed = 5;
     private final Image image;
     private boolean active = true;
 
@@ -17,7 +17,7 @@ public class Bullet {
             throw new IllegalArgumentException(String.format("총알 리소스 로드 실패: '%s'를 찾을 수 없습니다.", resourceName));
         }
         this.image = new ImageIcon(imgUrl).getImage();
-        this.x = startX;
+        this.x = startX - image.getWidth(null)/2;
         this.y = startY;
     }
     public void draw(Graphics g) {
@@ -30,4 +30,20 @@ public class Bullet {
                 image.getHeight(null));
     }
     public boolean isActive() {return active;}
+
+    // 매 프레임마다 호출 → 위쪽으로 이동
+    public void update() {
+        y -= speed;
+        if (y + image.getHeight(null) < 0) {
+            active = false;
+        }
+    }
+
+    // getter
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
 }
