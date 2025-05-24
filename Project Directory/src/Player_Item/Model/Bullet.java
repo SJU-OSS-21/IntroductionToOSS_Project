@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Bullet {
     private int x, y;
-    private final int speed = 10;
+    private final int speed = 5;
     private final Image image;
     private boolean active = true;
 
@@ -17,7 +17,7 @@ public class Bullet {
             throw new IllegalArgumentException(String.format("총알 리소스 로드 실패: '%s'를 찾을 수 없습니다.", resourceName));
         }
         this.image = new ImageIcon(imgUrl).getImage();
-        this.x = startX;
+        this.x = startX - image.getWidth(null)/2;
         this.y = startY;
     }
     public void draw(Graphics g) {
