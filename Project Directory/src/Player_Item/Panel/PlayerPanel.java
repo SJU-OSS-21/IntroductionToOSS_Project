@@ -19,6 +19,8 @@ public class PlayerPanel extends JPanel implements ActionListener, Runnable {
     Thread gameThread;
 
     // 총알 관련
+    private long lastFireTime = 0;
+    private final long fireInterval = 300; // 발사 쿨타임(ms)
 
     public PlayerPanel(int width, int height) {
         setOpaque(false);
