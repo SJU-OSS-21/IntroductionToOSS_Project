@@ -84,14 +84,19 @@ public class PlayerPanel extends JPanel implements ActionListener, Runnable {
 
         // 1. 플레이어 그리기
         player.draw(g);
-
-        // 2. 총알 그리기
     }
 
     public void Update() {
+        // 1. 플레이어 업데이트
         int dx = input.isLeft()  ? -1 : input.isRight() ? 1 : 0;
         int dy = input.isUp()    ? -1 : input.isDown()  ? 1 : 0;
         player.move(dx, dy, getWidth(), getHeight());
+
+        // 2. 총알 업데이트
+        if (input.isFire()) {
+            long now = System.currentTimeMillis(); // ms로 쿨타임 판단
+
+        }
     }
 
     @Override
