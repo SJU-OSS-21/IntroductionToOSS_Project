@@ -95,7 +95,9 @@ public class PlayerPanel extends JPanel implements ActionListener, Runnable {
         // 2. 총알 업데이트
         if (input.isFire()) {
             long now = System.currentTimeMillis(); // ms로 쿨타임 판단
+            if (now - lastFireTime > fireInterval) {
 
+            }
         }
     }
 
