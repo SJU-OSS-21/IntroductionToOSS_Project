@@ -8,6 +8,7 @@ public class Player {
     private int x, y; // 플레이어 위치
     private int speed = 5; // 플레이어 속도
     private Image image; // 플레이어 이미지(에셋)
+    private int hp = 3;
 
     // 생성자
     public Player(String imgPath, int startX, int startY) {
@@ -37,5 +38,20 @@ public class Player {
                 image.getWidth(null),
                 image.getHeight(null));
     }
-    // 1
+
+    // getter
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+
+    // setter
+    public void decreasePlayerHp() {
+        hp -= 1;
+    }
+    public void increasePlayerHp() {
+        hp += 1;
+    }
 }
