@@ -37,5 +37,12 @@ public class Player {
                 image.getWidth(null),
                 image.getHeight(null));
     }
-    // 1
+
+    // getter
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
 }

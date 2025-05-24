@@ -86,6 +86,8 @@ public class PlayerPanel extends JPanel implements ActionListener, Runnable {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.red);
 
         // 1. 플레이어 그리기
         player.draw(g);
@@ -93,7 +95,10 @@ public class PlayerPanel extends JPanel implements ActionListener, Runnable {
         // 2. 총알 그리기
         for (Bullet b : bullets) {
             b.draw(g);
+            g2d.fillRect(b.getX(), b.getY(), 10, 10);
         }
+
+        g2d.fillRect(player.getX(), player.getY(), 10, 10);
     }
 
     public void Update() {
@@ -127,6 +132,9 @@ public class PlayerPanel extends JPanel implements ActionListener, Runnable {
                 it.remove();
             }
         }
+
+        // 디버그용
+
     }
 
     @Override
