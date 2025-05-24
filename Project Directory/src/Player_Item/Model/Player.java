@@ -6,7 +6,7 @@ import java.net.URL;
 
 public class Player {
     private int x, y; // 플레이어 위치
-    private int speed; // 플레이어 속도
+    private int speed = 5; // 플레이어 속도
     private Image image; // 플레이어 이미지(에셋)
 
     // 생성자
@@ -37,4 +37,5 @@ public class Player {
                 image.getWidth(null),
                 image.getHeight(null));
     }
+    // 1
 }
