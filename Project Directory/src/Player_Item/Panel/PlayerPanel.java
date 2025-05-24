@@ -1,19 +1,24 @@
 package Player_Item.Panel;
 
 import Player_Item.InputController;
+import Player_Item.Model.Bullet;
 import Player_Item.Model.Player;
 import main.KeyInputSystem;
+import org.w3c.dom.css.Rect;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class PlayerPanel extends JPanel implements ActionListener, Runnable {
     private final Player player;            // 플레이어
     private final InputController input;     // 키 입력 시스템
-    // private final Timer timer;
+    private final List<Bullet> bullets = new ArrayList<>();
 
     final double FPS = 60.0;
     Thread gameThread;
@@ -84,6 +89,11 @@ public class PlayerPanel extends JPanel implements ActionListener, Runnable {
 
         // 1. 플레이어 그리기
         player.draw(g);
+
+        // 2. 총알 그리기
+        for (Bullet b : bullets) {
+            b.draw(g);
+        }
     }
 
     public void Update() {
@@ -96,7 +106,25 @@ public class PlayerPanel extends JPanel implements ActionListener, Runnable {
         if (input.isFire()) {
             long now = System.currentTimeMillis(); // ms로 쿨타임 판단
             if (now - lastFireTime > fireInterval) {
+                Rectangle pr = player.getBounds(); // 플레이어 크기 가져오기
 
+                // 플레이어 중앙에서 총알 생성
+                int bx = pr.x + pr.width / 2;
+                int by = pr.y;
+                Bullet bullet = new Bullet("bullet.png", bx, by-1);
+                bullets.add(bullet); // 총알 배열에 추가
+
+                lastFireTime = now; // 쏜 시간 업데이트
+            }
+        }
+
+        // 3. 총알 업데이트 및 비활성 총알 제거
+        Iterator<Bullet> it = bullets.iterator();
+        while (it.hasNext()) {
+            Bullet b = it.next();
+            b.update();
+            if (!b.isActive()) {
+                it.remove();
             }
         }
     }

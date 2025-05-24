@@ -30,4 +30,12 @@ public class Bullet {
                 image.getHeight(null));
     }
     public boolean isActive() {return active;}
+
+    // 매 프레임마다 호출 → 위쪽으로 이동
+    public void update() {
+        y -= speed;
+        if (y + image.getHeight(null) < 0) {
+            active = false;
+        }
+    }
 }
