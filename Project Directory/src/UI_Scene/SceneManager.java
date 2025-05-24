@@ -1,5 +1,6 @@
 package UI_Scene;
 
+import Player_Item.Panel.PlayerPanel;
 import main.GamePanel;
 import main.GamePanel2;
 
@@ -10,20 +11,22 @@ class MainScene extends BaseScene {
     public MainScene() {
 
 
-        GamePanel game1 = new GamePanel();
-        GamePanel2 game2 = new GamePanel2();
-
-        game1.setBounds(new Rectangle(0,0,900,1600));
-        game2.setBounds(new Rectangle(0,0,900,1600));
-        this.add(game1,Integer.valueOf(0));
-        this.add(game2,Integer.valueOf(1));
-
-        setPreferredSize(new Dimension(900,1600));
-        setLayout(null);
-
-
+//        GamePanel game1 = new GamePanel();
+//        GamePanel2 game2 = new GamePanel2();
+//
+//        game1.setBounds(new Rectangle(0,0,900,1600));
+//        game2.setBounds(new Rectangle(0,0,900,1600));
+//        this.add(game1,Integer.valueOf(0));
 //        this.add(game2,Integer.valueOf(1));
 
+
+
+        PlayerPanel playerPanel = new PlayerPanel(600, 1000);
+        playerPanel.setBounds(new Rectangle(0,0,600,1000));
+        this.add(playerPanel, Integer.valueOf(0));
+
+        setPreferredSize(new Dimension(600,1000)); // 실제 창 크기
+        setLayout(null);
     }
 
     @Override
