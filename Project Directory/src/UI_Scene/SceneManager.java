@@ -20,15 +20,11 @@ class MainScene extends BaseScene {
         setPreferredSize(new Dimension(900,1600));
         setLayout(null);
 
+    }
 
-//        GamePanel game1 = new GamePanel();
-//        GamePanel2 game2 = new GamePanel2();
-//
-//        game1.setBounds(new Rectangle(0,0,900,1600));
-//        game2.setBounds(new Rectangle(0,0,900,1600));
-//        this.add(game1,Integer.valueOf(0));
-//        this.add(game2,Integer.valueOf(1));
-
+    // TODO :  Panel 여기에 설치
+    @Override
+    public void setGameObjectList() {
         PlayerPanel playerPanel = new PlayerPanel(600, 1000);
         playerPanel.setBounds(new Rectangle(0,0,600,1000));
         this.add(playerPanel, Integer.valueOf(0));
@@ -37,17 +33,6 @@ class MainScene extends BaseScene {
         setLayout(null);
     }
 
-
-    // TODO :  Panel 여기에 설치
-    @Override
-    public void setGameObjectList() {
-
-    }
-
-    @Override
-    public void setGameObjectList() {
-
-    }
 
     @Override
     public void setUISet() {
