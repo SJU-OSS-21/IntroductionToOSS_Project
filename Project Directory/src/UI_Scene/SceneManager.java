@@ -41,13 +41,7 @@ class MainScene extends BaseScene {
     // TODO :  Panel 여기에 설치
     @Override
     public void setGameObjectList() {
-        GamePanel game1 = new GamePanel();
-        GamePanel2 game2 = new GamePanel2();
 
-        game1.setBounds(new Rectangle(0,0,900,1600));
-        game2.setBounds(new Rectangle(0,0,900,1600));
-        this.add(game1,Integer.valueOf(0));
-        this.add(game2,Integer.valueOf(1));
     }
 
     @Override
@@ -75,7 +69,13 @@ class InGameScene extends BaseScene {
 
     @Override
     public void setGameObjectList() {
+        GamePanel game1 = new GamePanel();
+        GamePanel2 game2 = new GamePanel2();
 
+        game1.setBounds(new Rectangle(0,0,900,1600));
+        game2.setBounds(new Rectangle(0,0,900,1600));
+        this.add(game1,Integer.valueOf(0));
+        this.add(game2,Integer.valueOf(1));
     }
 
     //  TODO : UI Panel 기입
