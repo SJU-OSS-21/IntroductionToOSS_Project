@@ -1,5 +1,6 @@
 package UI_Scene;
 
+import Player_Item.Panel.PlayerPanel;
 import main.GamePanel;
 import main.GamePanel2;
 
@@ -18,7 +19,24 @@ class MainScene extends BaseScene {
     public void setScene() {
         setPreferredSize(new Dimension(900,1600));
         setLayout(null);
+
+
+//        GamePanel game1 = new GamePanel();
+//        GamePanel2 game2 = new GamePanel2();
+//
+//        game1.setBounds(new Rectangle(0,0,900,1600));
+//        game2.setBounds(new Rectangle(0,0,900,1600));
+//        this.add(game1,Integer.valueOf(0));
+//        this.add(game2,Integer.valueOf(1));
+
+        PlayerPanel playerPanel = new PlayerPanel(600, 1000);
+        playerPanel.setBounds(new Rectangle(0,0,600,1000));
+        this.add(playerPanel, Integer.valueOf(0));
+
+        setPreferredSize(new Dimension(600,1000)); // 실제 창 크기
+        setLayout(null);
     }
+
 
     // TODO :  Panel 여기에 설치
     @Override
@@ -32,7 +50,11 @@ class MainScene extends BaseScene {
         this.add(game2,Integer.valueOf(1));
     }
 
-    //  TODO : UI Panel 기입
+    @Override
+    public void setGameObjectList() {
+
+    }
+
     @Override
     public void setUISet() {
 
@@ -42,17 +64,15 @@ class MainScene extends BaseScene {
 class InGameScene extends BaseScene {
 
     public InGameScene() {
-        super();
-    }
-
-    //  TODO : Scene JLayeredPane에 대한 설정 기입
-    @Override
-    public void setScene() {
         setPreferredSize(new Dimension(900,1600));
         setLayout(null);
     }
 
-    //  TODO : Panel 여기에 설치
+    @Override
+    public void setScene() {
+
+    }
+
     @Override
     public void setGameObjectList() {
 
@@ -93,6 +113,20 @@ class GameOverScene extends BaseScene {
 
 //  Non-SingleTon -> Static Class
 public class SceneManager {
+    //  region SingleTon
+//    private static SceneManager instance;
+//
+//    //  수정을 방지하기 위한 final 키워드 사용
+//    public static final SceneManager getInstance() {
+//        if (instance == null) {
+//            instance = new SceneManager();
+//
+//            return instance;
+//        }
+//
+//        return instance;
+//    }
+    //  endregion
 
     //  Scenes
     public static BaseScene mainScene = null;
