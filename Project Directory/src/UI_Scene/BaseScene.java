@@ -31,9 +31,16 @@ public abstract class BaseScene extends JLayeredPane {
 //        return height;
 //    }
 
+    //  Constructor
+    protected BaseScene(){
+        setGameObjectList();
+        setUISet();
+        setScene();
+    }
+
     //  Abstract Functions
 
-    //  TODO : 사실상 생성자를 강제로 생성하게 끔 설정 - called in Constructor
+    //  TODO : Scene과 관련한 설정 사항
     public abstract void setScene();
 
     //  TODO : Scene 내에 존재해야 하는 gameObject setting

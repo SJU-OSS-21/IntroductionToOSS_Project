@@ -16,6 +16,7 @@ public class MyFrame extends JFrame {
         GameManager.getInstance().setMainFrame(mainFrame);
         // endregion
 
+        //  Scene 불러오는 함수
         SceneManager.changeScene(SceneManager.Scene.Main);
 
         mainFrame.pack();   // set size of window by GamePanel
