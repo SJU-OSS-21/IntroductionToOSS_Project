@@ -11,17 +11,17 @@ public class Enemy {
     Image image;
 
     Enemy() {
-        w = 20;
-        h = 20;
+        w = 100;
+        h = 50;
         px = 100;
         py = 100;
 
-        vx = 200;
-        vy = 200;
+        vx = (float)(Math.floor(Math.random() * 501) - 250);
+        vy = 400;
     }
 
     public void draw(Graphics g) {
-        g.setColor(Color.GREEN);
+        g.setColor(Color.BLACK);
         g.fillRect((int)px, (int)py, (int) w, (int) h);
     }
     public void update(float dt) {
@@ -36,10 +36,10 @@ public class Enemy {
             return;
 
         if (px + w > width) { px = width - w;   vx *= -1; }
-        if (px - w < 0)     { px = w;           vx *= -1; }
+        if (px < 0)         { px = 0;           vx *= -1; }
 
         if (py + h > height)    { py = height - h;  vy *= -1; }
-        if (py - h < 0)         { py = h;           vy *= -1; }
+        if (py < 0)             { py = 0;           vy *= -1; }
     }
     public boolean isDead() {
         return false;
