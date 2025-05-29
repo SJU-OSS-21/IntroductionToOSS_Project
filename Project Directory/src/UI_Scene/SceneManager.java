@@ -17,7 +17,7 @@ class MainScene extends BaseScene {
     //  TODO : Scene JLayeredPane에 대한 설정 기입
     @Override
     public void setScene() {
-        setPreferredSize(new Dimension(900,1600));
+        setPreferredSize(new Dimension(600,1000));
         setLayout(null);
 
     }

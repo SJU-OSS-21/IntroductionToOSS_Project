@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Bullet {
     private int x, y;
-    private final int speed = 5;
+    private final int speed = 8;
     private final Image image;
     private boolean active = true;
 

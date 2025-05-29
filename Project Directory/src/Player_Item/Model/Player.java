@@ -18,8 +18,8 @@ public class Player {
             throw new IllegalArgumentException("리소스 로드 실패: " + imgPath);
         }
         this.image = new ImageIcon(imgUrl).getImage();
-        this.x = startX;
-        this.y = startY;
+        this.x = startX/2 - image.getWidth(null)/2;
+        this.y = startY - 100;
     }
 
     // 이동 함수
