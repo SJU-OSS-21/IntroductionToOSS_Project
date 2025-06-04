@@ -3,12 +3,21 @@ package UI_Scene;
 import Player_Item.Panel.PlayerPanel;
 import main.GamePanel;
 import main.GamePanel2;
+import main.MapPanel;
 
 import java.awt.*;
 
 //  아래에 있는 MainScene, InGameScene, BaseScene에 Object(Panel)을 넣어주세요
 
 class MainScene extends BaseScene {
+    final int originalTileSize = 16;
+    final int scale = 3;
+    final int tileSize = originalTileSize * scale;
+    final int maxScreenCol = 10;//(가로 타일 개수)
+    final int maxScreenRow = 20;//(세로 타일 개수)
+    final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
+    final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
+    final double FPS = 60.0;
 
     public MainScene() {
         super();
@@ -17,7 +26,7 @@ class MainScene extends BaseScene {
     //  TODO : Scene JLayeredPane에 대한 설정 기입
     @Override
     public void setScene() {
-        setPreferredSize(new Dimension(600,1000));
+        setPreferredSize(new Dimension(screenWidth,screenHeight));
         setLayout(null);
 
     }
@@ -25,11 +34,15 @@ class MainScene extends BaseScene {
     // TODO :  Panel 여기에 설치
     @Override
     public void setGameObjectList() {
-        PlayerPanel playerPanel = new PlayerPanel(600, 1000);
-        playerPanel.setBounds(new Rectangle(0,0,600,1000));
-        this.add(playerPanel, Integer.valueOf(0));
+        MapPanel mp = new MapPanel();
+        mp.setBounds(new Rectangle(0,0,screenWidth,screenHeight));
+        this.add(mp, Integer.valueOf(0));
 
-        setPreferredSize(new Dimension(600,1000)); // 실제 창 크기
+        PlayerPanel playerPanel = new PlayerPanel(screenWidth, screenHeight);
+        playerPanel.setBounds(new Rectangle(0,0,screenWidth,screenHeight));
+        this.add(playerPanel, Integer.valueOf(1));
+
+        setPreferredSize(new Dimension(screenWidth,screenHeight)); // 실제 창 크기
         setLayout(null);
     }
 
@@ -54,13 +67,13 @@ class InGameScene extends BaseScene {
 
     @Override
     public void setGameObjectList() {
-        GamePanel game1 = new GamePanel();
-        GamePanel2 game2 = new GamePanel2();
-
-        game1.setBounds(new Rectangle(0,0,900,1600));
-        game2.setBounds(new Rectangle(0,0,900,1600));
-        this.add(game1,Integer.valueOf(0));
-        this.add(game2,Integer.valueOf(1));
+//        GamePanel game1 = new GamePanel();
+//        GamePanel2 game2 = new GamePanel2();
+//
+//        game1.setBounds(new Rectangle(0,0,900,1600));
+//        game2.setBounds(new Rectangle(0,0,900,1600));
+//        this.add(game1,Integer.valueOf(0));
+//        this.add(game2,Integer.valueOf(1));
     }
 
     //  TODO : UI Panel 기입
