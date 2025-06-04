@@ -28,12 +28,12 @@ public class PlayerPanel extends JPanel implements Runnable {
     private int shotCount = 3;                // 발사 개수 (1,2,3...)
     private final int bulletSpacing = 12;     // 총알 간 가로 간격(px)
 
-    public PlayerPanel(int width, int height) {
+    public PlayerPanel(int panelWidth, int panelHeight) {
         setOpaque(false);
-        setPreferredSize(new Dimension(width, height));
+        setPreferredSize(new Dimension(panelWidth, panelHeight));
 
         // 플레이어 초기 위치
-        player = new Player("player2.png", width/2 - 30, height - 100);
+        player = new Player("player2.png", panelWidth, panelHeight);
 
         // 키 입력 설정
         input = new InputController();
