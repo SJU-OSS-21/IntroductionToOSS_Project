@@ -85,18 +85,19 @@ public class MapPanel extends JPanel implements Runnable {
     }
 
     public void Update() {
-        if (keyIS.isUp) {
-            playerY -= playerSpeed;
-        }
-        if (keyIS.isDown) {
-            playerY += playerSpeed;
-        }
-        if (keyIS.isLeft) {
-            playerX -= playerSpeed;
-        }
-        if (keyIS.isRight) {
-            playerX += playerSpeed;
-        }
+        tileManager.updateScroll(); // 배경 스크롤 업데이트
+//        if (keyIS.isUp) {
+//            playerY -= playerSpeed;
+//        }
+//        if (keyIS.isDown) {
+//            playerY += playerSpeed;
+//        }
+//        if (keyIS.isLeft) {
+//            playerX -= playerSpeed;
+//        }
+//        if (keyIS.isRight) {
+//            playerX += playerSpeed;
+//        }
     }
 
     public void paintComponent(Graphics g) {
