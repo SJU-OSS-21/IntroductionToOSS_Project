@@ -2,6 +2,7 @@ package Enemies;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 public class Enemy {
     float w, h;
@@ -10,19 +11,23 @@ public class Enemy {
     float type;
     Image image;
 
-    Enemy() {
-        w = 100;
-        h = 50;
-        px = 100;
-        py = 100;
+    public Enemy(String imgPath, int _px, int _py) {
+        w = 57;
+        h = 42;
+        px = _px;
+        py = _py;
 
-        vx = (float)(Math.floor(Math.random() * 501) - 250);
-        vy = 400;
+        vx = (float)(Math.floor(Math.random() * 201) - 100);
+        vy = 200;
+
+        URL imgUrl = getClass().getClassLoader().getResource(imgPath);
+        this.image = new ImageIcon(imgUrl).getImage();
     }
 
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect((int)px, (int)py, (int) w, (int) h);
+        //g.fillRect((int)px, (int)py, (int) w, (int) h);
+        g.drawImage(image, (int)px, (int)py, null);
     }
     public void update(float dt) {
         px += vx * dt;
