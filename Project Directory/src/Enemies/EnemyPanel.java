@@ -8,9 +8,12 @@ import java.util.LinkedList;
 public class EnemyPanel extends JPanel implements Runnable {
     LinkedList<Enemy> enemies;
 
-    EnemyPanel() {
+    public EnemyPanel(int panelWidth, int panelHeight) {
+        setOpaque(false);
+        setPreferredSize(new Dimension(panelWidth, panelHeight));
+
         enemies = new LinkedList<>();
-        enemies.add(new Enemy());
+        enemies.add(new Enemy("enemy.png", 100, 100));
 
         Thread t = new Thread(this);
         t.start();

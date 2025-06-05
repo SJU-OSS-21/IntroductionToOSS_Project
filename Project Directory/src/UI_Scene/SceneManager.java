@@ -1,5 +1,6 @@
 package UI_Scene;
 
+import Enemies.EnemyPanel;
 import Player_Item.Panel.PlayerPanel;
 import main.GamePanel;
 import main.GamePanel2;
@@ -41,6 +42,10 @@ class MainScene extends BaseScene {
         PlayerPanel playerPanel = new PlayerPanel(screenWidth, screenHeight);
         playerPanel.setBounds(new Rectangle(0,0,screenWidth,screenHeight));
         this.add(playerPanel, Integer.valueOf(1));
+
+        EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight);
+        enemyPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
+        this.add(enemyPanel, Integer.valueOf(2));
 
         setPreferredSize(new Dimension(screenWidth,screenHeight)); // 실제 창 크기
         setLayout(null);
