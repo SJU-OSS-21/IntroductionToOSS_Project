@@ -39,7 +39,13 @@ public class Player {
         y = Math.max(0, Math.min(y + dy * speed, maxH - normalImage.getHeight(null)));
     }
     // 피격 처리
-
+    public void hit() {
+        if (invincible) return; // 무적 상태인 경우 return
+        hp = Math.max(0, hp-1);
+        // 무적 처리
+        invincible = true;
+        invincibleStartTime = System.currentTimeMillis();
+    }
 
     // draw()
     public void draw(Graphics g) {
