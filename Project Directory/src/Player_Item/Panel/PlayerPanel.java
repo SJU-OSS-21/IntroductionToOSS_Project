@@ -33,7 +33,7 @@ public class PlayerPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(panelWidth, panelHeight));
 
         // 플레이어 초기 위치
-        player = new Player("player_normal.png", panelWidth, panelHeight);
+        player = new Player("player_normal.png", "player_hit.png", panelWidth, panelHeight);
 
         // 키 입력 설정
         input = new InputController();
@@ -113,12 +113,14 @@ public class PlayerPanel extends JPanel implements Runnable {
         }
 
         // 총알 업데이트 및 비활성 총알 제거
-        Iterator<Bullet> it = bullets.iterator();
-        while (it.hasNext()) {
-            Bullet b = it.next();
-            b.update();
-            if (!b.isActive()) {
-                it.remove();
+        synchronized (bullets) {
+            Iterator<Bullet> it = bullets.iterator();
+            while (it.hasNext()) {
+                Bullet b = it.next();
+                b.update();
+                if (!b.isActive()) {
+                    it.remove();
+                }
             }
         }
     }
