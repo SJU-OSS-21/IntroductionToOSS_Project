@@ -13,7 +13,6 @@ public class EnemyPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(panelWidth, panelHeight));
 
         enemies = new LinkedList<>();
-        enemies.add(new Enemy("enemy.png", 100, 100));
 
         Thread t = new Thread(this);
         t.start();
@@ -21,23 +20,44 @@ public class EnemyPanel extends JPanel implements Runnable {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Iterator<Enemy> it = enemies.iterator();
-        while (it.hasNext()) {
-            Enemy e = it.next();
-            e.draw(g);
+        synchronized (enemies) {
+            Iterator<Enemy> it = enemies.iterator();
+            while (it.hasNext()) {
+                Enemy e = it.next();
+                e.draw(g);
+            }
         }
     }
 
     public void run() {
+        float dt = 0.0f;
         while (true) {
             try {
-                for (var e : enemies)
-                    e.update(0.033f);
-                for (var e : enemies)
-                    e.collisionResolution(this);
+                synchronized (enemies) {
+                    Iterator<Enemy> it = enemies.iterator();
+
+                    for (var e : enemies)
+                        e.update(0.033f);
+
+                    for (var e : enemies)
+                        e.collisionResolution();
+
+                    while (it.hasNext()) {
+                        Enemy e = it.next();
+                        if (e.active == false)
+                            it.remove();
+                    }
+
+                    if (dt > 100) {
+                        enemies.add(new Enemy(this));
+                        dt = 0;
+                        //System.out.println("enemies : " + enemies.size());
+                    }
+                }
 
                 repaint();
                 Thread.sleep(33);
+                dt += 33;
             } catch (InterruptedException e) {
                 return;
             }
