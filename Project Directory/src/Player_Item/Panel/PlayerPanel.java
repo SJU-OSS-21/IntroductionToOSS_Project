@@ -17,7 +17,7 @@ import java.util.List;
 public class PlayerPanel extends JPanel implements Runnable {
     private final Player player;              // 플레이어 모델
     private final InputController input;      // 키 입력 컨트롤러
-    private final List<Bullet> bullets = new ArrayList<>();
+    public final List<Bullet> bullets = new ArrayList<>();
 
     private final double FPS = 60.0;
     private Thread gameThread;
@@ -101,9 +101,12 @@ public class PlayerPanel extends JPanel implements Runnable {
 
                 // shotCount 개수만큼 발사, 가운데 정렬
                 int startIdx = -(shotCount - 1) / 2;
-                for (int i = 0; i < shotCount; i++) {
-                    int offsetX = (startIdx + i) * bulletSpacing;
-                    bullets.add(new Bullet("bullet2.png", centerX + offsetX, y));
+
+                synchronized (bullets) {
+                    for (int i = 0; i < shotCount; i++) {
+                        int offsetX = (startIdx + i) * bulletSpacing;
+                        bullets.add(new Bullet("bullet2.png", centerX + offsetX, y));
+                    }
                 }
                 lastFireTime = nowTime;
             }
@@ -127,9 +130,11 @@ public class PlayerPanel extends JPanel implements Runnable {
         g2d.setColor(Color.red);
 
         // 총알 그리기
-        for (Bullet b : bullets) {
-            b.draw(g);
-            g2d.fillRect(b.getX(), b.getY(), 2, 2);
+        synchronized (bullets) {
+            for (Bullet b : bullets) {
+                b.draw(g);
+                g2d.fillRect(b.getX(), b.getY(), 2, 2);
+            }
         }
         // 플레이어 그리기
         player.draw(g);
