@@ -58,7 +58,19 @@ public class Player {
 
     // draw()
     public void draw(Graphics g) {
-        g.drawImage(normalImage, x, y, null);
+        updateInvincible();
+
+        if (invincible) {
+            long elapsed = System.currentTimeMillis() - invincibleStartTime;
+            // blinkInterval 간격마다 이미지 토글
+            if ((elapsed / blinkInterval) % 2 == 0) {
+                g.drawImage(hitImage, x, y, null);
+            } else {
+                g.drawImage(normalImage, x, y, null);
+            }
+        } else {
+            g.drawImage(normalImage, x, y, null);
+        }
     }
     // 경계값
     public Rectangle getBounds() {
