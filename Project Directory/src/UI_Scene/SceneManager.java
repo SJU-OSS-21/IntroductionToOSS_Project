@@ -35,6 +35,38 @@ class MainScene extends BaseScene {
     // TODO :  Panel 여기에 설치
     @Override
     public void setGameObjectList() {
+
+    }
+
+
+    @Override
+    public void setUISet() {
+
+    }
+}
+
+class InGameScene extends BaseScene {
+    final int originalTileSize = 16;
+    final int scale = 3;
+    final int tileSize = originalTileSize * scale;
+    final int maxScreenCol = 10;//(가로 타일 개수)
+    final int maxScreenRow = 20;//(세로 타일 개수)
+    final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
+    final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
+    final double FPS = 60.0;
+
+    public InGameScene() {
+        super();
+    }
+
+    @Override
+    public void setScene() {
+        setPreferredSize(new Dimension(900,1600));
+        setLayout(null);
+    }
+
+    @Override
+    public void setGameObjectList() {
         MapPanel mp = new MapPanel();
         mp.setBounds(new Rectangle(0,0,screenWidth,screenHeight));
         this.add(mp, Integer.valueOf(0));
@@ -51,36 +83,6 @@ class MainScene extends BaseScene {
         setLayout(null);
 
         enemyPanel.setPlayerPanel(playerPanel);
-    }
-
-
-    @Override
-    public void setUISet() {
-
-    }
-}
-
-class InGameScene extends BaseScene {
-
-    public InGameScene() {
-        setPreferredSize(new Dimension(900,1600));
-        setLayout(null);
-    }
-
-    @Override
-    public void setScene() {
-
-    }
-
-    @Override
-    public void setGameObjectList() {
-//        GamePanel game1 = new GamePanel();
-//        GamePanel2 game2 = new GamePanel2();
-//
-//        game1.setBounds(new Rectangle(0,0,900,1600));
-//        game2.setBounds(new Rectangle(0,0,900,1600));
-//        this.add(game1,Integer.valueOf(0));
-//        this.add(game2,Integer.valueOf(1));
     }
 
     //  TODO : UI Panel 기입
