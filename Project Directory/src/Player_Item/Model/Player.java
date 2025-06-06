@@ -8,7 +8,11 @@ public class Player {
     private int x, y; // 플레이어 위치
     private int speed = 5; // 플레이어 속도
     private Image image; // 플레이어 이미지(에셋)
-    private int hp = 3;
+    private int hp = 3; // 플레이어 체력
+
+    // 무적 관련 필드
+    private boolean invincible = false;
+
 
     // 생성자
     public Player(String imgPath, int startX, int startY) {
