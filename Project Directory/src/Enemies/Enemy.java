@@ -72,7 +72,7 @@ public class Enemy {
     public boolean isActive() {
         return active;
     }
-    public Rectangle getBound() {
+    public Rectangle getBounds() {
         return new Rectangle((int)px, (int)py, (int)w, (int)h);
     }
 }

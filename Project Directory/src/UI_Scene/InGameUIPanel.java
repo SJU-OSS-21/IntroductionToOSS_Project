@@ -17,7 +17,7 @@ public class InGameUIPanel extends UIPanel {
 
     @Override
     protected void drawUI(Graphics2D g2) {
-        g2.setFont(customFont.deriveFont(18f));
+        g2.setFont(mainFont.deriveFont(18f));
         g2.setColor(Color.YELLOW);
         g2.drawString("Score: " + score, 20, 30);
     }

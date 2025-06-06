@@ -33,9 +33,10 @@ public abstract class BaseScene extends JLayeredPane {
 
     //  Constructor
     protected BaseScene(){
-        setGameObjectList();
-        setUISet();
         setScene();
+        setGameObjectList();
+        //  Init 타이밍 문제로 명시적 선언 요함
+//        setUISet();
     }
 
     //  Abstract Functions
