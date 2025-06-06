@@ -1,6 +1,7 @@
 // src/Player_Item/Panel/PlayerPanel.java
 package Player_Item.Panel;
 
+import Enemies.EnemyPanel;
 import Player_Item.InputController;
 import Player_Item.Model.Player;
 import Player_Item.Model.Bullet;
@@ -18,6 +19,8 @@ public class PlayerPanel extends JPanel implements Runnable {
     private final Player player;              // 플레이어 모델
     private final InputController input;      // 키 입력 컨트롤러
     public final List<Bullet> bullets = new ArrayList<>();
+
+    private EnemyPanel enemyPanel; // 충돌처리 등을 위해 enemyPanel 가져오기
 
     private final double FPS = 60.0;
     private Thread gameThread;
@@ -143,6 +146,11 @@ public class PlayerPanel extends JPanel implements Runnable {
         g2d.fillRect(player.getX(), player.getY(), 10, 10);
     }
 
+    // 충돌 검사: 플레이어
+    private void checkCollisions() {
+
+    }
+
     /**
      * 발사 개수 설정
      */
@@ -155,5 +163,9 @@ public class PlayerPanel extends JPanel implements Runnable {
      */
     public int getShotCount() {
         return shotCount;
+    }
+
+    public void setEnemyPanel(EnemyPanel e) {
+        enemyPanel = e;
     }
 }
