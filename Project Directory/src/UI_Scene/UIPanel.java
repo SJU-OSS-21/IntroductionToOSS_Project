@@ -20,7 +20,7 @@ public abstract class UIPanel extends JPanel {
     protected void loadFonts() {
         try {
             // Main 타이틀용 폰트 (크고 스타일리시한 폰트)
-            URL mainFontURL = getClass().getClassLoader().getResource("res/Fonts/ArcadeClassic.ttf");
+            URL mainFontURL = getClass().getClassLoader().getResource("Fonts/Ethnocentric.otf");
             if (mainFontURL != null) {
                 mainFont = Font.createFont(Font.TRUETYPE_FONT, new File(mainFontURL.toURI())).deriveFont(36f);
                 GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(mainFont);
@@ -29,7 +29,7 @@ public abstract class UIPanel extends JPanel {
             }
 
             // 본문용 폰트 (가독성 위주)
-            URL textFontURL = getClass().getClassLoader().getResource("res/Fonts/Pretendard-Regular.ttf");
+            URL textFontURL = getClass().getClassLoader().getResource("Fonts/Ubuntu-Regular.ttf");
             if (textFontURL != null) {
                 textFont = Font.createFont(Font.TRUETYPE_FONT, new File(textFontURL.toURI())).deriveFont(20f);
                 GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(textFont);
