@@ -1,6 +1,7 @@
 // src/Player_Item/Panel/PlayerPanel.java
 package Player_Item.Panel;
 
+import Enemies.Enemy;
 import Enemies.EnemyPanel;
 import Player_Item.InputController;
 import Player_Item.Model.Player;
@@ -148,7 +149,23 @@ public class PlayerPanel extends JPanel implements Runnable {
 
     // 충돌 검사: 플레이어
     private void checkCollisions() {
+        Rectangle pb = player.getBounds();
+        // enemy list 가져오기
+        List<Enemy> enemies = enemyPanel.enemies;
 
+        synchronized (enemies) {
+            Iterator<Enemy> it = enemies.iterator();
+            while (it.hasNext()) {
+                Enemy e = it.next();
+                if (pb.intersects(e.getBounds())) {
+                    // 플레이어가 적과 충돌
+                    player.hit();
+                    it.remove();
+
+                    break; // 한 번만 처리하고 루프 탈출
+                }
+            }
+        }
     }
 
     /**
