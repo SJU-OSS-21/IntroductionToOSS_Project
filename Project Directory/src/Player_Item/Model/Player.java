@@ -11,8 +11,10 @@ public class Player {
     private int hp = 3; // 플레이어 체력
 
     // 무적 관련 필드
-    private boolean invincible = false;
-
+    private boolean invincible = false; // 무적 여부
+    private long invincibleStartTime = 0; // 무적 시작
+    private final long invincibleDuration = 2000; // 무적 지속 시간 (ms)
+    private final long blinkInterval = 200;      // 깜빡임 간격 (ms)
 
     // 생성자
     public Player(String imgPath, int startX, int startY) {
