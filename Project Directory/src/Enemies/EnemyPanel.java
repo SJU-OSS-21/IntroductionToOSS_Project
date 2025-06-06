@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class EnemyPanel extends JPanel implements Runnable {
-    LinkedList<Enemy> enemies;
-    PlayerPanel playerPanel;
+    public LinkedList<Enemy> enemies;
+    public PlayerPanel playerPanel;
 
     public EnemyPanel(int panelWidth, int panelHeight) {
         setOpaque(false);
@@ -33,7 +33,9 @@ public class EnemyPanel extends JPanel implements Runnable {
     }
 
     public void run() {
+        float time = 0.0f;
         float dt = 0.0f;
+        float spawnCoolTime = 1000.0f;
         while (true) {
             try {
                 synchronized (enemies) {
@@ -47,19 +49,26 @@ public class EnemyPanel extends JPanel implements Runnable {
 
                     while (it.hasNext()) {
                         Enemy e = it.next();
-                        if (!e.active)
+                        if (!e.isActive())
                             it.remove();
                     }
 
-                    if (dt > 100) {
+                    if (dt > spawnCoolTime) {
                         enemies.add(new Enemy(this));
-                        dt = 0;
+                        dt = 0.0f;
                         //System.out.println("enemies : " + enemies.size());
                     }
+                    if (time > 1000) {
+                        spawnCoolTime *= 0.95f;
+                        time = 0.0f;
+                    }
+                    if (spawnCoolTime < 300)
+                        spawnCoolTime = 300.0f;
                 }
 
                 repaint();
                 Thread.sleep(33);
+                time += 33;
                 dt += 33;
             } catch (InterruptedException e) {
                 return;
