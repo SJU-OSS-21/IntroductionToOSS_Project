@@ -43,6 +43,10 @@ class MainScene extends BaseScene {
         MapPanel mp = new MapPanel();
         mp.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(mp, Integer.valueOf(0));
+
+        UIPlayerPanel playerUI = new UIPlayerPanel("player_normal.png", screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+        playerUI.setBounds(0, 0, screenWidth, screenHeight);
+        this.add(playerUI, Integer.valueOf(2));
     }
 
 
@@ -60,9 +64,10 @@ class MainScene extends BaseScene {
             System.exit(0); // 정상 종료
         });
 
-        this.add(mainUIPanel, Integer.valueOf(1));
+        this.add(mainUIPanel, Integer.valueOf(10));
     }
 }
+
 
 class InGameScene extends BaseScene {
     final int originalTileSize = 16;
@@ -171,7 +176,7 @@ class LoadingScene extends BaseScene {
         Timer dotTimer = new Timer(500, null);
         dotTimer.addActionListener(e -> {
             String base = "Loading";
-            int dotCount = (int)((System.currentTimeMillis() / 500) % 4); // 0~3
+            int dotCount = (int) ((System.currentTimeMillis() / 500) % 4); // 0~3
             loadingLabel.setText(base + ".".repeat(dotCount));
         });
         dotTimer.start();
