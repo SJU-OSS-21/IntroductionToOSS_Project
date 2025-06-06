@@ -8,13 +8,14 @@ import java.net.URL;
 import java.util.List;
 
 public class Enemy {
-    float w, h;
-    float px, py;
-    float vx, vy;
-    float type;
-    Image image;
-    boolean active;
-    int panelWidth, panelHeight;
+    public Image image;
+    public float w, h;
+    public float px, py;
+    public float vx, vy;
+    public int hp;
+    public boolean active;
+    public int panelWidth, panelHeight;
+
 
     public Enemy(JPanel p) {
         panelWidth = p.getWidth();
@@ -22,20 +23,16 @@ public class Enemy {
         init();
     }
     public void init() {
+        URL imgUrl = getClass().getClassLoader().getResource("enemy.png");
+        image = new ImageIcon(imgUrl).getImage();
         w = 57;
         h = 42;
-
-        // 0 ~ panelWidth - w & += 10
         px = (float)Math.floor(Math.random() * (panelWidth - w));
-        //px = 100;
         py = -100;
-
         vx = (float)Math.floor(Math.random() * 201) - 100;
-        //vx = 0;
         vy = 100;
 
-        URL imgUrl = getClass().getClassLoader().getResource("enemy.png");
-        this.image = new ImageIcon(imgUrl).getImage();
+        hp = 2;
 
         active = true;
     }
@@ -55,21 +52,27 @@ public class Enemy {
         if (px + w > panelWidth)    { px = panelWidth - w;   vx *= -1; }
         if (px < 0)                 { px = 0;           vx *= -1; }
 
-        //if (py + h > height)    { py = height - h;  vy *= -1; }
-        //if (py < 0)             { py = 0;           vy *= -1; }
-
         if (py > panelHeight)    { active = false; }
 
-        for (var b : bullets) {
-            if (px <= b.getX() && b.getX() <= px + w && py <= b.getY() && b.getY() <= py + h) {
-                active = false;
-                System.out.println("hit");
-                b.active = false;
-                break;
+        synchronized (bullets) {
+            for (var b : bullets) {
+                if (px <= b.getX() && b.getX() <= px + w && py <= b.getY() && b.getY() <= py + h) {
+                    hp -= 1;
+                    URL imgUrl = getClass().getClassLoader().getResource("enemy_hit.png");
+                    image = new ImageIcon(imgUrl).getImage();
+                    if (hp <= 0)
+                        active = false;
+                    b.active = false;
+                    // System.out.println("hit");
+                    break;
+                }
             }
         }
     }
     public boolean isActive() {
         return active;
+    }
+    public Rectangle getBound() {
+        return new Rectangle((int)px, (int)py, (int)w, (int)h);
     }
 }
