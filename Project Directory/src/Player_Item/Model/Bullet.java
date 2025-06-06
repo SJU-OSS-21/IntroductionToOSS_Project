@@ -8,7 +8,7 @@ public class Bullet {
     private int x, y;
     private final int speed = 8;
     private final Image image;
-    private boolean active = true;
+    public boolean active = true;
 
     public Bullet(String resourceName, int startX, int startY) {
         // 이미지 불러오기
