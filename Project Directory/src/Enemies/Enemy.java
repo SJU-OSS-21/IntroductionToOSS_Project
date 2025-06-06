@@ -1,8 +1,11 @@
 package Enemies;
 
+import Player_Item.Model.Bullet;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+import java.util.List;
 
 public class Enemy {
     float w, h;
@@ -24,6 +27,7 @@ public class Enemy {
 
         // 0 ~ panelWidth - w & += 10
         px = (float)Math.floor(Math.random() * (panelWidth - w));
+        //px = 100;
         py = -100;
 
         vx = (float)Math.floor(Math.random() * 201) - 100;
@@ -44,7 +48,7 @@ public class Enemy {
         px += vx * dt;
         py += vy * dt;
     }
-    public void collisionResolution() {
+    public void collisionResolution(List<Bullet> bullets) {
         if (panelWidth < 1)
             return;
 
@@ -55,6 +59,15 @@ public class Enemy {
         //if (py < 0)             { py = 0;           vy *= -1; }
 
         if (py > panelHeight)    { active = false; }
+
+        for (var b : bullets) {
+            if (px <= b.getX() && b.getX() <= px + w && py <= b.getY() && b.getY() <= py + h) {
+                active = false;
+                System.out.println("hit");
+                b.active = false;
+                break;
+            }
+        }
     }
     public boolean isActive() {
         return active;

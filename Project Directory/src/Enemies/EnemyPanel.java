@@ -1,5 +1,7 @@
 package Enemies;
 
+import Player_Item.Panel.PlayerPanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
@@ -7,6 +9,7 @@ import java.util.LinkedList;
 
 public class EnemyPanel extends JPanel implements Runnable {
     LinkedList<Enemy> enemies;
+    PlayerPanel playerPanel;
 
     public EnemyPanel(int panelWidth, int panelHeight) {
         setOpaque(false);
@@ -40,11 +43,11 @@ public class EnemyPanel extends JPanel implements Runnable {
                         e.update(0.033f);
 
                     for (var e : enemies)
-                        e.collisionResolution();
+                        e.collisionResolution(playerPanel.bullets);
 
                     while (it.hasNext()) {
                         Enemy e = it.next();
-                        if (e.active == false)
+                        if (!e.active)
                             it.remove();
                     }
 
@@ -62,5 +65,9 @@ public class EnemyPanel extends JPanel implements Runnable {
                 return;
             }
         }
+    }
+
+    public void setPlayerPanel(PlayerPanel p) {
+        playerPanel = p;
     }
 }
