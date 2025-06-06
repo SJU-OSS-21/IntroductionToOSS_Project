@@ -83,6 +83,7 @@ class InGameScene extends BaseScene {
         setLayout(null);
 
         enemyPanel.setPlayerPanel(playerPanel);
+        playerPanel.setEnemyPanel(enemyPanel);
     }
 
     //  TODO : UI Panel 기입
