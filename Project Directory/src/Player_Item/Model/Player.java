@@ -87,6 +87,11 @@ public class Player {
         return y;
     }
 
+    // 무적 상태 여부 반환
+    public boolean isInvincible() {
+        return invincible;
+    }
+
     // setter
     public void decreasePlayerHp() {
         hp -= 1;
