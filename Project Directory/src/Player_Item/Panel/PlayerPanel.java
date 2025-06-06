@@ -33,7 +33,7 @@ public class PlayerPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(panelWidth, panelHeight));
 
         // 플레이어 초기 위치
-        player = new Player("player2.png", panelWidth, panelHeight);
+        player = new Player("player_normal.png", panelWidth, panelHeight);
 
         // 키 입력 설정
         input = new InputController();
