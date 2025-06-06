@@ -49,6 +49,8 @@ class MainScene extends BaseScene {
 
         setPreferredSize(new Dimension(screenWidth,screenHeight)); // 실제 창 크기
         setLayout(null);
+
+        enemyPanel.setPlayerPanel(playerPanel);
     }
 
 
