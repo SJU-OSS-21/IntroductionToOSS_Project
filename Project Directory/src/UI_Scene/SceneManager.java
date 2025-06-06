@@ -8,6 +8,8 @@ import main.MapPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.net.URL;
 import java.util.Random;
 
 //  아래에 있는 MainScene, InGameScene, BaseScene에 Object(Panel)을 넣어주세요
@@ -79,8 +81,17 @@ class InGameScene extends BaseScene {
     final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
     final double FPS = 60.0;
 
+    InGameManager inGameManager;
+    InGameUIPanel inGameUIPanel;
+
     public InGameScene() {
         super();
+        inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight);
+        inGameManager = new InGameManager(this, inGameUIPanel);
+        JPanel overlay = inGameManager.getPauseOverlayPanel();
+        overlay.setBounds(0, 0, screenWidth, screenHeight);
+        this.add(overlay, Integer.valueOf(10)); // 꼭 높은 레이어에
+
         setUISet();
     }
 
@@ -123,24 +134,39 @@ class LoadingScene extends BaseScene {
     private final SceneManager.Scene nextScene;
     private JLabel loadingLabel = new JLabel("", SwingConstants.CENTER);
     private JLabel tipLabel = new JLabel("", SwingConstants.LEFT);
+    private File textFontURL;
+    private Font textFont;
 
     private final String[] tips = {
-            "💡 팁: Shift 키를 누르면 빠르게 달릴 수 있습니다!",
-            "💡 팁: 적을 만났을 때는 조심하세요!",
-            "💡 팁: 모든 오브젝트는 상호작용할 수 있습니다.",
-            "💡 팁: 미니맵을 확인하세요!",
-            "💡 팁: 시간을 절약하려면 경로를 외우세요!"
+            "Tips : HJD는 황재동입니다.",
+            "Tips : 시험 공부할 시간이 없나요? 안 하면 됩니다.",
+            "Tips : Swing은 현석이가 좋아하는 재즈 장르입니다.",
+            "Tips : 유니티가 그리워지는 순간이군요.",
+            "Tips : 이런 강준 안강준",
+            "Tips : 영준이는 제 중학교 영어 선생님 이름입니다.",
+            "Tips : 항상 커밋을 잘하는 게 어떨까요?",
+            "Tips : Powered by Java ? ㄴㄴ Powered By GPT",
+            "Tips : 뭔 팁은 팁이야 딱 보면 몰라?"
     };
 
     public LoadingScene(SceneManager.Scene nextScene) {
         this.nextScene = nextScene;
 
+        try {
+            URL textFontURL = getClass().getClassLoader().getResource("Fonts/high1 Wonchuri Title B.ttf");
+            if (textFontURL == null) throw new RuntimeException("폰트 파일을 찾을 수 없습니다.");
+            textFont = Font.createFont(Font.TRUETYPE_FONT, new File(textFontURL.toURI())).deriveFont(20f);
+        } catch (Exception e) {
+            e.printStackTrace();
+            textFont = new Font("SansSerif", Font.PLAIN, 20); // 폰트 로딩 실패 시 기본 폰트로 대체
+        }
 
         loadingLabel = new JLabel("", SwingConstants.CENTER);
         tipLabel = new JLabel("", SwingConstants.LEFT);
 
         setUISet();
     }
+
 
     @Override
     public void setScene() {
@@ -160,17 +186,30 @@ class LoadingScene extends BaseScene {
     @Override
     public void setUISet() {
         // === Loading 텍스트 설정 ===
-        loadingLabel.setFont(new Font("SansSerif", Font.BOLD, 36));
+        loadingLabel.setFont(textFont.deriveFont(32f));
         loadingLabel.setForeground(Color.WHITE);
         loadingLabel.setBounds(0, screenHeight / 2 - 40, screenWidth, 80);
         add(loadingLabel);
 
-        // === Tip 라벨 설정 ===
-        tipLabel.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        // Tip 라벨 설정
+        tipLabel = new JLabel(randomTip(), SwingConstants.CENTER);
+        tipLabel.setFont(textFont.deriveFont(18f));
         tipLabel.setForeground(Color.LIGHT_GRAY);
-        tipLabel.setBounds(30, screenHeight - 50, screenWidth - 60, 30);
-        tipLabel.setText(randomTip());
+        tipLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        tipLabel.setVerticalAlignment(SwingConstants.CENTER);
+
+        // === 텍스트의 실제 너비 측정 ===
+        FontMetrics fm = tipLabel.getFontMetrics(tipLabel.getFont());
+        int textWidth = fm.stringWidth(tipLabel.getText());
+
+        // === 라벨의 너비와 위치 재조정 (텍스트 중앙 정렬) ===
+        int tipX = (screenWidth - textWidth) / 2;
+        int tipY = screenHeight - 100;
+        int tipHeight = 40;
+        tipLabel.setBounds(tipX, tipY, textWidth, tipHeight);
+
         add(tipLabel);
+
 
         // === 점 애니메이션 처리 ===
         Timer dotTimer = new Timer(500, null);
