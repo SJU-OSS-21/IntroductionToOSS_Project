@@ -7,7 +7,7 @@ import java.awt.*;
 import java.net.URL;
 import java.util.List;
 
-public class Enemy {
+public class Enemy implements Runnable {
     public Image image;
     public float w, h;
     public float px, py;
@@ -32,7 +32,7 @@ public class Enemy {
         vx = (float)Math.floor(Math.random() * 201) - 100;
         vy = 100;
 
-        hp = 2;
+        hp = 1;
 
         active = true;
     }
@@ -57,9 +57,7 @@ public class Enemy {
         synchronized (bullets) {
             for (var b : bullets) {
                 if (px <= b.getX() && b.getX() <= px + w && py <= b.getY() && b.getY() <= py + h) {
-                    hp -= 1;
-                    URL imgUrl = getClass().getClassLoader().getResource("enemy_hit.png");
-                    image = new ImageIcon(imgUrl).getImage();
+                    reduceHP();
                     if (hp <= 0)
                         active = false;
                     b.active = false;
@@ -74,5 +72,22 @@ public class Enemy {
     }
     public Rectangle getBound() {
         return new Rectangle((int)px, (int)py, (int)w, (int)h);
+    }
+    public void reduceHP() {
+        hp -= 1;
+        Thread t = new Thread(this);
+        t.start();
+    }
+
+    public void run() {
+        try {
+            URL imgUrl = getClass().getClassLoader().getResource("enemy_hit.png");
+            image = new ImageIcon(imgUrl).getImage();
+            Thread.sleep(150);
+            imgUrl = getClass().getClassLoader().getResource("enemy.png");
+            image = new ImageIcon(imgUrl).getImage();
+        } catch (Exception e) {
+            return;
+        }
     }
 }
