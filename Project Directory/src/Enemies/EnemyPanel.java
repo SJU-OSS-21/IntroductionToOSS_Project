@@ -1,6 +1,7 @@
 package Enemies;
 
 import Player_Item.Panel.PlayerPanel;
+import UI_Scene.InGameManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,7 +37,17 @@ public class EnemyPanel extends JPanel implements Runnable {
         float time = 0.0f;
         float dt = 0.0f;
         float spawnCoolTime = 1000.0f;
+        int baseHP = 2;
+        float baseSpeed = 200;
         while (true) {
+            if (InGameManager.global.isPaused()) {
+                try {
+                    Thread.sleep(10); // pause 상태 유지
+                    continue;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             try {
                 synchronized (enemies) {
                     Iterator<Enemy> it = enemies.iterator();
@@ -54,16 +65,23 @@ public class EnemyPanel extends JPanel implements Runnable {
                     }
 
                     if (dt > spawnCoolTime) {
-                        enemies.add(new Enemy(this));
+                        Enemy e = new Enemy(this);
+                        e.hp = baseHP / 2;
+                        e.vy = baseSpeed;
+                        enemies.add(e);
                         dt = 0.0f;
                         //System.out.println("enemies : " + enemies.size());
                     }
-                    if (time > 1000) {
-                        spawnCoolTime *= 0.95f;
+                    if (time > 5000) {
+                        spawnCoolTime *= 0.9f;
+                        baseHP += 1;
+                        baseSpeed *= 1.05;
                         time = 0.0f;
                     }
-                    if (spawnCoolTime < 300)
-                        spawnCoolTime = 300.0f;
+                    if (spawnCoolTime < 100)
+                        spawnCoolTime = 100.0f;
+                    if (baseHP > 5)
+                        baseHP = 5;
                 }
 
                 repaint();
