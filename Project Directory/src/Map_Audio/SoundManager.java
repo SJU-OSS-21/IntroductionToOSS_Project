@@ -16,4 +16,15 @@ public class SoundManager {
             e.printStackTrace();
         }
     }
+    // 특정 노래 재생
+    public static synchronized void play(int index) {
+        if (index < 0 || index >= SONG_COUNT) return;
+
+        Clip clip = _clips[index];
+        if (clip != null) {
+            clip.stop(); // 재생 중인 경우 멈춤
+            clip.setFramePosition(0); // 재생 위치를 처음으로
+            clip.start(); // 재생
+        }
+    }
 }
