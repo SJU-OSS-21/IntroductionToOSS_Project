@@ -29,7 +29,7 @@ public class PlayerPanel extends JPanel implements Runnable {
     private Thread gameThread;
 
     private long lastFireTime = 0;
-    private final long fireInterval = 300;    // 발사 쿨다운(ms)
+    private final long fireInterval = 100;    // 발사 쿨다운(ms)
 
     private int shotCount = 3;                // 발사 개수 (1,2,3...)
     private final int bulletSpacing = 12;     // 총알 간 가로 간격(px)

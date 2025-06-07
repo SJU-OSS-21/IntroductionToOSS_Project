@@ -14,6 +14,8 @@ import java.io.File;
 import java.net.URL;
 import java.util.Random;
 
+import static Map_Audio.SoundManager.MainSceneSOUNDID;
+
 //  아래에 있는 MainScene, InGameScene, BaseScene에 Object(Panel)을 넣어주세요
 
 class MainScene extends BaseScene {
@@ -323,20 +325,20 @@ public class SceneManager {
             case 0:
                 if (mainScene == null) mainScene = new MainScene();
                 SoundManager.play(8,1f);
-                SoundManager.play(0,0.6f);
+                MainSceneSOUNDID =  SoundManager.play(0,0.6f);
                 curScene = mainScene;
                 break;
             case 1:
                 // 항상 새로 만들어야 다음Scene 다르게 지정 가능 (옵션)
                 loadingScene = new LoadingScene(Scene.InGame);
-                SoundManager.stop(0);
+                SoundManager.stop(MainSceneSOUNDID);
 
 
                 curScene = loadingScene;
                 break;
             case 2:
                 if (gameScene == null) gameScene = new InGameScene();
-                SoundManager.play(1,0.6f);
+                SoundManager.GameSceneSOUNDID = SoundManager.play(1,0.6f);
 //                SoundManager.loop(6,true,0);
                 curScene = gameScene;
                 break;
