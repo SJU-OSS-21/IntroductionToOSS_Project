@@ -28,6 +28,22 @@ public class SoundManager {
             clip.start(); // 재생
         }
     }
+    // 특정 사운드 루프 재생
+    public static synchronized void loop(int index, boolean continuous, int loopCount) {
+        if (index < 0 || index >= SONG_COUNT) return;
+
+        Clip clip = _clips[index];
+        if (clip != null) {
+            clip.stop(); // 현재 재생 중인 클립을 멈춤
+            clip.setFramePosition(0); // 재생 위치 초기화
+
+            if (continuous) {
+                clip.loop(Clip.LOOP_CONTINUOUSLY); // 무한 반복
+            } else {
+                clip.loop(loopCount); // 지정된 횟수만큼 반복
+            }
+        }
+    }
     public static void setVolume(Clip clip, float volume) {
         if (clip == null) return;
 
