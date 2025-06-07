@@ -1,6 +1,7 @@
 package Player_Item.Model;
 
 import Map_Audio.SoundManager;
+import UI_Scene.InGameUIPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,13 +12,22 @@ public class Player {
     private int speed = 5; // 플레이어 속도
     private Image normalImage; // 플레이어 정상 이미지
     private Image hitImage;    // 플레이어 피격 시 이미지
-    private int hp = 3; // 플레이어 체력
+    private int maxHp = 3;
+    private int curHp = 3; // 플레이어 체력
 
     // 무적 관련 필드
     private boolean invincible = false; // 무적 여부
     private long invincibleStartTime = 0; // 무적 시작
     private final long invincibleDuration = 2000; // 무적 지속 시간 (ms)
     private final long blinkInterval = 200;      // 깜빡임 간격 (ms)
+
+    //  InGameUI
+    private InGameUIPanel uiPanel;
+
+    public void setUiPanel(InGameUIPanel panel) {
+        this.uiPanel = panel;
+    }
+
 
     // 생성자
     public Player(String normalImgPath, String hitImgPath, int startX, int startY) {
@@ -43,7 +53,13 @@ public class Player {
     // 피격 처리
     public void hit() {
         if (invincible) return; // 무적 상태인 경우 return
-        hp = Math.max(0, hp-1);
+        curHp = Math.max(0, curHp-1);
+
+        //  HP UI Update
+        if (uiPanel != null) {
+            uiPanel.UIUpdate(); // 체력 감소 시 UI 알림
+        }
+
         // 무적 처리
         invincible = true;
         invincibleStartTime = System.currentTimeMillis();
@@ -94,11 +110,15 @@ public class Player {
         return invincible;
     }
 
+    public float getHpRatio(){
+        return curHp / (float) maxHp;
+    }
+
     // setter
     public void decreasePlayerHp() {
-        hp -= 1;
+        curHp -= 1;
     }
     public void increasePlayerHp() {
-        hp += 1;
+        curHp += 1;
     }
 }

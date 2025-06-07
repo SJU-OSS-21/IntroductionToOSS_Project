@@ -89,6 +89,7 @@ class InGameScene extends BaseScene {
 
     InGameManager inGameManager;
     InGameUIPanel inGameUIPanel;
+    InGamePausePanel pausePanel;
 
     public InGameScene() {
         super();
@@ -101,9 +102,18 @@ class InGameScene extends BaseScene {
     public void setScene() {
         inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight);
         inGameManager = new InGameManager(this, inGameUIPanel);
+
+        pausePanel = new InGamePausePanel(screenWidth, screenHeight);
+
+        pausePanel.setVisible(false); // 처음엔 숨김 상태
+
         JPanel overlay = inGameManager.getPauseOverlayPanel();
+
         overlay.setBounds(0, 0, screenWidth, screenHeight);
+
+        this.add(inGameUIPanel, Integer.valueOf(5));
         this.add(overlay, Integer.valueOf(10)); // 꼭 높은 레이어에
+        this.add(pausePanel, Integer.valueOf(12));
 
         setPreferredSize(new Dimension(screenWidth, screenHeight)); // 실제 창 크기
         setLayout(null);
@@ -118,6 +128,9 @@ class InGameScene extends BaseScene {
         PlayerPanel playerPanel = new PlayerPanel(screenWidth, screenHeight);
         playerPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(playerPanel, Integer.valueOf(1));
+
+        inGameManager.setPlayer(playerPanel.player);
+        inGameUIPanel.setPlayer(playerPanel.player);
 
         EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight);
         enemyPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
