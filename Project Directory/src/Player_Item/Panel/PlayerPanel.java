@@ -6,6 +6,7 @@ import Enemies.EnemyPanel;
 import Player_Item.InputController;
 import Player_Item.Model.Player;
 import Player_Item.Model.Bullet;
+import UI_Scene.InGameManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -90,10 +91,13 @@ public class PlayerPanel extends JPanel implements Runnable {
      * 게임 로직 업데이트
      */
     private void updateGame() {
+        if (InGameManager.global.isPaused()) return;
+
         // 플레이어 이동
         int dx = input.isLeft() ? -1 : input.isRight() ? 1 : 0;
-        int dy = input.isUp()   ? -1 : input.isDown()  ? 1 : 0;
+        int dy = input.isUp() ? -1 : input.isDown() ? 1 : 0;
         player.move(dx, dy, getWidth(), getHeight());
+
 
         // 총알 발사 처리
         if (input.isFire()) {
