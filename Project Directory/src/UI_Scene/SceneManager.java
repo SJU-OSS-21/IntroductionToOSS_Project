@@ -51,6 +51,7 @@ class MainScene extends BaseScene {
         setLayout(null);
 
         enemyPanel.setPlayerPanel(playerPanel);
+        playerPanel.setEnemyPanel(enemyPanel);
     }
 
 

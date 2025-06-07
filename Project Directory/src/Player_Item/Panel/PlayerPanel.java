@@ -1,6 +1,8 @@
 // src/Player_Item/Panel/PlayerPanel.java
 package Player_Item.Panel;
 
+import Enemies.Enemy;
+import Enemies.EnemyPanel;
 import Player_Item.InputController;
 import Player_Item.Model.Player;
 import Player_Item.Model.Bullet;
@@ -19,6 +21,8 @@ public class PlayerPanel extends JPanel implements Runnable {
     private final InputController input;      // 키 입력 컨트롤러
     public final List<Bullet> bullets = new ArrayList<>();
 
+    private EnemyPanel enemyPanel; // 충돌처리 등을 위해 enemyPanel 가져오기
+
     private final double FPS = 60.0;
     private Thread gameThread;
 
@@ -33,7 +37,7 @@ public class PlayerPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(panelWidth, panelHeight));
 
         // 플레이어 초기 위치
-        player = new Player("player2.png", panelWidth, panelHeight);
+        player = new Player("player_normal.png", "player_hit.png", panelWidth, panelHeight);
 
         // 키 입력 설정
         input = new InputController();
@@ -113,12 +117,14 @@ public class PlayerPanel extends JPanel implements Runnable {
         }
 
         // 총알 업데이트 및 비활성 총알 제거
-        Iterator<Bullet> it = bullets.iterator();
-        while (it.hasNext()) {
-            Bullet b = it.next();
-            b.update();
-            if (!b.isActive()) {
-                it.remove();
+        synchronized (bullets) {
+            Iterator<Bullet> it = bullets.iterator();
+            while (it.hasNext()) {
+                Bullet b = it.next();
+                b.update();
+                if (!b.isActive()) {
+                    it.remove();
+                }
             }
         }
     }
@@ -141,6 +147,27 @@ public class PlayerPanel extends JPanel implements Runnable {
         g2d.fillRect(player.getX(), player.getY(), 10, 10);
     }
 
+    // 충돌 검사: 플레이어
+    private void checkCollisions() {
+        Rectangle pb = player.getBounds();
+        // enemy list 가져오기
+        List<Enemy> enemies = enemyPanel.enemies;
+
+        synchronized (enemies) {
+            Iterator<Enemy> it = enemies.iterator();
+            while (it.hasNext()) {
+                Enemy e = it.next();
+                if (pb.intersects(e.getBounds())) {
+                    // 플레이어가 적과 충돌
+                    player.hit();
+                    it.remove();
+
+                    break; // 한 번만 처리하고 루프 탈출
+                }
+            }
+        }
+    }
+
     /**
      * 발사 개수 설정
      */
@@ -153,5 +180,9 @@ public class PlayerPanel extends JPanel implements Runnable {
      */
     public int getShotCount() {
         return shotCount;
+    }
+
+    public void setEnemyPanel(EnemyPanel e) {
+        enemyPanel = e;
     }
 }
