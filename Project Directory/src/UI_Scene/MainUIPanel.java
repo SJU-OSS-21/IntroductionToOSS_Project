@@ -13,7 +13,7 @@ public class MainUIPanel extends UIPanel {
     private JLabel versionLabel;
 
     //  Title Fonts
-    Font sfFont;
+//    Font sfFont;
 
     private static final String TITLE_TEXT = "<html><div style='text-align: center;'>Pull<br>The<br>Request</div></html>";
     private static final int TITLE_LINE_COUNT = 3;
