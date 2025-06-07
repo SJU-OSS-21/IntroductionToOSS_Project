@@ -21,7 +21,7 @@ public class Bullet {
         this.image = new ImageIcon(imgUrl).getImage();
         this.x = startX - image.getWidth(null)/2;
         this.y = startY;
-        SoundManager.play(4,1f);
+        SoundManager.play(4,0.5f);
 //        SoundManager.play(5,1f);
     }
     public void draw(Graphics g) {
