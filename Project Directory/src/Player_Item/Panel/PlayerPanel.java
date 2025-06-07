@@ -127,6 +127,9 @@ public class PlayerPanel extends JPanel implements Runnable {
                 }
             }
         }
+
+        // 충돌처리 검사
+        checkCollisions();
     }
 
     @Override
@@ -157,10 +160,10 @@ public class PlayerPanel extends JPanel implements Runnable {
             Iterator<Enemy> it = enemies.iterator();
             while (it.hasNext()) {
                 Enemy e = it.next();
-                if (pb.intersects(e.getBounds())) {
+                if (pb.intersects(e.getBound())) {
                     // 플레이어가 적과 충돌
                     player.hit();
-                    it.remove();
+                    // it.remove(); 디버그용, 충돌 시 적이 제거되진 않음
 
                     break; // 한 번만 처리하고 루프 탈출
                 }
