@@ -1,5 +1,6 @@
 package Enemies;
 
+import Map_Audio.SoundManager;
 import Player_Item.Model.Bullet;
 
 import javax.swing.*;
@@ -58,7 +59,9 @@ public class Enemy implements Runnable {
             for (var b : bullets) {
                 if (px <= b.getX() && b.getX() <= px + w && py <= b.getY() && b.getY() <= py + h) {
                     reduceHP();
+                    SoundManager.play(5,1f);
                     if (hp <= 0)
+                        SoundManager.play(6,1f);
                         active = false;
                     b.active = false;
                     // System.out.println("hit");
@@ -77,6 +80,7 @@ public class Enemy implements Runnable {
         hp -= 1;
         Thread t = new Thread(this);
         t.start();
+//        SoundManager.play(5,1f);
     }
 
     public void run() {
