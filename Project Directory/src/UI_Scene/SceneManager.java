@@ -1,6 +1,7 @@
 package UI_Scene;
 
 import Enemies.EnemyPanel;
+import Map_Audio.SoundManager;
 import Player_Item.Panel.PlayerPanel;
 import main.GamePanel;
 import main.GamePanel2;
@@ -318,6 +319,7 @@ public class SceneManager {
         switch (curSceneNum) {
             case 0:
                 if (mainScene == null) mainScene = new MainScene();
+                SoundManager.play(0,0.6f);
                 curScene = mainScene;
                 break;
             case 1:
