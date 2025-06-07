@@ -8,7 +8,7 @@ public class SoundManager {
     static{
         try{
             for(int i = 0; i < SONG_COUNT; i++){
-                AudioInputStream ais = AudioSystem.getAudioInputStream(SoundManager.class.getResource("song"+i+".wav"));
+                AudioInputStream ais = AudioSystem.getAudioInputStream(SoundManager.class.getResource("/song"+i+".wav"));
                 _clips[i] = AudioSystem.getClip();
                 _clips[i].open(ais);
             }

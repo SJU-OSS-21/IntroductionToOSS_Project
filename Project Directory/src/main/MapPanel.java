@@ -1,6 +1,7 @@
 package main;
 
 import Map_Audio.TileManager;
+import UI_Scene.InGameManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,6 +63,14 @@ public class MapPanel extends JPanel implements Runnable {
         long timer = 0;
         int drawCount = 0;
         while (gameThread != null) {
+            if (InGameManager.global.isPaused()) {
+                try {
+                    Thread.sleep(10); // pause 상태 유지
+                    continue;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             now = System.nanoTime();
 
             delta += (now - lastTime) / drawInterval;
