@@ -7,6 +7,7 @@ import main.GamePanel;
 import main.GamePanel2;
 import main.MapPanel;
 
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -59,11 +60,13 @@ class MainScene extends BaseScene {
 
         //   Start 버튼 클릭 시 게임 시작 로직
         mainUIPanel.getStartButton().addActionListener(e -> {
+            SoundManager.play(7,1f);
             SceneManager.changeScene(SceneManager.Scene.Loading);
         });
 
         //   Exit 버튼 클릭 시 프로그램 종료
         mainUIPanel.getExitButton().addActionListener(e -> {
+            SoundManager.play(7,1f);
             System.exit(0); // 정상 종료
         });
 
@@ -319,16 +322,22 @@ public class SceneManager {
         switch (curSceneNum) {
             case 0:
                 if (mainScene == null) mainScene = new MainScene();
+                SoundManager.play(8,1f);
                 SoundManager.play(0,0.6f);
                 curScene = mainScene;
                 break;
             case 1:
                 // 항상 새로 만들어야 다음Scene 다르게 지정 가능 (옵션)
                 loadingScene = new LoadingScene(Scene.InGame);
+                SoundManager.stop(0);
+
+
                 curScene = loadingScene;
                 break;
             case 2:
                 if (gameScene == null) gameScene = new InGameScene();
+                SoundManager.play(1,0.6f);
+//                SoundManager.loop(6,true,0);
                 curScene = gameScene;
                 break;
             case 3:

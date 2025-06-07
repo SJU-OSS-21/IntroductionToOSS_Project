@@ -3,6 +3,7 @@ package Player_Item.Panel;
 
 import Enemies.Enemy;
 import Enemies.EnemyPanel;
+import Map_Audio.SoundManager;
 import Player_Item.InputController;
 import Player_Item.Model.Player;
 import Player_Item.Model.Bullet;

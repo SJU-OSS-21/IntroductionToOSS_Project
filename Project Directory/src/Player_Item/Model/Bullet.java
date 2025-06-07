@@ -1,5 +1,7 @@
 package Player_Item.Model;
 
+import Map_Audio.SoundManager;
+
 import java.awt.*;
 import java.net.URL;
 import javax.swing.ImageIcon;
@@ -19,6 +21,8 @@ public class Bullet {
         this.image = new ImageIcon(imgUrl).getImage();
         this.x = startX - image.getWidth(null)/2;
         this.y = startY;
+        SoundManager.play(4,1f);
+//        SoundManager.play(5,1f);
     }
     public void draw(Graphics g) {
         // 활성화 중일 시 그리기

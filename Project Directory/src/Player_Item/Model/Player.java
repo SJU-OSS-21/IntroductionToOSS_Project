@@ -1,5 +1,7 @@
 package Player_Item.Model;
 
+import Map_Audio.SoundManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
