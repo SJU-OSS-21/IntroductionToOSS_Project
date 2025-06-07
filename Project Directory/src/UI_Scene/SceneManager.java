@@ -86,17 +86,19 @@ class InGameScene extends BaseScene {
 
     public InGameScene() {
         super();
-        inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight);
-        inGameManager = new InGameManager(this, inGameUIPanel);
-        JPanel overlay = inGameManager.getPauseOverlayPanel();
-        overlay.setBounds(0, 0, screenWidth, screenHeight);
-        this.add(overlay, Integer.valueOf(10)); // 꼭 높은 레이어에
+
 
         setUISet();
     }
 
     @Override
     public void setScene() {
+        inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight);
+        inGameManager = new InGameManager(this, inGameUIPanel);
+        JPanel overlay = inGameManager.getPauseOverlayPanel();
+        overlay.setBounds(0, 0, screenWidth, screenHeight);
+        this.add(overlay, Integer.valueOf(10)); // 꼭 높은 레이어에
+
         setPreferredSize(new Dimension(screenWidth, screenHeight)); // 실제 창 크기
         setLayout(null);
     }
