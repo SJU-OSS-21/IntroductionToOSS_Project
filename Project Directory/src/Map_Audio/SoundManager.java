@@ -3,7 +3,7 @@ package Map_Audio;
 import javax.sound.sampled.*;
 
 public class SoundManager {
-    private static final int SONG_COUNT = 5;//재생할 노래의 수
+    private static final int SONG_COUNT = 9;//재생할 노래의 수
     private static Clip[] _clips = new Clip[SONG_COUNT];
     static{
         try{
