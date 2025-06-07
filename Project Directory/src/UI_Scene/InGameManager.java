@@ -1,5 +1,7 @@
 package UI_Scene;
 
+import Player_Item.Model.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -19,6 +21,9 @@ public class InGameManager {
     private boolean isPaused = false;
     private final List<Timer> managedTimers = new ArrayList<>();
 
+    //  Player 저장
+    public Player player;
+
     public InGameManager(InGameScene scene, JPanel pausePanel) {
         this.inGameScene = scene;
         this.pausePanel = pausePanel;
@@ -26,6 +31,10 @@ public class InGameManager {
 
         global = this; // 전역 인스턴스 등록
         setupKeyListener();
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public boolean isPaused() {
