@@ -64,6 +64,8 @@ public class Player {
         invincible = true;
         invincibleStartTime = System.currentTimeMillis();
     }
+
+
     // 매 프레임마다 호출하여 무적 상태를 갱신
     private void updateInvincible() {
         if (!invincible) return;
