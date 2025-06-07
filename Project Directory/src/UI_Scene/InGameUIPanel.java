@@ -53,8 +53,11 @@ public class InGameUIPanel extends UIPanel {
 
     private void startTimerUpdate() {
         new Timer(1000, e -> {
-            elapsedTimeInSeconds++;
-            repaint();
+            // InGameManager가 존재하고, 일시정지 상태가 아니어야 증가
+            if (InGameManager.global != null && !InGameManager.global.isPaused()) {
+                elapsedTimeInSeconds++;
+                repaint();
+            }
         }).start();
     }
 
@@ -62,6 +65,8 @@ public class InGameUIPanel extends UIPanel {
         interpolateHealth(); // 내부 상태 갱신
         repaint();           // 화면에 실제로 반영
     }
+
+    private boolean deathHandled = false; // 사망 처리 중복 방지용
 
     private void interpolateHealth() {
         if (player != null) {
@@ -87,7 +92,23 @@ public class InGameUIPanel extends UIPanel {
         } else if (bufferedHealth < displayedHealth) {
             bufferedHealth = displayedHealth;
         }
+
+        // === 체력 게이지가 완전히 0이 된 후 처리 ===
+        if (displayedHealth == 0f && !deathHandled) {
+            deathHandled = true;
+
+            //  게임 매니저에 점수와 생존 시간 등록
+            GameManager.getInstance().score = this.score;
+            GameManager.getInstance().timer = this.elapsedTimeInSeconds;
+
+            // 씬 전환
+            SwingUtilities.invokeLater(() -> {
+                SceneManager.changeScene(SceneManager.Scene.GameOver);
+            });
+        }
     }
+
+
 
 
     @Override
