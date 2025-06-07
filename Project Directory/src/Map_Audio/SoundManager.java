@@ -44,6 +44,15 @@ public class SoundManager {
             }
         }
     }
+    // 특정 노래 정지
+    public static synchronized void stop(int index) {
+        if (index < 0 || index >= SONG_COUNT) return;
+
+        Clip clip = _clips[index];
+        if (clip != null && clip.isRunning()) {
+            clip.stop();
+        }
+    }
     public static void setVolume(Clip clip, float volume) {
         if (clip == null) return;
 
