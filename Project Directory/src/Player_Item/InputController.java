@@ -1,6 +1,8 @@
 package Player_Item;// src/com/example/strikers1945/controller/InputController.java
 
 
+import UI_Scene.InGameManager;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
