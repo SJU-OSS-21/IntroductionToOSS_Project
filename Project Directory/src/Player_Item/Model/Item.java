@@ -26,6 +26,13 @@ public class Item {
     private static final double PROB_UPGRADE = 0.2;
     private static final double PROB_HEALTH  = 0.3;
 
+    // 아이템 -> 필드에서 생존 시간 (ms 기준)
+    private final long spawnTime;
+    private final long lifeTime       = 10_000; // 10초
+    private final long blinkDuration  = 2_000;  // 마지막 2초간 깜빡임
+    private final long blinkInterval  = 200;    // 200ms 간격 깜빡임
+
+
     /**
      * 생성자
      * @param type 아이템 종류
