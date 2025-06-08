@@ -63,8 +63,8 @@ public class MapPanel extends JPanel implements Runnable {
         long timer = 0;
         int drawCount = 0;
         while (gameThread != null) {
-            if(InGameManager.global != null) {
-                if (InGameManager.global.isPaused()) {
+            if(InGameManager.getInstance() != null) {
+                if (InGameManager.getInstance().isPaused()) {
                     try {
                         Thread.sleep(10); // pause 상태 유지
                         continue;
