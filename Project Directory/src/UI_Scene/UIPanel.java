@@ -22,39 +22,39 @@ public abstract class UIPanel extends JPanel {
     protected void loadFonts() {
         try {
             // Main 타이틀용 폰트 (크고 스타일리시한 폰트)
-            URL mainFontURL = getClass().getClassLoader().getResource("Fonts/Ethnocentric Rg.otf");
-            if (mainFontURL != null) {
-                mainFont = Font.createFont(Font.TRUETYPE_FONT, new File(mainFontURL.toURI())).deriveFont(36f);
-                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(mainFont);
-            } else {
-                throw new Exception("mainFont not found");
+            try (var is = getClass().getClassLoader().getResourceAsStream("Fonts/Ethnocentric Rg.otf")) {
+                if (is != null) {
+                    mainFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(36f);
+                    GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(mainFont);
+                } else throw new Exception("mainFont not found");
             }
 
             // 본문용 폰트 (가독성 위주)
-            URL textFontURL = getClass().getClassLoader().getResource("Fonts/Ubuntu-Regular.ttf");
-            if (textFontURL != null) {
-                textFont = Font.createFont(Font.TRUETYPE_FONT, new File(textFontURL.toURI())).deriveFont(20f);
-                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(textFont);
-            } else {
-                throw new Exception("textFont not found");
+            try (var is = getClass().getClassLoader().getResourceAsStream("Fonts/Ubuntu-Regular.ttf")) {
+                if (is != null) {
+                    textFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
+                    GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(textFont);
+                } else throw new Exception("textFont not found");
             }
 
-            // 본문용 폰트 (가독성 위주)
-            URL uiFontURL = getClass().getClassLoader().getResource("Fonts/high1 Wonchuri Title B.ttf");
-            if (uiFontURL != null) {
-                uiFont = Font.createFont(Font.TRUETYPE_FONT, new File(uiFontURL.toURI())).deriveFont(20f);
-                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(uiFont);
-            } else {
-                throw new Exception("uiFont not found");
+            // UI 전용 폰트
+            try (var is = getClass().getClassLoader().getResourceAsStream("Fonts/high1 Wonchuri Title B.ttf")) {
+                if (is != null) {
+                    uiFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
+                    GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(uiFont);
+                } else throw new Exception("uiFont not found");
             }
 
         } catch (Exception e) {
             // fallback fonts
             mainFont = new Font("SansSerif", Font.BOLD, 30);
             textFont = new Font("Dialog", Font.PLAIN, 18);
+            uiFont = new Font("Dialog", Font.BOLD, 20);
             System.err.println("폰트 로딩 실패: 기본 폰트로 대체합니다.");
+            e.printStackTrace();
         }
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {
