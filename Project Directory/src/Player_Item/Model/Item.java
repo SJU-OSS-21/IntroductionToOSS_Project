@@ -147,7 +147,7 @@ public class Item {
     public void applyEffect(Player player, java.util.List<Enemy> enemies) {
         switch (type) {
             case HEALTH:
-                // player.increaseHp(1);
+                player.increasePlayerHp();
                 break;
             case UPGRADE:
                 // player.setShotCount(player.getShotCount() + 1);
