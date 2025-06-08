@@ -370,7 +370,7 @@ public class SceneManager {
                 gameOverScene = new GameOverScene();
 //                if (gameOverScene == null) gameOverScene = new GameOverScene();
                 SoundManager.stop(GameSceneSOUNDID);
-//                SoundManager.stopAll();
+                SoundManager.stopAll();
                 GameOverSceneSOUNDID = SoundManager.play(2,0.6f);
                 SoundManager.play(9,0.6f);
                 curScene = gameOverScene;
