@@ -2,6 +2,7 @@ package UI_Scene;
 
 import Enemies.EnemyPanel;
 import Map_Audio.SoundManager;
+import Map_Audio.TileManager;
 import Player_Item.Panel.PlayerPanel;
 import main.GamePanel;
 import main.GamePanel2;
@@ -353,6 +354,7 @@ public class SceneManager {
         switch (curSceneNum) {
             case 0:
                 if (mainScene == null) mainScene = new MainScene();
+                SoundManager.stopAll();
                 SoundManager.stop(GameOverSceneSOUNDID);
                 SoundManager.play(8,1f);
                 MainSceneSOUNDID =  SoundManager.play(0,0.6f);
@@ -362,6 +364,7 @@ public class SceneManager {
                 // 항상 새로 만들어야 다음Scene 다르게 지정 가능 (옵션)
                 loadingScene = new LoadingScene(Scene.InGame);
                 SoundManager.stop(MainSceneSOUNDID);
+                SoundManager.stopAll();
 //                MainSceneSOUNDID = -1;
 
 
@@ -369,13 +372,16 @@ public class SceneManager {
                 break;
             case 2:
                 if (gameScene == null) gameScene = new InGameScene();
+                TileManager.nextTileIndex = 0;
                 GameSceneSOUNDID = SoundManager.play(1,0.6f);
                 curScene = gameScene;
                 break;
             case 3:
                 if (gameOverScene == null) gameOverScene = new GameOverScene();
                 SoundManager.stop(GameSceneSOUNDID);
+                SoundManager.stopAll();
                 GameOverSceneSOUNDID = SoundManager.play(2,0.6f);
+                SoundManager.play(9,0.6f);
                 curScene = gameOverScene;
                 break;
             default:
