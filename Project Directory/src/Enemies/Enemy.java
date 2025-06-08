@@ -8,6 +8,7 @@ import UI_Scene.InGameManager;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+
 import java.util.List;
 
 public class Enemy implements Runnable {
@@ -19,8 +20,10 @@ public class Enemy implements Runnable {
     public boolean active;
     public int panelWidth, panelHeight;
 
+
     //  For Score Count
     InGameManager inGameManager;
+
 
     public Enemy(JPanel p, InGameManager inGameManager) {
         panelWidth = p.getWidth();
@@ -29,6 +32,7 @@ public class Enemy implements Runnable {
         this.inGameManager = inGameManager;
 
         init();
+
     }
     public void init() {
         URL imgUrl = getClass().getClassLoader().getResource("enemy.png");

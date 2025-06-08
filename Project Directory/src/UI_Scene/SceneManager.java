@@ -1,8 +1,10 @@
 package UI_Scene;
 
 import Enemies.EnemyPanel;
+
 import Map_Audio.SoundManager;
 import Map_Audio.TileManager;
+
 import Player_Item.Panel.PlayerPanel;
 import main.GamePanel;
 import main.GamePanel2;
@@ -50,9 +52,11 @@ class MainScene extends BaseScene {
         mp.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(mp, Integer.valueOf(0));
 
+
         UIPlayerPanel playerUI = new UIPlayerPanel("player_normal.png", screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
         playerUI.setBounds(0, 0, screenWidth, screenHeight);
         this.add(playerUI, Integer.valueOf(2));
+
     }
 
 

@@ -20,7 +20,9 @@ public class EnemyPanel extends JPanel implements Runnable {
 
         this.inGameManager = inGameManager;
 
+
         enemies = new LinkedList<>();
+
 
         Thread t = new Thread(this);
         t.start();
