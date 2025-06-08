@@ -13,7 +13,7 @@ public class MainUIPanel extends UIPanel {
     private JLabel versionLabel;
 
     //  Title Fonts
-    Font sfFont;
+//    Font sfFont;
 
     private static final String TITLE_TEXT = "<html><div style='text-align: center;'>Pull<br>The<br>Request</div></html>";
     private static final int TITLE_LINE_COUNT = 3;
@@ -154,11 +154,11 @@ public class MainUIPanel extends UIPanel {
                 int textWidth = fm.stringWidth(line);
                 int textX = x - textWidth / 2;
 
-                // ==== 💥 그림자 효과 ====
+                // ==== 그림자 효과 ====
                 g2.setColor(new Color(0, 0, 0, 120)); // 반투명 블랙
                 g2.drawString(line, textX + 2, y + 2); // 살짝 아래쪽으로 offset
 
-                // ==== 🎨 양방향 그라데이션 텍스트 ====
+                // ==== 양방향 그라데이션 텍스트 ====
                 // 텍스트 Shape 생성
                 Shape textShape = font.createGlyphVector(g2.getFontRenderContext(), line).getOutline();
                 AffineTransform transform = AffineTransform.getTranslateInstance(textX, y);

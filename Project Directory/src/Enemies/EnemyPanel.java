@@ -12,9 +12,13 @@ public class EnemyPanel extends JPanel implements Runnable {
     public LinkedList<Enemy> enemies;
     public PlayerPanel playerPanel;
 
-    public EnemyPanel(int panelWidth, int panelHeight) {
+    public InGameManager inGameManager;
+
+    public EnemyPanel(int panelWidth, int panelHeight, InGameManager inGameManager) {
         setOpaque(false);
         setPreferredSize(new Dimension(panelWidth, panelHeight));
+
+        this.inGameManager = inGameManager;
 
         enemies = new LinkedList<>();
 
@@ -65,7 +69,7 @@ public class EnemyPanel extends JPanel implements Runnable {
                     }
 
                     if (dt > spawnCoolTime) {
-                        Enemy e = new Enemy(this);
+                        Enemy e = new Enemy(this, inGameManager);
                         e.hp = baseHP / 2;
                         e.vy = baseSpeed;
                         enemies.add(e);

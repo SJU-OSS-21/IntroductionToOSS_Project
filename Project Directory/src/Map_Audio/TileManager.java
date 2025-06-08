@@ -25,8 +25,8 @@ public class TileManager {
 
     // --- 타일 변경 관련 타이머 변수 ---
     private long lastSwitchTime = System.currentTimeMillis();
-    private final long switchInterval = 30000;  // 30초마다 (원래대로 두었습니다)
-    private int nextTileIndex = 0;
+    private final long switchInterval = 30000;  // 30초마다 맵 변경
+    public static int nextTileIndex = 0;
 
     // 3) “속도 증가”용 타이머 변수 추가
     private long lastSpeedIncreaseTime = System.currentTimeMillis();
