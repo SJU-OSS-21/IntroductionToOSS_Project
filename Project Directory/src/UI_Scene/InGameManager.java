@@ -1,6 +1,7 @@
 package UI_Scene;
 
 import Player_Item.Model.Player;
+import Player_Item.Panel.PlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,8 @@ public class InGameManager {
     public Player player;
     public JPanel pauseOverlay;
     public final List<Timer> managedTimers = new ArrayList<>();
+
+    public PlayerPanel playerPanel;
 
     private int score = 0;
     private boolean isPaused = false;
@@ -83,6 +86,24 @@ public class InGameManager {
         return isPaused;
     }
 
+    public PauseOverlayPanel getPauseOverlayPanel() {
+        return pauseOverlayPanel;
+    }
+
+    public void registerTimer(Timer timer) {
+        managedTimers.add(timer);
+    }
+
+    private void setupKeyListener() {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+            if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                togglePause();
+                return true; // 이벤트 소비
+            }
+            return false;
+        });
+    }
+
     public void togglePause() {
         isPaused = !isPaused;
         setPausePanelVisible(isPaused);
@@ -112,6 +133,9 @@ public class InGameManager {
 
     public void setInGameUIPanel(InGameUIPanel inGameUIPanel) {
         this.inGameUIPanel = inGameUIPanel;
+    }
+    public void setPlayerPanel(PlayerPanel playerPanel) {
+        this.playerPanel = playerPanel;
     }
 
     public void registerTimer(Timer timer) {
