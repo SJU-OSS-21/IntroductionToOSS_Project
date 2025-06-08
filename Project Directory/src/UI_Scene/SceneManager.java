@@ -2,8 +2,10 @@ package UI_Scene;
 
 import Enemies.EnemyPanel;
 
+
 import Map_Audio.SoundManager;
 import Map_Audio.TileManager;
+
 
 import Player_Item.Panel.PlayerPanel;
 import main.GamePanel;
@@ -27,25 +29,26 @@ class MainScene extends BaseScene {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 10;//(가로 타일 개수)
-    final int maxScreenRow = 20;//(세로 타일 개수)
-    final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
-    final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
+    final int maxScreenCol = 10;
+    final int maxScreenRow = 20;
+    final int screenWidth = tileSize * maxScreenCol;
+    final int screenHeight = tileSize * maxScreenRow;
     final double FPS = 60.0;
+
 
     //  UI Panel
     MainUIPanel mainUIPanel;
 
     public MainScene() {}
 
-    //  TODO : Scene JLayeredPane에 대한 설정 기입
+
     @Override
     public void setScene() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setLayout(null);
+
     }
 
-    // TODO :  Panel 여기에 설치
     @Override
     public void setGameObjectList() {
         MapPanel mp = new MapPanel();
@@ -60,8 +63,17 @@ class MainScene extends BaseScene {
     }
 
 
+        EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight, InGameManager.getInstance());
+        enemyPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
+        this.add(enemyPanel, Integer.valueOf(2));
+
+        enemyPanel.setPlayerPanel(playerPanel);
+        playerPanel.setEnemyPanel(enemyPanel);
+    }
+
     @Override
     public void setUISet() {
+
         mainUIPanel = new MainUIPanel(screenWidth, screenHeight);
 
         //   Start 버튼 클릭 시 게임 시작 로직
@@ -93,10 +105,12 @@ class InGameScene extends BaseScene {
 
     public InGameScene() {}
 
+
     @Override
     public void setScene() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setLayout(null);
+
 
         InGameManager.getInstance().reset();
     }
@@ -135,9 +149,10 @@ class InGameScene extends BaseScene {
         playerPanel.setEnemyPanel(enemyPanel);
     }
 
-    //  TODO : UI Panel 기입
+
     @Override
     public void setUISet() {
+
         InGameManager.getInstance().setPausePanelVisible(false);
 
         InGameManager.getInstance().setPausePanelVisible(false);
@@ -202,6 +217,7 @@ class LoadingScene extends BaseScene {
         setOpaque(true);
     }
 
+<
 
     @Override
     public void setGameObjectList() {}
@@ -278,6 +294,7 @@ class GameOverScene extends BaseScene {
     public void setGameObjectList() {}
 
     @Override
+
     public void setUISet() {
         gameOverUIPanel = new GameOverUIPanel(screenWidth, screenHeight);
         add(gameOverUIPanel, Integer.valueOf(10));
@@ -295,7 +312,9 @@ class GameOverScene extends BaseScene {
 //  Non-SingleTon -> Static Class
 public class SceneManager {
 
+
     // === Scene Instances ===
+
     public static BaseScene mainScene = null;
     public static BaseScene loadingScene = null;
     public static BaseScene gameScene = null;
@@ -305,7 +324,9 @@ public class SceneManager {
     public static String curSceneName = null;
     public static BaseScene curScene = null;
 
+
     // === Scene Enum ===
+
     public enum Scene {
         Main,
         Loading,
@@ -313,7 +334,9 @@ public class SceneManager {
         GameOver
     }
 
+
     // === Overloaded Scene Changers ===
+
     public static void changeScene(int sid) {
         curSceneNum = sid;
         curSceneName = Scene.values()[sid].toString();
@@ -325,6 +348,7 @@ public class SceneManager {
         curSceneName = name.toString();
         innerChangeScene();
     }
+
 
     // === 내부 씬 전환 처리 ===
     private static void innerChangeScene() {
@@ -390,6 +414,7 @@ public class SceneManager {
         frame.repaint();
     }
 }
+
 
 
 

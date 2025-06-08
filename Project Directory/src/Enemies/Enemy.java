@@ -21,6 +21,7 @@ public class Enemy implements Runnable {
     public int panelWidth, panelHeight;
 
 
+
     //  For Score Count
     InGameManager inGameManager;
 
@@ -28,6 +29,7 @@ public class Enemy implements Runnable {
     public Enemy(JPanel p, InGameManager inGameManager) {
         panelWidth = p.getWidth();
         panelHeight = p.getHeight();
+
 
         this.inGameManager = inGameManager;
 
@@ -43,6 +45,7 @@ public class Enemy implements Runnable {
         py = -100;
         vx = (float)Math.floor(Math.random() * 201) - 100;
         vy = 100;
+
 
         hp = 1;
 
@@ -87,10 +90,12 @@ public class Enemy implements Runnable {
     }
     public boolean isActive() {
         return active;
+
     }
     public Rectangle getBound() {
         return new Rectangle((int)px, (int)py, (int)w, (int)h);
     }
+
     public void reduceHP() {
         hp -= 1;
         Thread t = new Thread(this);
