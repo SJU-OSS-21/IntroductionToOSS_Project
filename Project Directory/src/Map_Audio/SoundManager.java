@@ -96,7 +96,7 @@ public class SoundManager {
             }
         }
 
-        activeClips.clear(); // 🔐 마지막에 맵 초기화
+        activeClips.clear(); //마지막에 맵 초기화
     }
 
     //볼륨 설정
