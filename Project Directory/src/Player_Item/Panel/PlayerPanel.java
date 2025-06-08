@@ -186,7 +186,7 @@ public class PlayerPanel extends JPanel implements Runnable {
      * 발사 개수 설정
      */
     public void setShotCount(int count) {
-        this.shotCount = Math.max(1, count);
+        this.shotCount = Math.min(5, count);
     }
 
     /**

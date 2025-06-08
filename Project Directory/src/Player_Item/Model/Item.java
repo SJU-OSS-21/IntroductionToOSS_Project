@@ -1,6 +1,7 @@
 package Player_Item.Model;
 
 import Enemies.Enemy;
+import Player_Item.Panel.PlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -144,17 +145,18 @@ public class Item {
     }
 
     /** 아이템 효과 처리 (플레이어와 적 리스트를 받아서) */
-    public void applyEffect(Player player, java.util.List<Enemy> enemies) {
+    public void applyEffect(Player player, PlayerPanel panel, java.util.List<Enemy> enemies) {
         switch (type) {
             case HEALTH:
                 player.increasePlayerHp();
                 break;
             case UPGRADE:
-                // player.setShotCount(player.getShotCount() + 1);
+                panel.setShotCount(panel.getShotCount()+1);
                 break;
             case BOMB:
-                // for (Enemy e : enemies) e.setActive(false);
-                // enemies.clear();
+                synchronized(enemies) {
+                    enemies.clear();
+                }
                 break;
         }
         active = false;
