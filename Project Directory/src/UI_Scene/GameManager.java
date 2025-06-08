@@ -46,12 +46,21 @@ public class GameManager {
         return mainFrame;
     }
 
+    public void updateScore(int score){
+        this.score = score;
+    }
+
     public int getScore() {
         return score;
     }
 
     public int getTimer() {
         return timer;
+    }
+
+    public void resetScoreAndTimer(){
+        score = 0;
+        timer = 0;
     }
 
 }
