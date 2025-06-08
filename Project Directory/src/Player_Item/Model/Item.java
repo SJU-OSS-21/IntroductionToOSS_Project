@@ -80,6 +80,15 @@ public class Item {
             type = Type.HEALTH;
         }
 
+        // 경로는 패널에서 실제 클래스로딩경로에 맞게 설정
+        String path;
+        switch (type) {
+            case HEALTH:  path = "res/item_health.png"; break;
+            case UPGRADE: path = "res/item_upgrade.png"; break;
+            default:      path = "res/item_bomb.png";    break;
+        }
+
+        // 아이템 생성자로 반환
         return new Item(type, path, x, y);
     }
 
