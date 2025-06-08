@@ -47,20 +47,41 @@ public class Item {
             throw new IllegalArgumentException("리소스 로드 실패: " + imgPath);
         }
         this.image = new ImageIcon(url).getImage();
+
+        // 좌표 지정
         this.x = x;
         this.y = y;
-    }
-    public static Item of(Type type, int x, int y) {
-        String path;
-        switch (type) {
-            case HEALTH: path = "res/item_health.png"; break;
-            case UPGRADE: path = "res/item_upgrade.png"; break;
-            case BOMB:    path = "res/item_bomb.png";    break;
-            default:      path = "res/item_health.png"; break;
-        }
-        return new Item(type, path, x, y);
+
+        // 아이템 스폰 시간(현재 시간으로 기록)
+        this.spawnTime = System.currentTimeMillis();
+
+        // 랜덤 방향 설정 (speed 픽셀/프레임)
+        int dx = (int)(Math.random() * 2 * speed) - speed;
+        int dy = (int)(Math.random() * 2 * speed) - speed;
+        this.vx = dx == 0 ? speed : dx;
+        this.vy = dy == 0 ? speed : dy;
     }
 
+    /**
+     * 적 사망시 호출할 함수 -> 랜덤 아이템 드랍
+     * @param x 화면 좌표
+     * @param y 화면 좌표
+     * @return 드롭된 아이템 혹은 null
+     */
+    public static Item randomDrop(int x, int y) {
+        double r = Math.random();
+        Type type = null;
+
+        if (r < PROB_BOMB) {
+            type = Type.BOMB;
+        } else if (r < PROB_BOMB + PROB_UPGRADE) {
+            type = Type.UPGRADE;
+        } else if (r < PROB_BOMB + PROB_UPGRADE + PROB_HEALTH) {
+            type = Type.HEALTH;
+        }
+
+        return new Item(type, path, x, y);
+    }
 
     /** 렌더링 처리 */
     public void draw(Graphics g) {
