@@ -2,12 +2,14 @@ package Map_Audio;
 
 import javax.sound.sampled.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SoundManager {
-    private static final int SONG_COUNT = 9;
+    private static final int SONG_COUNT = 10;
     private static final URL[] soundURLs = new URL[SONG_COUNT];
 
     private static final AtomicInteger idCounter = new AtomicInteger(0);
@@ -80,17 +82,21 @@ public class SoundManager {
             activeClips.remove(id);
         }
     }// 모든 클립 정지 및 해제
+
+
     public static synchronized void stopAll() {
-        for (Map.Entry<Integer, Clip> entry : activeClips.entrySet()) {
-            Clip clip = entry.getValue();
-            if (clip != null && clip.isRunning()) {
-                clip.stop();
-            }
-            if (clip != null && clip.isOpen()) {
-                clip.close();
+        // 먼저 모든 clip을 복사해서 안전하게 순회하고,
+        // 이후 전체 맵 초기화
+        List<Clip> clipsToStop = new ArrayList<>(activeClips.values());
+
+        for (Clip clip : clipsToStop) {
+            if (clip != null) {
+                if (clip.isRunning()) clip.stop();
+                if (clip.isOpen()) clip.close();
             }
         }
-        activeClips.clear();
+
+        activeClips.clear(); // 🔐 마지막에 맵 초기화
     }
 
     //볼륨 설정
