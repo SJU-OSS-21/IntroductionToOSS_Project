@@ -108,7 +108,7 @@ public class Item {
         if (!active) return; // 비활성화 시 무시
 
         // 1. 위치 업데이트
-        x += vy;
+        x += vx;
         y += vy;
 
         // 2. 벽 충돌 시 법선 방향으로 방향 전환
