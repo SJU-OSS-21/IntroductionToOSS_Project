@@ -23,8 +23,13 @@ public class InGameUIPanel extends UIPanel {
 
     private Player player; // 플레이어 참조
 
-    public InGameUIPanel(int width, int height) {
+    //  Manager
+    InGameManager inGameManager;
+
+    public InGameUIPanel(int width, int height, InGameManager inGameManager) {
         super(width, height);
+        this.inGameManager = inGameManager;
+
         lastUpdateTime = System.currentTimeMillis();
 
         BufferedImage tempImg = null;
@@ -145,7 +150,7 @@ public class InGameUIPanel extends UIPanel {
         g2.setFont(uiFont.deriveFont(18f));
         g2.setColor(Color.YELLOW);
 
-        String scoreStr = "Score: " + score;
+        String scoreStr = "Score : " + score;
         FontMetrics fm = g2.getFontMetrics();
         int scoreX = getWidth() - fm.stringWidth(scoreStr) - 20;  // 우측 끝에서 20px 안쪽
         int scoreY = 30;
