@@ -28,7 +28,7 @@ public class GameManager {
 
 
     //  Counters
-    public double timer;
+    public int timer;
     public int score;
 
     //  Game Frame
@@ -46,5 +46,12 @@ public class GameManager {
         return mainFrame;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public int getTimer() {
+        return timer;
+    }
 
 }

@@ -1,5 +1,7 @@
 package UI_Scene;
 
+import Player_Item.Model.Player;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -13,19 +15,37 @@ public class InGameManager {
     public static InGameManager global;
 
     private final InGameScene inGameScene;
-    private final JPanel pausePanel;
+    private final JPanel pauseOverlay;
     private final PauseOverlayPanel pauseOverlayPanel;
+
 
     private boolean isPaused = false;
     private final List<Timer> managedTimers = new ArrayList<>();
 
-    public InGameManager(InGameScene scene, JPanel pausePanel) {
-        this.inGameScene = scene;
-        this.pausePanel = pausePanel;
-        this.pauseOverlayPanel = new PauseOverlayPanel();
+    //  Player 저장
+    public Player player;
 
-        global = this; // 전역 인스턴스 등록
+    private final InGamePausePanel pausePanel;
+
+    public InGameManager(InGameScene scene, JPanel pauseOverlay, InGamePausePanel pausePanel) {
+        this.inGameScene = scene;
+        this.pauseOverlay = pauseOverlay;
+        this.pauseOverlayPanel = new PauseOverlayPanel();
+        this.pausePanel = pausePanel;
+
+        // 오버레이 패널 설정
+        pauseOverlayPanel.setBounds(0, 0, scene.getWidth(), scene.getHeight());
+        pauseOverlayPanel.setVisible(false);
+        scene.add(pauseOverlayPanel);
+
+        global = this;
         setupKeyListener();
+    }
+
+
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public boolean isPaused() {
@@ -62,10 +82,12 @@ public class InGameManager {
         inGameScene.repaint();
     }
 
+
     public void setPausePanelVisible(boolean visible) {
-        pausePanel.setVisible(visible);
         pauseOverlayPanel.setVisible(visible);
+        pausePanel.setVisible(visible); // ← 이제는 이거 하나만 존재함
     }
+
 
     /**
      * 내부 클래스: 일시정지 상태를 표시할 반투명 회색 패널
