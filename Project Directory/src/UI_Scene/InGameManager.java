@@ -27,6 +27,10 @@ public class InGameManager {
 
     private final InGamePausePanel pausePanel;
 
+    private InGameUIPanel inGameUIPanel;
+
+    int score = 0;
+
     public InGameManager(InGameScene scene, JPanel pauseOverlay, InGamePausePanel pausePanel) {
         this.inGameScene = scene;
         this.pauseOverlay = pauseOverlay;
@@ -107,6 +111,20 @@ public class InGameManager {
                 g2d.dispose();
             }
             super.paintComponent(g);
+        }
+    }
+
+    public void setInGameUIPanel(InGameUIPanel inGameUIPanel) {
+        this.inGameUIPanel = inGameUIPanel;
+    }
+
+    public void updateScore(int offset){
+        this.score += offset;
+
+        GameManager.getInstance().updateScore(score);
+
+        if(inGameUIPanel != null){
+            inGameUIPanel.setScore(score);
         }
     }
 }

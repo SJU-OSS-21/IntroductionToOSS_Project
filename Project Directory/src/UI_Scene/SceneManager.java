@@ -103,7 +103,7 @@ class InGameScene extends BaseScene {
 
     @Override
     public void setScene() {
-        inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight);
+        inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight, inGameManager);
         this.add(inGameUIPanel, Integer.valueOf(5));
 
         pausePanel = new InGamePausePanel(screenWidth, screenHeight);
@@ -111,6 +111,9 @@ class InGameScene extends BaseScene {
         this.add(pausePanel, Integer.valueOf(12));
 
         inGameManager = new InGameManager(this, inGameUIPanel, pausePanel); // 수정됨
+
+        inGameManager.setInGameUIPanel(inGameUIPanel);
+
 
         JPanel overlay = inGameManager.getPauseOverlayPanel();
         overlay.setBounds(0, 0, screenWidth, screenHeight);
@@ -133,7 +136,7 @@ class InGameScene extends BaseScene {
         inGameManager.setPlayer(playerPanel.player);
         inGameUIPanel.setPlayer(playerPanel.player);
 
-        EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight);
+        EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight, inGameManager);
         enemyPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(enemyPanel, Integer.valueOf(2));
 
@@ -353,31 +356,41 @@ public class SceneManager {
         // 새 씬 선택 또는 생성
         switch (curSceneNum) {
             case 0:
-                if (mainScene == null) mainScene = new MainScene();
+                mainScene = new MainScene();
+//                if (mainScene == null) mainScene = new MainScene();
                 SoundManager.stopAll();
                 SoundManager.stop(GameOverSceneSOUNDID);
                 SoundManager.play(8,1f);
                 MainSceneSOUNDID =  SoundManager.play(0,0.6f);
                 curScene = mainScene;
+
+                //  RESET
+                GameManager.getInstance().resetScoreAndTimer();
                 break;
             case 1:
-                // 항상 새로 만들어야 다음Scene 다르게 지정 가능 (옵션)
+                // 항상 새로 만들어야 다음 Scene 다르게 지정 가능 (옵션)
                 loadingScene = new LoadingScene(Scene.InGame);
                 SoundManager.stop(MainSceneSOUNDID);
                 SoundManager.stopAll();
 //                MainSceneSOUNDID = -1;
 
-
                 curScene = loadingScene;
                 break;
             case 2:
-                if (gameScene == null) gameScene = new InGameScene();
+                //  Please Reallocate
+                gameScene = new InGameScene();
+
+//                if (gameScene == null) gameScene = new InGameScene();
                 TileManager.nextTileIndex = 0;
                 GameSceneSOUNDID = SoundManager.play(1,0.6f);
                 curScene = gameScene;
+
+                //  RESET
+                GameManager.getInstance().resetScoreAndTimer();
                 break;
             case 3:
-                if (gameOverScene == null) gameOverScene = new GameOverScene();
+                gameOverScene = new GameOverScene();
+//                if (gameOverScene == null) gameOverScene = new GameOverScene();
                 SoundManager.stop(GameSceneSOUNDID);
                 SoundManager.stopAll();
                 GameOverSceneSOUNDID = SoundManager.play(2,0.6f);
