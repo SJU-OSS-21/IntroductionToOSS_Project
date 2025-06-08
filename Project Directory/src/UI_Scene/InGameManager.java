@@ -123,10 +123,6 @@ public class InGameManager {
         if (pausePanel != null) pausePanel.setVisible(visible);
     }
 
-    public PauseOverlayPanel getPauseOverlayPanel() {
-        return pauseOverlayPanel;
-    }
-
     public void setPausePanel(InGamePausePanel pausePanel) {
         this.pausePanel = pausePanel;
     }
@@ -138,9 +134,6 @@ public class InGameManager {
         this.playerPanel = playerPanel;
     }
 
-    public void registerTimer(Timer timer) {
-        managedTimers.add(timer);
-    }
 
     public void updateScore(int offset) {
         this.score += offset;
@@ -151,19 +144,6 @@ public class InGameManager {
         }
     }
 
-    // ESC 키 등록은 최초 1회만 수행
-    private void setupKeyListener() {
-        if (escListenerRegistered) return;
-        escListenerRegistered = true;
-
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-            if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                instance.togglePause();
-                return true;
-            }
-            return false;
-        });
-    }
 
     /**
      * 내부 클래스: 일시정지 상태를 표시할 반투명 회색 패널

@@ -107,10 +107,9 @@ class InGameScene extends BaseScene {
         playerPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(playerPanel, Integer.valueOf(1));
 
-<<<<<<< HEAD
-        inGameManager.setPlayerPanel(playerPanel);
-        inGameManager.setPlayer(playerPanel.player);
-=======
+        InGameManager.getInstance().setPlayerPanel(playerPanel);
+        InGameManager.getInstance().setPlayer(playerPanel.player);
+
         InGameUIPanel inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight, InGameManager.getInstance());
         InGamePausePanel pausePanel = new InGamePausePanel(screenWidth, screenHeight);
 
@@ -125,7 +124,6 @@ class InGameScene extends BaseScene {
         this.add(overlay, Integer.valueOf(10));
 
         InGameManager.getInstance().setPlayer(playerPanel.player);
->>>>>>> main
         inGameUIPanel.setPlayer(playerPanel.player);
 
         EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight, InGameManager.getInstance());
