@@ -1,6 +1,7 @@
 package Player_Item.Model;
 
 import Enemies.Enemy;
+import Player_Item.Panel.PlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,11 +58,14 @@ public class Item {
         // 아이템 스폰 시간(현재 시간으로 기록)
         this.spawnTime = System.currentTimeMillis();
 
-        // 랜덤 방향 설정 (speed 픽셀/프레임)
-        int dx = (int)(Math.random() * 2 * speed) - speed;
-        int dy = (int)(Math.random() * 2 * speed) - speed;
-        this.vx = dx == 0 ? speed : dx;
-        this.vy = dy == 0 ? speed : dy;
+        // 랜덤 대각 방향 설정 (4방향)
+        int dir = (int)(Math.random() * 4);
+        switch (dir) {
+            case 0: vx =  speed; vy =  speed; break; // down-right
+            case 1: vx =  speed; vy = -speed; break; // up-right
+            case 2: vx = -speed; vy =  speed; break; // down-left
+            default: vx = -speed; vy = -speed; break; // up-left
+        }
     }
 
     /**
@@ -74,20 +78,21 @@ public class Item {
         double r = Math.random();
         Type type = null;
 
-        if (r < PROB_BOMB) {
-            type = Type.BOMB;
-        } else if (r < PROB_BOMB + PROB_UPGRADE) {
-            type = Type.UPGRADE;
-        } else if (r < PROB_BOMB + PROB_UPGRADE + PROB_HEALTH) {
-            type = Type.HEALTH;
-        }
+        if      (r < PROB_BOMB)                         type = Type.BOMB;
+        else if (r < PROB_BOMB + PROB_UPGRADE)          type = Type.UPGRADE;
+        else if (r < PROB_BOMB + PROB_UPGRADE + PROB_HEALTH) type = Type.HEALTH;
+        else                                            return null;
+
+        // debug
+        // type = Type.UPGRADE;
 
         // 경로는 패널에서 실제 클래스로딩경로에 맞게 설정
         String path;
         switch (type) {
-            case HEALTH:  path = "res/item_health.png"; break;
-            case UPGRADE: path = "res/item_upgrade.png"; break;
-            default:      path = "res/item_bomb.png";    break;
+            case HEALTH:  path = "item_health.png"; break;
+            case UPGRADE: path = "item_upgrade.png"; break;
+            case BOMB:      path = "item_bomb.png";    break;
+            default:                            return null;
         }
 
         // 아이템 생성자로 반환
@@ -103,7 +108,7 @@ public class Item {
         if (!active) return; // 비활성화 시 무시
 
         // 1. 위치 업데이트
-        x += vy;
+        x += vx;
         y += vy;
 
         // 2. 벽 충돌 시 법선 방향으로 방향 전환
@@ -144,17 +149,18 @@ public class Item {
     }
 
     /** 아이템 효과 처리 (플레이어와 적 리스트를 받아서) */
-    public void applyEffect(Player player, java.util.List<Enemy> enemies) {
+    public void applyEffect(Player player, PlayerPanel panel, java.util.List<Enemy> enemies) {
         switch (type) {
             case HEALTH:
                 player.increasePlayerHp();
                 break;
             case UPGRADE:
-                // player.setShotCount(player.getShotCount() + 1);
+                panel.setShotCount(panel.getShotCount()+1);
                 break;
             case BOMB:
-                // for (Enemy e : enemies) e.setActive(false);
-                // enemies.clear();
+                synchronized(enemies) {
+                    enemies.clear();
+                }
                 break;
         }
         active = false;

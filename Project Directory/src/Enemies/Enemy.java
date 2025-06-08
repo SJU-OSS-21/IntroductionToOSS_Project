@@ -2,6 +2,7 @@ package Enemies;
 
 import Map_Audio.SoundManager;
 import Player_Item.Model.Bullet;
+import Player_Item.Model.Item;
 import UI_Scene.GameManager;
 import UI_Scene.InGameManager;
 
@@ -9,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.List;
+
+import static Player_Item.Model.Item.randomDrop;
 
 public class Enemy implements Runnable {
     public Image image;
@@ -73,6 +76,12 @@ public class Enemy implements Runnable {
                         //  Score
                         inGameManager.updateScore(1);
                         active = false;
+
+                        // 아이템 랜덤 드랍
+                        Item drop = Item.randomDrop((int) px, (int) py);
+                        if (drop != null) {
+                            inGameManager.playerPanel.items.add(drop);
+                        }
                     }
                     b.active = false;
                     // System.out.println("hit");

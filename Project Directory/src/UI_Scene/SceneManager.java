@@ -107,6 +107,9 @@ class InGameScene extends BaseScene {
         playerPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(playerPanel, Integer.valueOf(1));
 
+        InGameManager.getInstance().setPlayerPanel(playerPanel);
+        InGameManager.getInstance().setPlayer(playerPanel.player);
+
         InGameUIPanel inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight, InGameManager.getInstance());
         InGamePausePanel pausePanel = new InGamePausePanel(screenWidth, screenHeight);
 
@@ -326,19 +329,26 @@ public class SceneManager {
     private static void innerChangeScene() {
         JFrame frame = GameManager.getInstance().getMainFrame();
 
+//        // 포커스 초기화 (키 입력 꼬임 방지)
+//        KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+
         // 이전 씬 제거
         if (curScene != null) {
             frame.remove(curScene);
         }
 
-        // ESC 리스너 등록 상태 초기화
-        try {
-            java.lang.reflect.Field field = InGameManager.class.getDeclaredField("escListenerRegistered");
-            field.setAccessible(true);
-            field.setBoolean(null, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        // ESC 리스너 등록 상태 초기화는 InGameScene 진입 전용으로 제한
+//        if (Scene.values()[curSceneNum] == Scene.InGame) {
+//            try {
+//                java.lang.reflect.Field field = InGameManager.class.getDeclaredField("escListenerRegistered");
+//                field.setAccessible(true);
+//                field.setBoolean(null, false);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+        System.out.println("Scene Change Start");
 
         switch (curSceneNum) {
             case 0:
@@ -364,18 +374,26 @@ public class SceneManager {
                 GameManager.getInstance().resetScoreAndTimer();
                 break;
             case 3:
+//                System.out.println("Scene GameOver Start");
                 gameOverScene = new GameOverScene();
-//                if (gameOverScene == null) gameOverScene = new GameOverScene();
-                SoundManager.stop(GameSceneSOUNDID);
+
+                SoundManager.stop(SoundManager.GameSceneSOUNDID);
+//                System.out.println("Scene Middle Start");
 //                SoundManager.stopAll();
-                GameOverSceneSOUNDID = SoundManager.play(2,0.6f);
-                SoundManager.play(9,0.6f);
+
+                SoundManager.GameOverSceneSOUNDID = SoundManager.play(2, 0.6f);
+                SoundManager.play(9, 0.6f);
                 curScene = gameOverScene;
+//                System.out.println("Scene GameOver Start");
                 break;
             default:
                 System.err.println("Scene Error : Scene is Not Exist [" + curSceneNum + "]");
                 return;
         }
+
+        System.out.println("Scene Change End");
+
+        InGameManager.getInstance().resetPause();
 
         curScene.setScene();
         curScene.setGameObjectList();
@@ -386,6 +404,8 @@ public class SceneManager {
         frame.repaint();
     }
 }
+
+
 
 
 

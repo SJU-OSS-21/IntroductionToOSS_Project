@@ -1,6 +1,7 @@
 package UI_Scene;
 
 import Player_Item.Model.Player;
+import Player_Item.Panel.PlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,8 @@ public class InGameManager {
     public Player player;
     public JPanel pauseOverlay;
     public final List<Timer> managedTimers = new ArrayList<>();
+
+    public PlayerPanel playerPanel;
 
     private int score = 0;
     private boolean isPaused = false;
@@ -58,6 +61,10 @@ public class InGameManager {
         this.score = 0;
     }
 
+    public void resetPause(){
+        this.isPaused = false;
+    }
+
     public void reset() {
         inGameScene = null;
         inGameUIPanel = null;
@@ -83,6 +90,31 @@ public class InGameManager {
         return isPaused;
     }
 
+    public PauseOverlayPanel getPauseOverlayPanel() {
+        return pauseOverlayPanel;
+    }
+
+    public void registerTimer(Timer timer) {
+        managedTimers.add(timer);
+    }
+
+    public void setupKeyListener() {
+        if (escListenerRegistered) return;
+
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
+            // 현재 씬이 InGameScene일 때만 ESC 처리
+            if (SceneManager.curScene instanceof InGameScene &&
+                    e.getID() == KeyEvent.KEY_PRESSED &&
+                    e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                togglePause();
+                return true;
+            }
+            return false;
+        });
+
+        escListenerRegistered = true;
+    }
+
     public void togglePause() {
         isPaused = !isPaused;
         setPausePanelVisible(isPaused);
@@ -102,10 +134,6 @@ public class InGameManager {
         if (pausePanel != null) pausePanel.setVisible(visible);
     }
 
-    public PauseOverlayPanel getPauseOverlayPanel() {
-        return pauseOverlayPanel;
-    }
-
     public void setPausePanel(InGamePausePanel pausePanel) {
         this.pausePanel = pausePanel;
     }
@@ -113,10 +141,10 @@ public class InGameManager {
     public void setInGameUIPanel(InGameUIPanel inGameUIPanel) {
         this.inGameUIPanel = inGameUIPanel;
     }
-
-    public void registerTimer(Timer timer) {
-        managedTimers.add(timer);
+    public void setPlayerPanel(PlayerPanel playerPanel) {
+        this.playerPanel = playerPanel;
     }
+
 
     public void updateScore(int offset) {
         this.score += offset;
@@ -127,19 +155,6 @@ public class InGameManager {
         }
     }
 
-    // ESC 키 등록은 최초 1회만 수행
-    private void setupKeyListener() {
-        if (escListenerRegistered) return;
-        escListenerRegistered = true;
-
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-            if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                instance.togglePause();
-                return true;
-            }
-            return false;
-        });
-    }
 
     /**
      * 내부 클래스: 일시정지 상태를 표시할 반투명 회색 패널
