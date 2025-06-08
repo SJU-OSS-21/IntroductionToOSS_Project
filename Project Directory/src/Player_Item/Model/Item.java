@@ -92,6 +92,29 @@ public class Item {
         return new Item(type, path, x, y);
     }
 
+    /**
+     * 프레임마다 호출: 이동 및 생존시간 체크
+     * @param maxW 화면 너비
+     * @param maxH 화면 높이
+     */
+    public void update(int maxW, int maxH) {
+        if (!active) return; // 비활성화 시 무시
+
+        // 1. 위치 업데이트
+        x += vy;
+        y += vy;
+
+        // 2. 벽 충돌 시 법선 방향으로 방향 전환
+        if (x <= 0 || x + image.getWidth(null) >= maxW) vx = -vx;
+        if (y <= 0 || y + image.getHeight(null) >= maxH) vy = -vy;
+
+        // 3. 생존 시간 경과 시 비활성
+        long age = System.currentTimeMillis() - spawnTime;
+        if (age >= lifeTime) {
+            active = false;
+        }
+    }
+
     /** 렌더링 처리 */
     public void draw(Graphics g) {
         if (!active) return;
