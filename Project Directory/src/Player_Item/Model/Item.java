@@ -115,10 +115,22 @@ public class Item {
         }
     }
 
-    /** 렌더링 처리 */
+    /**
+     * 렌더링 처리: 깜빡임 포함
+     * @param g 그래픽
+     */
     public void draw(Graphics g) {
         if (!active) return;
-        g.drawImage(image, x, y, null);
+        long age = System.currentTimeMillis() - spawnTime;
+        if (age >= lifeTime - blinkDuration) {
+            long t = age - (lifeTime - blinkDuration);
+            // 깜빡임 로직
+            if ((t / blinkInterval) % 2 == 0) {
+                g.drawImage(image, x, y, null);
+            }
+        } else {
+            g.drawImage(image, x, y, null);
+        }
     }
     /** 충돌 범위 반환 */
     public Rectangle getBounds() {
