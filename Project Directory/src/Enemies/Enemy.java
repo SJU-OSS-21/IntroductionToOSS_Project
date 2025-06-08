@@ -2,6 +2,8 @@ package Enemies;
 
 import Map_Audio.SoundManager;
 import Player_Item.Model.Bullet;
+import UI_Scene.GameManager;
+import UI_Scene.InGameManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +19,15 @@ public class Enemy implements Runnable {
     public boolean active;
     public int panelWidth, panelHeight;
 
+    //  For Score Count
+    InGameManager inGameManager;
 
-    public Enemy(JPanel p) {
+    public Enemy(JPanel p, InGameManager inGameManager) {
         panelWidth = p.getWidth();
         panelHeight = p.getHeight();
+
+        this.inGameManager = inGameManager;
+
         init();
     }
     public void init() {
@@ -59,10 +66,14 @@ public class Enemy implements Runnable {
             for (var b : bullets) {
                 if (px <= b.getX() && b.getX() <= px + w && py <= b.getY() && b.getY() <= py + h) {
                     reduceHP();
-                    SoundManager.play(5,1f);
-                    if (hp <= 0)
-                        SoundManager.play(6,1f);
+                    SoundManager.play(5,0.5f);
+                    if (hp <= 0) {
+                        SoundManager.play(6, 1f);
+
+                        //  Score
+                        inGameManager.updateScore(1);
                         active = false;
+                    }
                     b.active = false;
                     // System.out.println("hit");
                     break;
@@ -80,7 +91,6 @@ public class Enemy implements Runnable {
         hp -= 1;
         Thread t = new Thread(this);
         t.start();
-//        SoundManager.play(5,1f);
     }
 
     public void run() {

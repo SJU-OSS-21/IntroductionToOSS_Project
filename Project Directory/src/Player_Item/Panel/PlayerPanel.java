@@ -19,7 +19,7 @@ import java.util.List;
  * 플레이어 이동 및 총알 발사를 처리하는 패널
  */
 public class PlayerPanel extends JPanel implements Runnable {
-    private final Player player;              // 플레이어 모델
+    public final Player player;              // 플레이어 모델
     private final InputController input;      // 키 입력 컨트롤러
     public final List<Bullet> bullets = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class PlayerPanel extends JPanel implements Runnable {
     private Thread gameThread;
 
     private long lastFireTime = 0;
-    private final long fireInterval = 300;    // 발사 쿨다운(ms)
+    private final long fireInterval = 100;    // 발사 쿨다운(ms)
 
     private int shotCount = 3;                // 발사 개수 (1,2,3...)
     private final int bulletSpacing = 12;     // 총알 간 가로 간격(px)

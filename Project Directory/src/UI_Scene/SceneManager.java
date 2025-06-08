@@ -2,6 +2,7 @@ package UI_Scene;
 
 import Enemies.EnemyPanel;
 import Map_Audio.SoundManager;
+import Map_Audio.TileManager;
 import Player_Item.Panel.PlayerPanel;
 import main.GamePanel;
 import main.GamePanel2;
@@ -13,6 +14,10 @@ import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.Random;
+
+import static Map_Audio.SoundManager.MainSceneSOUNDID;
+import static Map_Audio.SoundManager.GameSceneSOUNDID;
+import static Map_Audio.SoundManager.GameOverSceneSOUNDID;
 
 //  아래에 있는 MainScene, InGameScene, BaseScene에 Object(Panel)을 넣어주세요
 
@@ -87,6 +92,7 @@ class InGameScene extends BaseScene {
 
     InGameManager inGameManager;
     InGameUIPanel inGameUIPanel;
+    InGamePausePanel pausePanel;
 
     public InGameScene() {
         super();
@@ -97,8 +103,18 @@ class InGameScene extends BaseScene {
 
     @Override
     public void setScene() {
-        inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight);
-        inGameManager = new InGameManager(this, inGameUIPanel);
+        inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight, inGameManager);
+        this.add(inGameUIPanel, Integer.valueOf(5));
+
+        pausePanel = new InGamePausePanel(screenWidth, screenHeight);
+        pausePanel.setVisible(false);
+        this.add(pausePanel, Integer.valueOf(12));
+
+        inGameManager = new InGameManager(this, inGameUIPanel, pausePanel); // 수정됨
+
+        inGameManager.setInGameUIPanel(inGameUIPanel);
+
+
         JPanel overlay = inGameManager.getPauseOverlayPanel();
         overlay.setBounds(0, 0, screenWidth, screenHeight);
         this.add(overlay, Integer.valueOf(10)); // 꼭 높은 레이어에
@@ -117,7 +133,10 @@ class InGameScene extends BaseScene {
         playerPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(playerPanel, Integer.valueOf(1));
 
-        EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight);
+        inGameManager.setPlayer(playerPanel.player);
+        inGameUIPanel.setPlayer(playerPanel.player);
+
+        EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight, inGameManager);
         enemyPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(enemyPanel, Integer.valueOf(2));
 
@@ -128,7 +147,13 @@ class InGameScene extends BaseScene {
     //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
+        pausePanel.getMainMenuButton().addActionListener(e -> {
+            SceneManager.changeScene(SceneManager.Scene.Main);
+        });
 
+        pausePanel.getRetryButton().addActionListener(e -> {
+            SceneManager.changeScene(SceneManager.Scene.Loading);
+        });
     }
 }
 
@@ -249,6 +274,8 @@ class GameOverScene extends BaseScene {
     final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
     final double FPS = 60.0;
 
+    GameOverUIPanel gameOverUIPanel;
+
     public GameOverScene() {
         super();
 
@@ -271,7 +298,15 @@ class GameOverScene extends BaseScene {
     //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
+        gameOverUIPanel = new GameOverUIPanel(screenWidth, screenHeight);
+        add(gameOverUIPanel, Integer.valueOf(10));
 
+        gameOverUIPanel.getMainMenuButton().addActionListener(e->{
+            SceneManager.changeScene(SceneManager.Scene.Main);
+        });
+        gameOverUIPanel.getRetryButton().addActionListener(e->{
+            SceneManager.changeScene(SceneManager.Scene.Loading);
+        });
     }
 }
 
@@ -321,27 +356,45 @@ public class SceneManager {
         // 새 씬 선택 또는 생성
         switch (curSceneNum) {
             case 0:
-                if (mainScene == null) mainScene = new MainScene();
+                mainScene = new MainScene();
+//                if (mainScene == null) mainScene = new MainScene();
+                SoundManager.stopAll();
+                SoundManager.stop(GameOverSceneSOUNDID);
                 SoundManager.play(8,1f);
-                SoundManager.play(0,0.6f);
+                MainSceneSOUNDID =  SoundManager.play(0,0.6f);
                 curScene = mainScene;
+
+                //  RESET
+                GameManager.getInstance().resetScoreAndTimer();
                 break;
             case 1:
-                // 항상 새로 만들어야 다음Scene 다르게 지정 가능 (옵션)
+                // 항상 새로 만들어야 다음 Scene 다르게 지정 가능 (옵션)
                 loadingScene = new LoadingScene(Scene.InGame);
-                SoundManager.stop(0);
-
+                SoundManager.stop(MainSceneSOUNDID);
+                SoundManager.stopAll();
+//                MainSceneSOUNDID = -1;
 
                 curScene = loadingScene;
                 break;
             case 2:
-                if (gameScene == null) gameScene = new InGameScene();
-                SoundManager.play(1,0.6f);
-//                SoundManager.loop(6,true,0);
+                //  Please Reallocate
+                gameScene = new InGameScene();
+
+//                if (gameScene == null) gameScene = new InGameScene();
+                TileManager.nextTileIndex = 0;
+                GameSceneSOUNDID = SoundManager.play(1,0.6f);
                 curScene = gameScene;
+
+                //  RESET
+                GameManager.getInstance().resetScoreAndTimer();
                 break;
             case 3:
-                if (gameOverScene == null) gameOverScene = new GameOverScene();
+                gameOverScene = new GameOverScene();
+//                if (gameOverScene == null) gameOverScene = new GameOverScene();
+                SoundManager.stop(GameSceneSOUNDID);
+                SoundManager.stopAll();
+                GameOverSceneSOUNDID = SoundManager.play(2,0.6f);
+                SoundManager.play(9,0.6f);
                 curScene = gameOverScene;
                 break;
             default:
