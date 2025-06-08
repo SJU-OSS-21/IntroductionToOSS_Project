@@ -17,8 +17,14 @@ public class Item {
     private final Type type;
     private final Image image;
     private int x, y;
+    private int vx, vy;
     private final int speed = 2;
     private boolean active = true;
+
+    // 각 아이템 드랍 확률
+    private static final double PROB_BOMB    = 0.1;
+    private static final double PROB_UPGRADE = 0.2;
+    private static final double PROB_HEALTH  = 0.3;
 
     /**
      * 생성자
