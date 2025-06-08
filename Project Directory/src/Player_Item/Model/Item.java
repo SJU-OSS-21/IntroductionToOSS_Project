@@ -1,5 +1,7 @@
 package Player_Item.Model;
 
+import Enemies.Enemy;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -139,6 +141,23 @@ public class Item {
     /** 활성 여부 */
     public boolean isActive() {
         return active;
+    }
+
+    /** 아이템 효과 처리 (플레이어와 적 리스트를 받아서) */
+    public void applyEffect(Player player, java.util.List<Enemy> enemies) {
+        switch (type) {
+            case HEALTH:
+                // player.increaseHp(1);
+                break;
+            case UPGRADE:
+                // player.setShotCount(player.getShotCount() + 1);
+                break;
+            case BOMB:
+                // for (Enemy e : enemies) e.setActive(false);
+                // enemies.clear();
+                break;
+        }
+        active = false;
     }
 
 }
