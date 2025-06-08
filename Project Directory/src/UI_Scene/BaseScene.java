@@ -33,8 +33,10 @@ public abstract class BaseScene extends JLayeredPane {
 
     //  Constructor
     protected BaseScene(){
-        setScene();
-        setGameObjectList();
+        //  호출 타이밍 문제로 Do Nothing -> SceneManager에서 초기화
+
+//        setScene();
+//        setGameObjectList();
         //  Init 타이밍 문제로 명시적 선언 요함
 //        setUISet();
     }
@@ -49,6 +51,13 @@ public abstract class BaseScene extends JLayeredPane {
 
     //  TODO : Scene 내에 존재해야 하는 UI Set에 대한 설정
     public abstract void setUISet();
+
+    //  TODO : to Init Scene
+    public void Init(){
+        setScene();
+        setGameObjectList();
+        setUISet();
+    }
 
 //SceneManager.curScene.startGameThread();
 }
