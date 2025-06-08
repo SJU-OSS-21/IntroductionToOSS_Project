@@ -9,6 +9,7 @@ public abstract class UIPanel extends JPanel {
 
     protected Font mainFont;
     protected Font textFont;
+    protected Font uiFont;
 
 
     public UIPanel(int width, int height) {
@@ -36,6 +37,15 @@ public abstract class UIPanel extends JPanel {
                 GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(textFont);
             } else {
                 throw new Exception("textFont not found");
+            }
+
+            // 본문용 폰트 (가독성 위주)
+            URL uiFontURL = getClass().getClassLoader().getResource("Fonts/high1 Wonchuri Title B.ttf");
+            if (uiFontURL != null) {
+                uiFont = Font.createFont(Font.TRUETYPE_FONT, new File(uiFontURL.toURI())).deriveFont(20f);
+                GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(uiFont);
+            } else {
+                throw new Exception("uiFont not found");
             }
 
         } catch (Exception e) {

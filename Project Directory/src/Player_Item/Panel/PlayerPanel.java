@@ -19,7 +19,7 @@ import java.util.List;
  * 플레이어 이동 및 총알 발사를 처리하는 패널
  */
 public class PlayerPanel extends JPanel implements Runnable {
-    private final Player player;              // 플레이어 모델
+    public final Player player;              // 플레이어 모델
     private final InputController input;      // 키 입력 컨트롤러
     public final List<Bullet> bullets = new ArrayList<>();
 

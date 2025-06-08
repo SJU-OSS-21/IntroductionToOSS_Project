@@ -89,6 +89,7 @@ class InGameScene extends BaseScene {
 
     InGameManager inGameManager;
     InGameUIPanel inGameUIPanel;
+    InGamePausePanel pausePanel;
 
     public InGameScene() {
         super();
@@ -100,7 +101,14 @@ class InGameScene extends BaseScene {
     @Override
     public void setScene() {
         inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight);
-        inGameManager = new InGameManager(this, inGameUIPanel);
+        this.add(inGameUIPanel, Integer.valueOf(5));
+
+        pausePanel = new InGamePausePanel(screenWidth, screenHeight);
+        pausePanel.setVisible(false);
+        this.add(pausePanel, Integer.valueOf(12));
+
+        inGameManager = new InGameManager(this, inGameUIPanel, pausePanel); // 수정됨
+
         JPanel overlay = inGameManager.getPauseOverlayPanel();
         overlay.setBounds(0, 0, screenWidth, screenHeight);
         this.add(overlay, Integer.valueOf(10)); // 꼭 높은 레이어에
@@ -119,6 +127,9 @@ class InGameScene extends BaseScene {
         playerPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(playerPanel, Integer.valueOf(1));
 
+        inGameManager.setPlayer(playerPanel.player);
+        inGameUIPanel.setPlayer(playerPanel.player);
+
         EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight);
         enemyPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(enemyPanel, Integer.valueOf(2));
@@ -130,7 +141,13 @@ class InGameScene extends BaseScene {
     //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
+        pausePanel.getMainMenuButton().addActionListener(e -> {
+            SceneManager.changeScene(SceneManager.Scene.Main);
+        });
 
+        pausePanel.getRetryButton().addActionListener(e -> {
+            SceneManager.changeScene(SceneManager.Scene.Loading);
+        });
     }
 }
 
@@ -251,6 +268,8 @@ class GameOverScene extends BaseScene {
     final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
     final double FPS = 60.0;
 
+    GameOverUIPanel gameOverUIPanel;
+
     public GameOverScene() {
         super();
 
@@ -273,7 +292,15 @@ class GameOverScene extends BaseScene {
     //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
+        gameOverUIPanel = new GameOverUIPanel(screenWidth, screenHeight);
+        add(gameOverUIPanel, Integer.valueOf(10));
 
+        gameOverUIPanel.getMainMenuButton().addActionListener(e->{
+            SceneManager.changeScene(SceneManager.Scene.Main);
+        });
+        gameOverUIPanel.getRetryButton().addActionListener(e->{
+            SceneManager.changeScene(SceneManager.Scene.Loading);
+        });
     }
 }
 
