@@ -122,5 +122,6 @@ public class Player {
     }
     public void increasePlayerHp() {
         curHp += 1;
+        if (maxHp < curHp) curHp = maxHp;
     }
 }

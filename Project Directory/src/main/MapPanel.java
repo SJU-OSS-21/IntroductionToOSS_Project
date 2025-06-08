@@ -63,8 +63,8 @@ public class MapPanel extends JPanel implements Runnable {
         long timer = 0;
         int drawCount = 0;
         while (gameThread != null) {
-            if(InGameManager.global != null) {
-                if (InGameManager.global.isPaused()) {
+            if(InGameManager.getInstance() != null) {
+                if (InGameManager.getInstance().isPaused()) {
                     try {
                         Thread.sleep(10); // pause 상태 유지
                         continue;
@@ -85,7 +85,7 @@ public class MapPanel extends JPanel implements Runnable {
                 drawCount++;
             }
             if (timer >= 1000000000) {
-                System.out.println("FPS : " + drawCount);
+//                System.out.println("FPS : " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
