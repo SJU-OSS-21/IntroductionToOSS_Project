@@ -74,7 +74,7 @@ public class MainUIPanel extends UIPanel {
 
 
         // === Version Label ===
-        versionLabel = new JLabel("OSSW Final Project v.20250607 by HJD Team", SwingConstants.LEFT);
+        versionLabel = new JLabel("OSSW Final Project v.20250609 by HJD Team", SwingConstants.LEFT);
         versionLabel.setFont(textFont.deriveFont(versionFontSize - 5f)); // 약간 더 작게
         versionLabel.setForeground(Color.DARK_GRAY);
 
