@@ -287,6 +287,7 @@ class GameOverScene extends BaseScene {
     public void setScene() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setLayout(null);
+        setFocusable(true);
     }
 
     //  TODO : Panel 여기에 설치
@@ -392,7 +393,7 @@ public class SceneManager {
                 gameOverScene = new GameOverScene();
 //                if (gameOverScene == null) gameOverScene = new GameOverScene();
                 SoundManager.stop(GameSceneSOUNDID);
-                SoundManager.stopAll();
+//                SoundManager.stopAll();
                 GameOverSceneSOUNDID = SoundManager.play(2,0.6f);
                 SoundManager.play(9,0.6f);
                 curScene = gameOverScene;

@@ -29,7 +29,7 @@ public class PlayerPanel extends JPanel implements Runnable {
     private Thread gameThread;
 
     private long lastFireTime = 0;
-    private final long fireInterval = 100;    // 발사 쿨다운(ms)
+    private final long fireInterval = 200;    // 발사 쿨다운(ms)
 
     private int shotCount = 3;                // 발사 개수 (1,2,3...)
     private final int bulletSpacing = 12;     // 총알 간 가로 간격(px)
@@ -66,7 +66,6 @@ public class PlayerPanel extends JPanel implements Runnable {
         long now;
         long timer = 0;
         int drawCount = 0;
-
         while (gameThread != null) {
             now = System.nanoTime();
             delta += (now - lastTime) / drawInterval;
@@ -81,7 +80,7 @@ public class PlayerPanel extends JPanel implements Runnable {
             }
 
             if (timer >= 1_000_000_000) {
-                System.out.println("FPS: " + drawCount);
+//                System.out.println("FPS: " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
@@ -101,24 +100,31 @@ public class PlayerPanel extends JPanel implements Runnable {
 
 
         // 총알 발사 처리
-        if (input.isFire()) {
-            long nowTime = System.currentTimeMillis();
-            if (nowTime - lastFireTime >= fireInterval) {
-                Rectangle pr = player.getBounds();
-                int centerX = pr.x + pr.width / 2;
-                int y = pr.y;
+        if(player.getHpRatio() != 0) {
+            if (input.isFire()) {
+                long nowTime = System.currentTimeMillis();
+                if (nowTime - lastFireTime >= fireInterval) {
+                    Rectangle pr = player.getBounds();
+                    int centerX = pr.x + pr.width / 2;
+                    int y = pr.y;
 
-                // shotCount 개수만큼 발사, 가운데 정렬
-                int startIdx = -(shotCount - 1) / 2;
+                    // shotCount 개수만큼 발사, 가운데 정렬
+                    int startIdx = -(shotCount - 1) / 2;
 
-                synchronized (bullets) {
-                    for (int i = 0; i < shotCount; i++) {
-                        int offsetX = (startIdx + i) * bulletSpacing;
-                        bullets.add(new Bullet("bullet2.png", centerX + offsetX, y));
+                    synchronized (bullets) {
+                        for (int i = 0; i < shotCount; i++) {
+                            int offsetX = (startIdx + i) * bulletSpacing;
+                            System.out.println("player shooting ");
+                            bullets.add(new Bullet("bullet2.png", centerX + offsetX, y));
+                        }
                     }
+                    lastFireTime = nowTime;
                 }
-                lastFireTime = nowTime;
             }
+        }
+        else{
+            gameThread.interrupt();
+            setFocusable(false);
         }
 
         // 총알 업데이트 및 비활성 총알 제거
