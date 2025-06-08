@@ -41,7 +41,7 @@ public class EnemyPanel extends JPanel implements Runnable {
         float time = 0.0f;
         float dt = 0.0f;
         float spawnCoolTime = 1000.0f;
-        int baseHP = 2;
+        int baseHP = 4;
         float baseSpeed = 200;
         while (true) {
             if (InGameManager.global.isPaused()) {
@@ -84,8 +84,6 @@ public class EnemyPanel extends JPanel implements Runnable {
                     }
                     if (spawnCoolTime < 100)
                         spawnCoolTime = 100.0f;
-                    if (baseHP > 5)
-                        baseHP = 5;
                 }
 
                 repaint();
