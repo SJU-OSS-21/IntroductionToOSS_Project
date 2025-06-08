@@ -25,22 +25,25 @@ class MainScene extends BaseScene {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 10;
-    final int maxScreenRow = 20;
-    final int screenWidth = tileSize * maxScreenCol;
-    final int screenHeight = tileSize * maxScreenRow;
+    final int maxScreenCol = 10;//(가로 타일 개수)
+    final int maxScreenRow = 20;//(세로 타일 개수)
+    final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
+    final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
     final double FPS = 60.0;
 
+    //  UI Panel
     MainUIPanel mainUIPanel;
 
     public MainScene() {}
 
+    //  TODO : Scene JLayeredPane에 대한 설정 기입
     @Override
     public void setScene() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setLayout(null);
     }
 
+    // TODO :  Panel 여기에 설치
     @Override
     public void setGameObjectList() {
         MapPanel mp = new MapPanel();
@@ -52,32 +55,36 @@ class MainScene extends BaseScene {
         this.add(playerUI, Integer.valueOf(2));
     }
 
+
     @Override
     public void setUISet() {
         mainUIPanel = new MainUIPanel(screenWidth, screenHeight);
 
+        //   Start 버튼 클릭 시 게임 시작 로직
         mainUIPanel.getStartButton().addActionListener(e -> {
             SoundManager.play(7,1f);
             SceneManager.changeScene(SceneManager.Scene.Loading);
         });
 
+        //   Exit 버튼 클릭 시 프로그램 종료
         mainUIPanel.getExitButton().addActionListener(e -> {
             SoundManager.play(7,1f);
-            System.exit(0);
+            System.exit(0); // 정상 종료
         });
 
         this.add(mainUIPanel, Integer.valueOf(10));
     }
 }
 
+
 class InGameScene extends BaseScene {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 10;
-    final int maxScreenRow = 20;
-    final int screenWidth = tileSize * maxScreenCol;
-    final int screenHeight = tileSize * maxScreenRow;
+    final int maxScreenCol = 10;//(가로 타일 개수)
+    final int maxScreenRow = 20;//(세로 타일 개수)
+    final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
+    final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
     final double FPS = 60.0;
 
     public InGameScene() {}
@@ -124,6 +131,7 @@ class InGameScene extends BaseScene {
         playerPanel.setEnemyPanel(enemyPanel);
     }
 
+    //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
         InGameManager.getInstance().setPausePanelVisible(false);
@@ -140,6 +148,7 @@ class InGameScene extends BaseScene {
 }
 
 class LoadingScene extends BaseScene {
+
     private final int screenWidth = 16 * 3 * 10;
     private final int screenHeight = 16 * 3 * 20;
 
@@ -179,6 +188,7 @@ class LoadingScene extends BaseScene {
         tipLabel = new JLabel("", SwingConstants.LEFT);
     }
 
+
     @Override
     public void setScene() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -187,6 +197,7 @@ class LoadingScene extends BaseScene {
         setBackground(Color.BLACK);
         setOpaque(true);
     }
+
 
     @Override
     public void setGameObjectList() {}
@@ -206,9 +217,11 @@ class LoadingScene extends BaseScene {
         tipLabel.setHorizontalAlignment(SwingConstants.CENTER);
         tipLabel.setVerticalAlignment(SwingConstants.CENTER);
 
+        // === 텍스트의 실제 너비 측정 ===
         FontMetrics fm = tipLabel.getFontMetrics(tipLabel.getFont());
         int textWidth = fm.stringWidth(tipLabel.getText());
 
+        // === 라벨의 너비와 위치 재조정 (텍스트 중앙 정렬) ===
         int tipX = (screenWidth - textWidth) / 2;
         int tipY = screenHeight - 100;
         int tipHeight = 40;
@@ -235,14 +248,15 @@ class LoadingScene extends BaseScene {
     }
 }
 
+
 class GameOverScene extends BaseScene {
     final int originalTileSize = 16;
     final int scale = 3;
     final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 10;
-    final int maxScreenRow = 20;
-    final int screenWidth = tileSize * maxScreenCol;
-    final int screenHeight = tileSize * maxScreenRow;
+    final int maxScreenCol = 10;//(가로 타일 개수)
+    final int maxScreenRow = 20;//(세로 타일 개수)
+    final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
+    final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
     final double FPS = 60.0;
 
     GameOverUIPanel gameOverUIPanel;
@@ -255,6 +269,7 @@ class GameOverScene extends BaseScene {
         setLayout(null);
     }
 
+    //  TODO : Panel 여기에 설치
     @Override
     public void setGameObjectList() {}
 
@@ -276,6 +291,7 @@ class GameOverScene extends BaseScene {
 //  Non-SingleTon -> Static Class
 public class SceneManager {
 
+    // === Scene Instances ===
     public static BaseScene mainScene = null;
     public static BaseScene loadingScene = null;
     public static BaseScene gameScene = null;
@@ -285,6 +301,7 @@ public class SceneManager {
     public static String curSceneName = null;
     public static BaseScene curScene = null;
 
+    // === Scene Enum ===
     public enum Scene {
         Main,
         Loading,
@@ -292,6 +309,7 @@ public class SceneManager {
         GameOver
     }
 
+    // === Overloaded Scene Changers ===
     public static void changeScene(int sid) {
         curSceneNum = sid;
         curSceneName = Scene.values()[sid].toString();
@@ -304,9 +322,11 @@ public class SceneManager {
         innerChangeScene();
     }
 
+    // === 내부 씬 전환 처리 ===
     private static void innerChangeScene() {
         JFrame frame = GameManager.getInstance().getMainFrame();
 
+        // 이전 씬 제거
         if (curScene != null) {
             frame.remove(curScene);
         }
@@ -345,10 +365,11 @@ public class SceneManager {
                 break;
             case 3:
                 gameOverScene = new GameOverScene();
-                SoundManager.stop(SoundManager.GameSceneSOUNDID);
-                SoundManager.stopAll();
-                SoundManager.GameOverSceneSOUNDID = SoundManager.play(2, 0.6f);
-                SoundManager.play(9, 0.6f);
+//                if (gameOverScene == null) gameOverScene = new GameOverScene();
+                SoundManager.stop(GameSceneSOUNDID);
+//                SoundManager.stopAll();
+                GameOverSceneSOUNDID = SoundManager.play(2,0.6f);
+                SoundManager.play(9,0.6f);
                 curScene = gameOverScene;
                 break;
             default:
@@ -365,8 +386,6 @@ public class SceneManager {
         frame.repaint();
     }
 }
-
-
 
 
 
