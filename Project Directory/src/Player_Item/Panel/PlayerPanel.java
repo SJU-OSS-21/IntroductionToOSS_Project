@@ -92,7 +92,7 @@ public class PlayerPanel extends JPanel implements Runnable {
      * 게임 로직 업데이트
      */
     private void updateGame() {
-        if (InGameManager.global.isPaused()) return;
+        if (InGameManager.getInstance().isPaused()) return;
 
         // 플레이어 이동
         int dx = input.isLeft() ? -1 : input.isRight() ? 1 : 0;

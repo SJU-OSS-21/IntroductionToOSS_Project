@@ -59,7 +59,7 @@ public class InGameUIPanel extends UIPanel {
     private void startTimerUpdate() {
         new Timer(1000, e -> {
             // InGameManager가 존재하고, 일시정지 상태가 아니어야 증가
-            if (InGameManager.global != null && !InGameManager.global.isPaused()) {
+            if (InGameManager.getInstance() != null && !InGameManager.getInstance().isPaused()) {
                 elapsedTimeInSeconds++;
                 repaint();
             }

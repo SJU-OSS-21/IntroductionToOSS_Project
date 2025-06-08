@@ -44,7 +44,7 @@ public class EnemyPanel extends JPanel implements Runnable {
         int baseHP = 4;
         float baseSpeed = 200;
         while (true) {
-            if (InGameManager.global.isPaused()) {
+            if (InGameManager.getInstance().isPaused()) {
                 try {
                     Thread.sleep(10); // pause 상태 유지
                     continue;
