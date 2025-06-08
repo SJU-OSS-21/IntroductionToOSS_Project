@@ -1,6 +1,7 @@
 package UI_Scene;
 
 import Player_Item.Model.Player;
+import Player_Item.Panel.PlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +25,7 @@ public class InGameManager {
 
     //  Player 저장
     public Player player;
+    public PlayerPanel playerPanel;
 
     private final InGamePausePanel pausePanel;
 
@@ -90,6 +92,10 @@ public class InGameManager {
     public void setPausePanelVisible(boolean visible) {
         pauseOverlayPanel.setVisible(visible);
         pausePanel.setVisible(visible); // ← 이제는 이거 하나만 존재함
+    }
+
+    public void setPlayerPanel(PlayerPanel playerPanel) {
+        this.playerPanel = playerPanel;
     }
 
 

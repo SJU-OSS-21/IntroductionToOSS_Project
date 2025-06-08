@@ -5,6 +5,7 @@ import Enemies.Enemy;
 import Enemies.EnemyPanel;
 import Map_Audio.SoundManager;
 import Player_Item.InputController;
+import Player_Item.Model.Item;
 import Player_Item.Model.Player;
 import Player_Item.Model.Bullet;
 import UI_Scene.InGameManager;
@@ -22,6 +23,7 @@ public class PlayerPanel extends JPanel implements Runnable {
     public final Player player;              // 플레이어 모델
     private final InputController input;      // 키 입력 컨트롤러
     public final List<Bullet> bullets = new ArrayList<>();
+    public final List<Item> items = new ArrayList<>();  // 아이템 리스트
 
     private EnemyPanel enemyPanel; // 충돌처리 등을 위해 enemyPanel 가져오기
 
@@ -139,6 +141,31 @@ public class PlayerPanel extends JPanel implements Runnable {
             }
         }
 
+        // 아이템 검사
+        List<Enemy> enemies = enemyPanel.enemies;
+        synchronized (enemies) {
+            synchronized (items) {
+                Iterator<Item> it = items.iterator();
+                while (it.hasNext()) {
+                    Item item = it.next();
+                    // 화면 테두리 안에서 튕기며 이동
+                    item.update(getWidth(), getHeight());
+
+                    // 플레이어와 충돌 시
+                    if (player.getBounds().intersects(item.getBounds())) {
+                        // 효과 적용 (체력 회복, 탄알 업그레이드, 폭탄)
+                        item.applyEffect(player, this, enemies);
+                        it.remove();
+                        continue;
+                    }
+                    // 수명 다했거나 inactive 상태면 제거
+                    if (!item.isActive()) {
+                        it.remove();
+                    }
+                }
+            }
+        }
+
         // 충돌처리 검사
         checkCollisions();
     }
@@ -149,6 +176,10 @@ public class PlayerPanel extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.red);
 
+        // 플레이어 그리기
+        player.draw(g);
+        g2d.fillRect(player.getX(), player.getY(), 10, 10);
+
         // 총알 그리기
         synchronized (bullets) {
             for (Bullet b : bullets) {
@@ -156,9 +187,13 @@ public class PlayerPanel extends JPanel implements Runnable {
                 g2d.fillRect(b.getX(), b.getY(), 2, 2);
             }
         }
-        // 플레이어 그리기
-        player.draw(g);
-        g2d.fillRect(player.getX(), player.getY(), 10, 10);
+
+        // 아이템 그리기
+        synchronized (items) {
+            for (Item item : items) {
+                item.draw(g);
+            }
+        }
     }
 
     // 충돌 검사: 플레이어

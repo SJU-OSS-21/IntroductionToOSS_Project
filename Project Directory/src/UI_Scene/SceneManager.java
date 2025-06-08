@@ -133,6 +133,7 @@ class InGameScene extends BaseScene {
         playerPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(playerPanel, Integer.valueOf(1));
 
+        inGameManager.setPlayerPanel(playerPanel);
         inGameManager.setPlayer(playerPanel.player);
         inGameUIPanel.setPlayer(playerPanel.player);
 
