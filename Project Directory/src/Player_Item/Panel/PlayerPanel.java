@@ -125,8 +125,8 @@ public class PlayerPanel extends JPanel implements Runnable {
             }
         }
         else{
-            gameThread.interrupt();
             setFocusable(false);
+//            gameThread.interrupt();
         }
 
         // 총알 업데이트 및 비활성 총알 제거
