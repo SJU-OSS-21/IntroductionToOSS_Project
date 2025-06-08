@@ -61,6 +61,10 @@ public class InGameManager {
         this.score = 0;
     }
 
+    public void resetPause(){
+        this.isPaused = false;
+    }
+
     public void reset() {
         inGameScene = null;
         inGameUIPanel = null;
@@ -94,14 +98,21 @@ public class InGameManager {
         managedTimers.add(timer);
     }
 
-    private void setupKeyListener() {
+    public void setupKeyListener() {
+        if (escListenerRegistered) return;
+
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-            if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            // 현재 씬이 InGameScene일 때만 ESC 처리
+            if (SceneManager.curScene instanceof InGameScene &&
+                    e.getID() == KeyEvent.KEY_PRESSED &&
+                    e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 togglePause();
-                return true; // 이벤트 소비
+                return true;
             }
             return false;
         });
+
+        escListenerRegistered = true;
     }
 
     public void togglePause() {
