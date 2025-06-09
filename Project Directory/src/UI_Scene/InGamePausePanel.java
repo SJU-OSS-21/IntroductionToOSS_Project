@@ -8,8 +8,8 @@ public class InGamePausePanel extends UIPanel {
     private final JButton mainMenuButton;
     private final JButton retryButton;
 
-    private static final String MAIN_MENU_IMAGE_PATH = "/UIs/HomeBTN.png";
-    private static final String RETRY_IMAGE_PATH = "/UIs/Retry.png";
+    private static final String MAIN_MENU_IMAGE_PATH = "/GameRes/UIs/HomeBTN.png";
+    private static final String RETRY_IMAGE_PATH = "/GameRes/UIs/Retry.png";
 
     public InGamePausePanel(int width, int height) {
         super(width, height);

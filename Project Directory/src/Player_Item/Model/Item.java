@@ -89,9 +89,9 @@ public class Item {
         // 경로는 패널에서 실제 클래스로딩경로에 맞게 설정
         String path;
         switch (type) {
-            case HEALTH:  path = "item_health.png"; break;
-            case UPGRADE: path = "item_upgrade.png"; break;
-            case BOMB:      path = "item_bomb.png";    break;
+            case HEALTH:  path = "GameRes/item_health.png"; break;
+            case UPGRADE: path = "GameRes/item_upgrade.png"; break;
+            case BOMB:      path = "GameRes/item_bomb.png";    break;
             default:                            return null;
         }
 

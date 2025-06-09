@@ -34,7 +34,7 @@ public class InGameUIPanel extends UIPanel {
 
         BufferedImage tempImg = null;
         try {
-            URL resource = getClass().getResource("/UIs/Timer.png");
+            URL resource = getClass().getResource("/GameRes/UIs/Timer.png");
             if (resource == null) {
                 throw new IllegalArgumentException("이미지 리소스를 찾을 수 없습니다: /UIs/Timer.png");
             }

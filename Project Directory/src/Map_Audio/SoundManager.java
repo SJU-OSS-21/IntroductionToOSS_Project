@@ -19,7 +19,7 @@ public class SoundManager {
     public static int GameOverSceneSOUNDID;
     static {
         for (int i = 0; i < SONG_COUNT; i++) {
-            soundURLs[i] = SoundManager.class.getResource("/song" + i + ".wav");
+            soundURLs[i] = SoundManager.class.getResource("/GameRes/song" + i + ".wav");
             if (soundURLs[i] == null) {
                 System.err.println("사운드 파일 없음: /song" + i + ".wav");
             }
