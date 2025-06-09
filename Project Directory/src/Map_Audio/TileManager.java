@@ -67,13 +67,13 @@ public class TileManager {
         try {
             tiles[0] = new Tile();
             tiles[0].image = ImageIO.read(
-                    getClass().getClassLoader().getResource("grass.png"));
+                    getClass().getClassLoader().getResource("GameRes/grass.png"));
             tiles[1] = new Tile();
             tiles[1].image = ImageIO.read(
-                    getClass().getClassLoader().getResource("sand.png"));
+                    getClass().getClassLoader().getResource("GameRes/sand.png"));
             tiles[2] = new Tile();
             tiles[2].image = ImageIO.read(
-                    getClass().getClassLoader().getResource("water.png"));
+                    getClass().getClassLoader().getResource("GameRes/water.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
