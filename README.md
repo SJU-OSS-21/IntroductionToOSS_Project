@@ -8,79 +8,100 @@
 
 ## 컴파일 방법
 src/Main 패키지에서 Main class 클릭 후 컴파일 진행
-📦 클래스 및 주요 메서드 설명
+## 📦 클래스 및 메서드 설명
 
-👤 Player 클래스
+### 👤 Player 클래스
+플레이어 객체를 제어하는 핵심 클래스입니다.
 
-플레이어 객체를 관리하는 핵심 클래스입니다.
-	•	move()
-→ 플레이어 이동 처리
-	•	hit()
-→ 적과 충돌 시 체력 감소 및 무적 처리
-	•	updateInvincible()
-→ 무적 지속 시간 체크
-	•	getHpRatio()
-→ 체력 UI 비율 반환
-	•	increasePlayerHP()
-→ 체력 +1
-	•	decreasePlayerHP()
-→ 체력 -1
-	•	draw(Graphics g)
-→ 깜빡임 효과 포함 플레이어 이미지 출력
-	•	update()
-→ 이동 속도와 방향 반영하여 위치 갱신
-	•	getBounds()
-→ 충돌 감지를 위한 경계 정보 반환
+- `move()`  
+  → 플레이어 이동 처리
 
-⸻
+- `hit()`  
+  → 플레이어와 적의 충돌 처리
 
-🎮 PlayerPanel 클래스
+- `updateInvincible()`  
+  → 무적 지속 시간 갱신
 
-게임 로직과 화면을 포함하는 메인 패널입니다.
-	•	setEnemyPanel()
-→ 적 패널과 연결
-	•	startGameThread()
-→ 게임 루프 스레드 시작
-	•	run()
-→ 타이머 기반 게임 루프 실행
-	•	updateGame()
-→ 전체 게임 상태 업데이트
-	•	paintComponent(Graphics g)
-→ 화면에 모든 객체 그리기
-	•	checkCollisions()
-→ 플레이어-적 충돌 판정
-	•	setShotCount(int count)
-→ 플레이어 총알 개수 설정
-	•	getShotCount()
-→ 총알 개수 반환
+- `getHpRatio()`  
+  → 체력 비율 반환 (UI 표시용)
 
-⸻
+- `increasePlayerHP()`  
+  → 체력 1 증가
 
-💥 Bullet 클래스
+- `decreasePlayerHP()`  
+  → 체력 1 감소
 
-총알의 위치 및 상태를 관리합니다.
-	•	isActive()
-→ 현재 활성 상태 여부 반환
-	•	getX() / getY()
-→ 현재 위치 좌표 반환
+- `draw(Graphics g)`  
+  → 이미지 출력 및 깜빡임 효과 처리
 
-⸻
+- `update()`  
+  → 이동 속도 및 방향 계산
 
-🎁 Item 클래스
+- `getBounds()`  
+  → 충돌 판정용 경계(Rectangle) 반환
 
-아이템의 생성과 효과 적용을 담당합니다.
-	•	PROB_BOMB, PROB_UPGRADE, PROB_HEALTH
-→ 각 아이템의 드랍 확률 상수
-	•	randomDrop()
-→ 확률에 따라 아이템 생성
-	•	applyEffect(Player player)
-→ 플레이어에게 아이템 효과 적용
-	•	getBounds()
-→ 아이템 충돌 감지를 위한 경계 반환
-	•	isActive()
-→ 활성 상태 여부 확인
-	•	update()
-→ 아이템 위치 및 상태 갱신
+---
+
+### 🎮 PlayerPanel 클래스
+게임 루프와 화면 처리를 담당하는 메인 패널입니다.
+
+- `setEnemyPanel()`  
+  → 적 패널 참조 연결
+
+- `startGameThread()`  
+  → 게임 스레드 시작
+
+- `run()`  
+  → 게임 루프 실행 (FPS 기반)
+
+- `updateGame()`  
+  → 전체 게임 로직 업데이트
+
+- `paintComponent(Graphics g)`  
+  → 그래픽 객체로 화면 출력
+
+- `checkCollisions()`  
+  → 플레이어와 적의 충돌 처리
+
+- `setShotCount(int count)`  
+  → 총알 개수 설정
+
+- `getShotCount()`  
+  → 총알 개수 반환
+
+---
+
+### 💥 Bullet 클래스
+플레이어의 총알 정보를 관리합니다.
+
+- `isActive()`  
+  → 총알 활성 상태 확인
+
+- `getX()`, `getY()`  
+  → 총알 위치 반환
+
+---
+
+### 🎁 Item 클래스
+아이템의 드랍 및 효과를 담당합니다.
+
+- `PROB_BOMB`, `PROB_UPGRADE`, `PROB_HEALTH`  
+  → 아이템 드랍 확률 상수
+
+- `randomDrop()`  
+  → 랜덤 아이템 생성
+
+- `applyEffect(Player player)`  
+  → 아이템 효과 적용
+
+- `getBounds()`  
+  → 충돌 판정용 경계 반환
+
+- `isActive()`  
+  → 활성 상태 확인
+
+- `update()`  
+  → 아이템 이동 및 상태 갱신
 ## 메서드 설명
 ### Player
 - Player Class
