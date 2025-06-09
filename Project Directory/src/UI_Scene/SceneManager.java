@@ -12,6 +12,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Random;
 
@@ -178,10 +179,10 @@ class LoadingScene extends BaseScene {
     public void initLoading() {
         this.nextScene = SceneManager.Scene.InGame;
 
-        try {
-            URL textFontURL = getClass().getClassLoader().getResource("Fonts/high1 Wonchuri Title B.ttf");
-            if (textFontURL == null) throw new RuntimeException("폰트 파일을 찾을 수 없습니다.");
-            textFont = Font.createFont(Font.TRUETYPE_FONT, new File(textFontURL.toURI())).deriveFont(20f);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("Fonts/high1 Wonchuri Title B.ttf")) {
+            if (is == null) throw new RuntimeException("폰트 파일을 찾을 수 없습니다.");
+            textFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(textFont);
         } catch (Exception e) {
             e.printStackTrace();
             textFont = new Font("SansSerif", Font.PLAIN, 20);
