@@ -3,15 +3,12 @@ package Enemies;
 import Map_Audio.SoundManager;
 import Player_Item.Model.Bullet;
 import Player_Item.Model.Item;
-import UI_Scene.GameManager;
 import UI_Scene.InGameManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.List;
-
-import static Player_Item.Model.Item.randomDrop;
 
 public class Enemy implements Runnable {
     public Image image;
@@ -34,7 +31,7 @@ public class Enemy implements Runnable {
         init();
     }
     public void init() {
-        URL imgUrl = getClass().getClassLoader().getResource("enemy.png");
+        URL imgUrl = getClass().getClassLoader().getResource("GameRes/enemy.png");
         image = new ImageIcon(imgUrl).getImage();
         w = 57;
         h = 42;
@@ -104,10 +101,10 @@ public class Enemy implements Runnable {
 
     public void run() {
         try {
-            URL imgUrl = getClass().getClassLoader().getResource("enemy_hit.png");
+            URL imgUrl = getClass().getClassLoader().getResource("GameRes/enemy_hit.png");
             image = new ImageIcon(imgUrl).getImage();
             Thread.sleep(150);
-            imgUrl = getClass().getClassLoader().getResource("enemy.png");
+            imgUrl = getClass().getClassLoader().getResource("GameRes/enemy.png");
             image = new ImageIcon(imgUrl).getImage();
         } catch (Exception e) {
             return;
