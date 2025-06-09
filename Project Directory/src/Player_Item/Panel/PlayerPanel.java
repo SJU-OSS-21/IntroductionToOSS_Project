@@ -41,7 +41,7 @@ public class PlayerPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(panelWidth, panelHeight));
 
         // 플레이어 초기 위치
-        player = new Player("player_normal.png", "player_hit.png", panelWidth, panelHeight);
+        player = new Player("player_normal.png", "player_hit.png", panelWidth/2, panelHeight-100);
 
         // 키 입력 설정
         input = new InputController();
@@ -52,7 +52,7 @@ public class PlayerPanel extends JPanel implements Runnable {
         });
 
         // 게임 루프 시작
-        startGameThread();
+//        startGameThread();
     }
 
     private void startGameThread() {
@@ -93,7 +93,7 @@ public class PlayerPanel extends JPanel implements Runnable {
      * 게임 로직 업데이트
      */
     private void updateGame() {
-        if (InGameManager.global.isPaused()) return;
+        if (InGameManager.getInstance().isPaused()) return;
 
         // 플레이어 이동
         int dx = input.isLeft() ? -1 : input.isRight() ? 1 : 0;
@@ -125,8 +125,8 @@ public class PlayerPanel extends JPanel implements Runnable {
             }
         }
         else{
-            gameThread.interrupt();
             setFocusable(false);
+//            gameThread.interrupt();
         }
 
         // 총알 업데이트 및 비활성 총알 제거
@@ -143,27 +143,28 @@ public class PlayerPanel extends JPanel implements Runnable {
 
         // 아이템 검사
         List<Enemy> enemies = enemyPanel.enemies;
-        synchronized (enemies) {
-            synchronized (items) {
-                Iterator<Item> it = items.iterator();
-                while (it.hasNext()) {
-                    Item item = it.next();
-                    // 화면 테두리 안에서 튕기며 이동
-                    item.update(getWidth(), getHeight());
+        synchronized (items) {
+            Iterator<Item> it = items.iterator();
+            while (it.hasNext()) {
+                Item item = it.next();
+                // 화면 테두리 안에서 튕기며 이동
+                item.update(getWidth(), getHeight());
 
-                    // 플레이어와 충돌 시
-                    if (player.getBounds().intersects(item.getBounds())) {
-                        // 효과 적용 (체력 회복, 탄알 업그레이드, 폭탄)
+                // 플레이어와 충돌 시
+                if (player.getBounds().intersects(item.getBounds())) {
+                    // 효과 적용 (체력 회복, 탄알 업그레이드, 폭탄)
+                    synchronized (enemies) {
                         item.applyEffect(player, this, enemies);
-                        it.remove();
-                        continue;
                     }
-                    // 수명 다했거나 inactive 상태면 제거
-                    if (!item.isActive()) {
-                        it.remove();
-                    }
+                    it.remove();
+                    continue;
+                }
+                // 수명 다했거나 inactive 상태면 제거
+                if (!item.isActive()) {
+                    it.remove();
                 }
             }
+
         }
 
         // 충돌처리 검사
@@ -178,13 +179,15 @@ public class PlayerPanel extends JPanel implements Runnable {
 
         // 플레이어 그리기
         player.draw(g);
-        g2d.fillRect(player.getX(), player.getY(), 10, 10);
+        // debug
+        // g2d.fillRect(player.getX(), player.getY(), 10, 10);
 
         // 총알 그리기
         synchronized (bullets) {
             for (Bullet b : bullets) {
                 b.draw(g);
-                g2d.fillRect(b.getX(), b.getY(), 2, 2);
+                // debug
+                // g2d.fillRect(b.getX(), b.getY(), 2, 2);
             }
         }
 
@@ -233,5 +236,6 @@ public class PlayerPanel extends JPanel implements Runnable {
 
     public void setEnemyPanel(EnemyPanel e) {
         enemyPanel = e;
+        startGameThread();
     }
 }

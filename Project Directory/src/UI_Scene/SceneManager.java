@@ -12,6 +12,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Random;
 
@@ -34,10 +35,7 @@ class MainScene extends BaseScene {
     //  UI Panel
     MainUIPanel mainUIPanel;
 
-    public MainScene() {
-        super();
-        setUISet();
-    }
+    public MainScene() {}
 
     //  TODO : Scene JLayeredPane에 대한 설정 기입
     @Override
@@ -90,37 +88,14 @@ class InGameScene extends BaseScene {
     final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
     final double FPS = 60.0;
 
-    InGameManager inGameManager;
-    InGameUIPanel inGameUIPanel;
-    InGamePausePanel pausePanel;
-
-    public InGameScene() {
-        super();
-
-
-        setUISet();
-    }
+    public InGameScene() {}
 
     @Override
     public void setScene() {
-        inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight, inGameManager);
-        this.add(inGameUIPanel, Integer.valueOf(5));
-
-        pausePanel = new InGamePausePanel(screenWidth, screenHeight);
-        pausePanel.setVisible(false);
-        this.add(pausePanel, Integer.valueOf(12));
-
-        inGameManager = new InGameManager(this, inGameUIPanel, pausePanel); // 수정됨
-
-        inGameManager.setInGameUIPanel(inGameUIPanel);
-
-
-        JPanel overlay = inGameManager.getPauseOverlayPanel();
-        overlay.setBounds(0, 0, screenWidth, screenHeight);
-        this.add(overlay, Integer.valueOf(10)); // 꼭 높은 레이어에
-
-        setPreferredSize(new Dimension(screenWidth, screenHeight)); // 실제 창 크기
+        setPreferredSize(new Dimension(screenWidth, screenHeight));
         setLayout(null);
+
+        InGameManager.getInstance().reset();
     }
 
     @Override
@@ -133,11 +108,26 @@ class InGameScene extends BaseScene {
         playerPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(playerPanel, Integer.valueOf(1));
 
-        inGameManager.setPlayerPanel(playerPanel);
-        inGameManager.setPlayer(playerPanel.player);
+        InGameManager.getInstance().setPlayerPanel(playerPanel);
+        InGameManager.getInstance().setPlayer(playerPanel.player);
+
+        InGameUIPanel inGameUIPanel = new InGameUIPanel(screenWidth, screenHeight, InGameManager.getInstance());
+        InGamePausePanel pausePanel = new InGamePausePanel(screenWidth, screenHeight);
+
+        InGameManager.getInstance().initialize(this, inGameUIPanel, pausePanel, playerPanel.player);
+
+        this.add(inGameUIPanel, Integer.valueOf(5));
+        pausePanel.setVisible(false);
+        this.add(pausePanel, Integer.valueOf(12));
+
+        JPanel overlay = InGameManager.getInstance().getPauseOverlayPanel();
+        overlay.setBounds(0, 0, screenWidth, screenHeight);
+        this.add(overlay, Integer.valueOf(10));
+
+        InGameManager.getInstance().setPlayer(playerPanel.player);
         inGameUIPanel.setPlayer(playerPanel.player);
 
-        EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight, inGameManager);
+        EnemyPanel enemyPanel = new EnemyPanel(screenWidth, screenHeight, InGameManager.getInstance());
         enemyPanel.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(enemyPanel, Integer.valueOf(2));
 
@@ -148,11 +138,14 @@ class InGameScene extends BaseScene {
     //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
-        pausePanel.getMainMenuButton().addActionListener(e -> {
+        InGameManager.getInstance().setPausePanelVisible(false);
+
+        InGameManager.getInstance().setPausePanelVisible(false);
+        InGameManager.getInstance().pausePanel.getMainMenuButton().addActionListener(e -> {
             SceneManager.changeScene(SceneManager.Scene.Main);
         });
 
-        pausePanel.getRetryButton().addActionListener(e -> {
+        InGameManager.getInstance().pausePanel.getRetryButton().addActionListener(e -> {
             SceneManager.changeScene(SceneManager.Scene.Loading);
         });
     }
@@ -163,7 +156,7 @@ class LoadingScene extends BaseScene {
     private final int screenWidth = 16 * 3 * 10;
     private final int screenHeight = 16 * 3 * 20;
 
-    private final SceneManager.Scene nextScene;
+    private SceneManager.Scene nextScene;
     private JLabel loadingLabel = new JLabel("", SwingConstants.CENTER);
     private JLabel tipLabel = new JLabel("", SwingConstants.LEFT);
     private File textFontURL;
@@ -181,22 +174,22 @@ class LoadingScene extends BaseScene {
             "Tips : 뭔 팁은 팁이야 딱 보면 몰라?"
     };
 
-    public LoadingScene(SceneManager.Scene nextScene) {
-        this.nextScene = nextScene;
+    public LoadingScene(SceneManager.Scene nextScene) {}
 
-        try {
-            URL textFontURL = getClass().getClassLoader().getResource("Fonts/high1 Wonchuri Title B.ttf");
-            if (textFontURL == null) throw new RuntimeException("폰트 파일을 찾을 수 없습니다.");
-            textFont = Font.createFont(Font.TRUETYPE_FONT, new File(textFontURL.toURI())).deriveFont(20f);
+    public void initLoading() {
+        this.nextScene = SceneManager.Scene.InGame;
+
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("Fonts/high1 Wonchuri Title B.ttf")) {
+            if (is == null) throw new RuntimeException("폰트 파일을 찾을 수 없습니다.");
+            textFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(textFont);
         } catch (Exception e) {
             e.printStackTrace();
-            textFont = new Font("SansSerif", Font.PLAIN, 20); // 폰트 로딩 실패 시 기본 폰트로 대체
+            textFont = new Font("SansSerif", Font.PLAIN, 20);
         }
 
         loadingLabel = new JLabel("", SwingConstants.CENTER);
         tipLabel = new JLabel("", SwingConstants.LEFT);
-
-        setUISet();
     }
 
 
@@ -205,25 +198,23 @@ class LoadingScene extends BaseScene {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setLayout(null);
 
-        setBackground(Color.BLACK);     // 배경색 설정
-        setOpaque(true);                // 배경색이 보이게 설정
+        setBackground(Color.BLACK);
+        setOpaque(true);
     }
 
 
     @Override
-    public void setGameObjectList() {
-        // 사용 안 함
-    }
+    public void setGameObjectList() {}
 
     @Override
     public void setUISet() {
-        // === Loading 텍스트 설정 ===
+        initLoading();
+
         loadingLabel.setFont(textFont.deriveFont(32f));
         loadingLabel.setForeground(Color.WHITE);
         loadingLabel.setBounds(0, screenHeight / 2 - 40, screenWidth, 80);
         add(loadingLabel);
 
-        // Tip 라벨 설정
         tipLabel = new JLabel(randomTip(), SwingConstants.CENTER);
         tipLabel.setFont(textFont.deriveFont(18f));
         tipLabel.setForeground(Color.LIGHT_GRAY);
@@ -242,18 +233,15 @@ class LoadingScene extends BaseScene {
 
         add(tipLabel);
 
-
-        // === 점 애니메이션 처리 ===
         Timer dotTimer = new Timer(500, null);
         dotTimer.addActionListener(e -> {
             String base = "Loading";
-            int dotCount = (int) ((System.currentTimeMillis() / 500) % 4); // 0~3
+            int dotCount = (int) ((System.currentTimeMillis() / 500) % 4);
             loadingLabel.setText(base + ".".repeat(dotCount));
         });
         dotTimer.start();
 
-        // === 씬 전환 타이머 === -> ms 단위
-        Timer nextSceneTimer = new Timer(5000, e -> SceneManager.changeScene(nextScene)); // 5초로 증가
+        Timer nextSceneTimer = new Timer(5000, e -> SceneManager.changeScene(nextScene));
         nextSceneTimer.setRepeats(false);
         nextSceneTimer.start();
     }
@@ -277,27 +265,18 @@ class GameOverScene extends BaseScene {
 
     GameOverUIPanel gameOverUIPanel;
 
-    public GameOverScene() {
-        super();
+    public GameOverScene() {}
 
-        setUISet();
-    }
-
-    //  TODO : Scene JLayeredPane에 대한 설정 기입
     @Override
     public void setScene() {
         setPreferredSize(new Dimension(screenWidth, screenHeight));
         setLayout(null);
-        setFocusable(true);
     }
 
     //  TODO : Panel 여기에 설치
     @Override
-    public void setGameObjectList() {
+    public void setGameObjectList() {}
 
-    }
-
-    //  TODO : UI Panel 기입
     @Override
     public void setUISet() {
         gameOverUIPanel = new GameOverUIPanel(screenWidth, screenHeight);
@@ -311,6 +290,7 @@ class GameOverScene extends BaseScene {
         });
     }
 }
+
 
 //  Non-SingleTon -> Static Class
 public class SceneManager {
@@ -350,65 +330,83 @@ public class SceneManager {
     private static void innerChangeScene() {
         JFrame frame = GameManager.getInstance().getMainFrame();
 
+//        // 포커스 초기화 (키 입력 꼬임 방지)
+//        KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
+
         // 이전 씬 제거
         if (curScene != null) {
             frame.remove(curScene);
         }
 
-        // 새 씬 선택 또는 생성
+//        // ESC 리스너 등록 상태 초기화는 InGameScene 진입 전용으로 제한
+//        if (Scene.values()[curSceneNum] == Scene.InGame) {
+//            try {
+//                java.lang.reflect.Field field = InGameManager.class.getDeclaredField("escListenerRegistered");
+//                field.setAccessible(true);
+//                field.setBoolean(null, false);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+        System.out.println("Scene Change Start");
+
         switch (curSceneNum) {
             case 0:
                 mainScene = new MainScene();
-//                if (mainScene == null) mainScene = new MainScene();
                 SoundManager.stopAll();
-                SoundManager.stop(GameOverSceneSOUNDID);
-                SoundManager.play(8,1f);
-                MainSceneSOUNDID =  SoundManager.play(0,0.6f);
+                SoundManager.stop(SoundManager.GameOverSceneSOUNDID);
+                SoundManager.play(8, 1f);
+                SoundManager.MainSceneSOUNDID = SoundManager.play(0, 0.6f);
                 curScene = mainScene;
-
-                //  RESET
                 GameManager.getInstance().resetScoreAndTimer();
                 break;
             case 1:
-                // 항상 새로 만들어야 다음 Scene 다르게 지정 가능 (옵션)
                 loadingScene = new LoadingScene(Scene.InGame);
-                SoundManager.stop(MainSceneSOUNDID);
+                SoundManager.stop(SoundManager.MainSceneSOUNDID);
                 SoundManager.stopAll();
-//                MainSceneSOUNDID = -1;
-
                 curScene = loadingScene;
                 break;
             case 2:
-                //  Please Reallocate
                 gameScene = new InGameScene();
-
-//                if (gameScene == null) gameScene = new InGameScene();
                 TileManager.nextTileIndex = 0;
-                GameSceneSOUNDID = SoundManager.play(1,0.6f);
+                SoundManager.GameSceneSOUNDID = SoundManager.play(1, 0.6f);
                 curScene = gameScene;
-
-                //  RESET
                 GameManager.getInstance().resetScoreAndTimer();
                 break;
             case 3:
+//                System.out.println("Scene GameOver Start");
                 gameOverScene = new GameOverScene();
-//                if (gameOverScene == null) gameOverScene = new GameOverScene();
-                SoundManager.stop(GameSceneSOUNDID);
+
+                SoundManager.stop(SoundManager.GameSceneSOUNDID);
+//                System.out.println("Scene Middle Start");
 //                SoundManager.stopAll();
-                GameOverSceneSOUNDID = SoundManager.play(2,0.6f);
-                SoundManager.play(9,0.6f);
+
+                SoundManager.GameOverSceneSOUNDID = SoundManager.play(2, 0.6f);
+                SoundManager.play(9, 0.6f);
                 curScene = gameOverScene;
+//                System.out.println("Scene GameOver Start");
                 break;
             default:
                 System.err.println("Scene Error : Scene is Not Exist [" + curSceneNum + "]");
                 return;
         }
 
+        System.out.println("Scene Change End");
+
+        InGameManager.getInstance().resetPause();
+
+        curScene.setScene();
+        curScene.setGameObjectList();
+        curScene.setUISet();
+
         frame.setContentPane(curScene);
         frame.revalidate();
         frame.repaint();
     }
 }
+
+
 
 
 

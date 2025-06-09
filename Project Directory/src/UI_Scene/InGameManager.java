@@ -5,53 +5,85 @@ import Player_Item.Panel.PlayerPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InGameManager {
 
-    // 전역 접근용
-    public static InGameManager global;
+    // === 싱글톤 인스턴스 ===
+    private static final InGameManager instance = new InGameManager();
+    public static InGameManager getInstance() {
+        return instance;
+    }
 
-    private final InGameScene inGameScene;
-    private final JPanel pauseOverlay;
-    private final PauseOverlayPanel pauseOverlayPanel;
+    // === 참조 및 상태 변수 ===
+    public InGameScene inGameScene;
+    public InGameUIPanel inGameUIPanel;
+    public InGamePausePanel pausePanel;
+    public PauseOverlayPanel pauseOverlayPanel;
 
-
-    private boolean isPaused = false;
-    private final List<Timer> managedTimers = new ArrayList<>();
-
-    //  Player 저장
     public Player player;
+    public JPanel pauseOverlay;
+    public final List<Timer> managedTimers = new ArrayList<>();
+
     public PlayerPanel playerPanel;
 
-    private final InGamePausePanel pausePanel;
+    private int score = 0;
+    private boolean isPaused = false;
 
-    private InGameUIPanel inGameUIPanel;
+    private static boolean escListenerRegistered = false;
 
-    int score = 0;
-
-    public InGameManager(InGameScene scene, JPanel pauseOverlay, InGamePausePanel pausePanel) {
-        this.inGameScene = scene;
-        this.pauseOverlay = pauseOverlay;
-        this.pauseOverlayPanel = new PauseOverlayPanel();
-        this.pausePanel = pausePanel;
-
-        // 오버레이 패널 설정
-        pauseOverlayPanel.setBounds(0, 0, scene.getWidth(), scene.getHeight());
-        pauseOverlayPanel.setVisible(false);
-        scene.add(pauseOverlayPanel);
-
-        global = this;
+    // === 생성자 비공개 ===
+    private InGameManager() {
+        // ESC 리스너는 최초 1회만 등록
         setupKeyListener();
     }
 
+    /**
+     * 초기화 함수 (씬 전환 시 호출 필수)
+     */
+    public void initialize(InGameScene scene, InGameUIPanel uiPanel, InGamePausePanel pausePanel, Player player) {
+        this.inGameScene = scene;
+        this.inGameUIPanel = uiPanel;
+        this.pausePanel = pausePanel;
+        this.player = player;
 
+        this.pauseOverlayPanel = new PauseOverlayPanel();
+        this.pauseOverlayPanel.setBounds(0, 0, scene.getWidth(), scene.getHeight());
+        this.pauseOverlayPanel.setVisible(false);
+        scene.add(pauseOverlayPanel);
+
+        this.pauseOverlay = pauseOverlayPanel;
+
+        this.managedTimers.clear();
+        this.isPaused = false;
+        this.score = 0;
+    }
+
+    public void resetPause(){
+        this.isPaused = false;
+    }
+
+    public void reset() {
+        inGameScene = null;
+        inGameUIPanel = null;
+        pausePanel = null;
+        pauseOverlayPanel = null;
+        pauseOverlay = null;
+        player = null;
+        managedTimers.clear();
+        isPaused = false;
+        score = 0;
+        // escListenerRegistered는 유지 (한 번만 등록됨)
+    }
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public boolean isPaused() {
@@ -66,14 +98,21 @@ public class InGameManager {
         managedTimers.add(timer);
     }
 
-    private void setupKeyListener() {
+    public void setupKeyListener() {
+        if (escListenerRegistered) return;
+
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(e -> {
-            if (e.getID() == KeyEvent.KEY_PRESSED && e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            // 현재 씬이 InGameScene일 때만 ESC 처리
+            if (SceneManager.curScene instanceof InGameScene &&
+                    e.getID() == KeyEvent.KEY_PRESSED &&
+                    e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 togglePause();
-                return true; // 이벤트 소비
+                return true;
             }
             return false;
         });
+
+        escListenerRegistered = true;
     }
 
     public void togglePause() {
@@ -85,17 +124,35 @@ public class InGameManager {
             else timer.start();
         }
 
-        inGameScene.repaint();
+        if (inGameScene != null) {
+            inGameScene.repaint();
+        }
     }
-
 
     public void setPausePanelVisible(boolean visible) {
-        pauseOverlayPanel.setVisible(visible);
-        pausePanel.setVisible(visible); // ← 이제는 이거 하나만 존재함
+        if (pauseOverlayPanel != null) pauseOverlayPanel.setVisible(visible);
+        if (pausePanel != null) pausePanel.setVisible(visible);
     }
 
+    public void setPausePanel(InGamePausePanel pausePanel) {
+        this.pausePanel = pausePanel;
+    }
+
+    public void setInGameUIPanel(InGameUIPanel inGameUIPanel) {
+        this.inGameUIPanel = inGameUIPanel;
+    }
     public void setPlayerPanel(PlayerPanel playerPanel) {
         this.playerPanel = playerPanel;
+    }
+
+
+    public void updateScore(int offset) {
+        this.score += offset;
+        GameManager.getInstance().updateScore(score);
+
+        if (inGameUIPanel != null) {
+            inGameUIPanel.setScore(score);
+        }
     }
 
 
@@ -112,25 +169,11 @@ public class InGameManager {
         protected void paintComponent(Graphics g) {
             if (isVisible()) {
                 Graphics2D g2d = (Graphics2D) g.create();
-                g2d.setColor(new Color(0, 0, 0, 150)); // 반투명 회색
+                g2d.setColor(new Color(0, 0, 0, 150));
                 g2d.fillRect(0, 0, getWidth(), getHeight());
                 g2d.dispose();
             }
             super.paintComponent(g);
-        }
-    }
-
-    public void setInGameUIPanel(InGameUIPanel inGameUIPanel) {
-        this.inGameUIPanel = inGameUIPanel;
-    }
-
-    public void updateScore(int offset){
-        this.score += offset;
-
-        GameManager.getInstance().updateScore(score);
-
-        if(inGameUIPanel != null){
-            inGameUIPanel.setScore(score);
         }
     }
 }
