@@ -2,6 +2,7 @@ package UI_Scene;
 
 import java.awt.*;
 
+//  Non-Used
 public class EndingUIPanel extends UIPanel {
 
     private String resultText = "GAME OVER";

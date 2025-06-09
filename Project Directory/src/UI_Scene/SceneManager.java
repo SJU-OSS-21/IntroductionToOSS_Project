@@ -143,6 +143,7 @@ class InGameScene extends BaseScene {
     }
 }
 
+//  Loading Scene은 따로 UIPanel을 받지 않음
 class LoadingScene extends BaseScene {
 
     private final int screenWidth = 16 * 3 * 10;
@@ -154,6 +155,7 @@ class LoadingScene extends BaseScene {
     private File textFontURL;
     private Font textFont;
 
+    //  Tips
     private final String[] tips = {
             "Tips : HJD는 황재동입니다.",
             "Tips : 시험 공부할 시간이 없나요? 안 하면 됩니다.",
@@ -168,6 +170,7 @@ class LoadingScene extends BaseScene {
 
     public LoadingScene(SceneManager.Scene nextScene) {}
 
+    //  Loading 초기화 함수
     public void initLoading() {
         this.nextScene = SceneManager.Scene.InGame;
 
@@ -213,11 +216,11 @@ class LoadingScene extends BaseScene {
         tipLabel.setHorizontalAlignment(SwingConstants.CENTER);
         tipLabel.setVerticalAlignment(SwingConstants.CENTER);
 
-        // === 텍스트의 실제 너비 측정 ===
+        //  텍스트의 실제 너비 측정
         FontMetrics fm = tipLabel.getFontMetrics(tipLabel.getFont());
         int textWidth = fm.stringWidth(tipLabel.getText());
 
-        // === 라벨의 너비와 위치 재조정 (텍스트 중앙 정렬) ===
+        //  Label의 너비와 위치 재조정 (텍스트 중앙 정렬)
         int tipX = (screenWidth - textWidth) / 2;
         int tipY = screenHeight - 100;
         int tipHeight = 40;
@@ -225,6 +228,7 @@ class LoadingScene extends BaseScene {
 
         add(tipLabel);
 
+        //  점찍는 효과
         Timer dotTimer = new Timer(500, null);
         dotTimer.addActionListener(e -> {
             String base = "Loading";
@@ -318,28 +322,14 @@ public class SceneManager {
         innerChangeScene();
     }
 
-    // === 내부 씬 전환 처리 ===
+    //  내부 씬 전환 처리
     private static void innerChangeScene() {
         JFrame frame = GameManager.getInstance().getMainFrame();
-
-//        // 포커스 초기화 (키 입력 꼬임 방지)
-//        KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 
         // 이전 씬 제거
         if (curScene != null) {
             frame.remove(curScene);
         }
-
-//        // ESC 리스너 등록 상태 초기화는 InGameScene 진입 전용으로 제한
-//        if (Scene.values()[curSceneNum] == Scene.InGame) {
-//            try {
-//                java.lang.reflect.Field field = InGameManager.class.getDeclaredField("escListenerRegistered");
-//                field.setAccessible(true);
-//                field.setBoolean(null, false);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
 
         System.out.println("Scene Change Start");
 
@@ -361,6 +351,7 @@ public class SceneManager {
                 curScene = loadingScene;
                 break;
             case 2:
+                //  하단의 주석 처리는 건드리지 말 것. (디버깅 용)
                 gameScene = new InGameScene();
 //                TileManager.initializeWhenSceneChange();
                 SoundManager.GameSceneSOUNDID = SoundManager.play(1, 0.6f);

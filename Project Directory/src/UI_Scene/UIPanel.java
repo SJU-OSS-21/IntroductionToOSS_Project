@@ -19,7 +19,6 @@ public abstract class UIPanel extends JPanel {
 
     protected void loadFonts() {
         try {
-            // Main 타이틀용 폰트 (크고 스타일리시한 폰트)
             try (var is = getClass().getClassLoader().getResourceAsStream("GameRes/Fonts/Ethnocentric Rg.otf")) {
                 if (is != null) {
                     mainFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(36f);
@@ -27,7 +26,6 @@ public abstract class UIPanel extends JPanel {
                 } else throw new Exception("mainFont not found");
             }
 
-            // 본문용 폰트 (가독성 위주)
             try (var is = getClass().getClassLoader().getResourceAsStream("GameRes/Fonts/Ubuntu-Regular.ttf")) {
                 if (is != null) {
                     textFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
@@ -35,7 +33,6 @@ public abstract class UIPanel extends JPanel {
                 } else throw new Exception("textFont not found");
             }
 
-            // UI 전용 폰트
             try (var is = getClass().getClassLoader().getResourceAsStream("GameRes/Fonts/high1 Wonchuri Title B.ttf")) {
                 if (is != null) {
                     uiFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
@@ -44,7 +41,7 @@ public abstract class UIPanel extends JPanel {
             }
 
         } catch (Exception e) {
-            // fallback fonts
+            //  Exception 시 기본 폰트 불려오도록 설정
             mainFont = new Font("SansSerif", Font.BOLD, 30);
             textFont = new Font("Dialog", Font.PLAIN, 18);
             uiFont = new Font("Dialog", Font.BOLD, 20);

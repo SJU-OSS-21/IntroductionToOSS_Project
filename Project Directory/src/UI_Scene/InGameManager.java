@@ -11,13 +11,13 @@ import java.util.List;
 
 public class InGameManager {
 
-    // === 싱글톤 인스턴스 ===
+    //  SingleTon
     private static final InGameManager instance = new InGameManager();
     public static InGameManager getInstance() {
         return instance;
     }
 
-    // === 참조 및 상태 변수 ===
+    //  참조 및 상태 변수
     public InGameScene inGameScene;
     public InGameUIPanel inGameUIPanel;
     public InGamePausePanel pausePanel;
@@ -29,20 +29,20 @@ public class InGameManager {
 
     public PlayerPanel playerPanel;
 
+    //  Handlers
     private int score = 0;
     private boolean isPaused = false;
 
+    //  ESC
     private static boolean escListenerRegistered = false;
 
-    // === 생성자 비공개 ===
+    //  생성자 비공개
     private InGameManager() {
-        // ESC 리스너는 최초 1회만 등록
+        //  ESC 리스너는 최초 1회만 등록
         setupKeyListener();
     }
 
-    /**
-     * 초기화 함수 (씬 전환 시 호출 필수)
-     */
+    //  초기화 함수 (씬 전환 시 호출 필수)
     public void initialize(InGameScene scene, InGameUIPanel uiPanel, InGamePausePanel pausePanel, Player player) {
         this.inGameScene = scene;
         this.inGameUIPanel = uiPanel;
@@ -61,10 +61,12 @@ public class InGameManager {
         this.score = 0;
     }
 
+    //  Pause 상태만 Reset
     public void resetPause(){
         this.isPaused = false;
     }
 
+    //  Global Reset
     public void reset() {
         inGameScene = null;
         inGameUIPanel = null;
@@ -75,7 +77,7 @@ public class InGameManager {
         managedTimers.clear();
         isPaused = false;
         score = 0;
-        // escListenerRegistered는 유지 (한 번만 등록됨)
+        //  escListenerRegistered는 유지 (한 번만 등록됨)
     }
 
     public void setPlayer(Player player) {
@@ -90,6 +92,7 @@ public class InGameManager {
         return isPaused;
     }
 
+    //  Pause 시 뒷 배경
     public PauseOverlayPanel getPauseOverlayPanel() {
         return pauseOverlayPanel;
     }
@@ -98,6 +101,7 @@ public class InGameManager {
         managedTimers.add(timer);
     }
 
+    //  esc 키 입력 처리 - 전역으로 설정 (Focus Useless)
     public void setupKeyListener() {
         if (escListenerRegistered) return;
 
@@ -115,6 +119,7 @@ public class InGameManager {
         escListenerRegistered = true;
     }
 
+    //  esc 입력 시 호출 (메뉴)
     public void togglePause() {
         isPaused = !isPaused;
         setPausePanelVisible(isPaused);
@@ -156,9 +161,7 @@ public class InGameManager {
     }
 
 
-    /**
-     * 내부 클래스: 일시정지 상태를 표시할 반투명 회색 패널
-     */
+    //  Inner 클래스: 일시정지 상태를 표시할 반투명 회색 패널
     public class PauseOverlayPanel extends JPanel {
         public PauseOverlayPanel() {
             setOpaque(false);

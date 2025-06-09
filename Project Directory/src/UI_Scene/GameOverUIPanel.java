@@ -3,8 +3,10 @@ package UI_Scene;
 import javax.swing.*;
 import java.awt.*;
 
+//  GameOver Panel
 public class GameOverUIPanel extends UIPanel {
 
+    //  References
     private final String gameOverText = "GAME OVER";
     private final JButton retryButton;
     private final JButton mainMenuButton;
@@ -30,6 +32,7 @@ public class GameOverUIPanel extends UIPanel {
         add(mainMenuButton);
     }
 
+    //  AddListener를 위한 함수
     public JButton getRetryButton() {
         return retryButton;
     }
