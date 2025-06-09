@@ -10,7 +10,7 @@
 src/Main 패키지에서 Main class 클릭 후 컴파일 진행
 ## 📦 클래스 및 메서드 설명
 
-### 👤 Player 클래스
+## 👤 Player 관련 클래스
 플레이어 객체를 제어하는 핵심 클래스입니다.
 
 - `move()`  
@@ -105,6 +105,8 @@ src/Main 패키지에서 Main class 클릭 후 컴파일 진행
   
 ---
 
+## 🚨 Enemy 관련 클래스
+
 ### 🧨 Enemy 클래스
 - `init()`  
   → 적 객체 초기 설정
@@ -141,6 +143,68 @@ src/Main 패키지에서 Main class 클릭 후 컴파일 진행
 
 ---
 
+## 🎲 Map_Audio 관련 클래스
+
+### TileMapGenerator
+- `TileMapGenerator()`  
+  -> 생성자 초기화 담당
+
+- `initializeTileRows()`  
+  -> 생성자에서 불러 타일 변경을 위한 배열 초기화
+
+- `getTileImages()`  
+  -> 리소스에서 타일 이미지 입력
+
+- `updateScroll()`  
+  -> 타일맵을 움직이게 해주는 주요 메서드
+
+- `shiftRowsDownWithNewIndex()`  
+  -> 화면 밖으로 타일이 벗어나면 아래로 시프트
+
+- `draw(Graphics2D g2)`  
+  -> 화면에 타일 그리기
+
+---
+
+## 🖼 MapPanel
+
+- `MapPanel()`  
+  -> 생성자: 패널을 만들어 씬 매니저에 전달하는 역할
+
+- `startGameThread()`  
+  -> 스레드 시작
+
+- `run()`  
+  -> `tileMapGenerator`의 `updateScroll()` 호출
+
+- `paintComponent(Graphics g)`  
+  -> 화면에 `tileMapGenerator`의 `draw()` 호출
+
+---
+
+## 🔊 SoundManager
+
+- `play(int index, float volume)`  
+  -> 원하는 음원을 재생
+
+- `loop(int index, float volume, boolean continuous, int loopCount)`  
+  -> 원하는 음원을 연속 재생
+
+- `playOrLoop(...)`  
+  -> 사용자가 사용할 함수 입력에 따라 play or loop 호출
+
+- `stop(int id)`  
+  -> id를 이용해 특정 음원 정지
+
+- `stopAll()`  
+  -> 모든 음원 정지 (재생되고 있는 것 포함)
+
+- `setVolume(Clip clip, float volume)`  
+  -> 음원을 재생하기 전 볼륨을 설정
+
+---
+
+## 🎲 UI 관련 클래스
 ### 🧩 BaseScene (Abstract)
 - `setScene()`  
   → Scene 속성 설정
@@ -349,90 +413,3 @@ src/Main 패키지에서 Main class 클릭 후 컴파일 진행
 - `updateScore()`  
   → 적 처치 시 점수 갱신
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-## 메서드 설명
-### Player
-- Player Class
-  - move() method
-    - 플레이어 이동 함수
-  - hit() method
-    - 플레이어와 적과의 충돌처리
-  - updateInvincible() method
-    - 매 프레임 무적 지속 시간 경과 체크
-  - getHpRatio() method
-    - 체력 UI바 만들 때 체력 비율 계산 
-  - increasePlayerHP() method
-    - 플레이어 체력 1 증가
-  - decreasePlayerHP() method
-    - 플레이어 체력 1 감소
-  - draw() method
-    - 패널에 이미지 그리기, 깜빡이는 효과 주기
-  - update() method
-    - 속도와 시간으로 위치 계산
-  - getBounds() method
-    - 객체 크기 반환
-- PlayerPanel Class
-  - setEnemyPanel() method
-    - 적 패널 참조 저장
-  - startGameThread() method
-    - 게임 스레드 시작
-  - run() method
-    - 목표 fps로 게임 update
-  - updateGame() method
-    - 게임 로직 전체 업데이트
-  - paintComponent() method
-    - 화면 그리기
-  - checkCollisions() method
-    - 플레이어와 적 충돌 처리
-  - setShotCount() method
-    - 충알 개수 setter
-  - getshotCount() method
-    - 총알 개수 getter
-- Bullet Class
-  - isActive()  method
-    - 활성 여부 확인
-  - getX() method
-    - x 위치 getter
-  - getY() method
-    - y 위치 getter
-- Item Class
-  - PROB_BOMB, PROB_UPGRADE, PROB_HEALTH
-    - 각 아이템 드랍 확률
-  - randomDrop() method
-    - 아이템 랜덤 드랍
-  - applyEffect()  method
-    - 각 아이템의 효과 적용
-  - getBounds()
-    - 충돌 판정용 경계 반환
-  - isActive() method
-    - 활성 여부 반환
-  - update()
-    - 아이템 이동 업데이트
-### Enemy
-- Enemy Class
-  - init() method
-  - draw() method
-  - update() method
-  - CollsionResolution() method
-  - isActive() method
-  - getBoudn() method
-  - reduceHP() method
-  - run() method
-- EnemyPanel Class
-  - run() method
-  - setPlayerPanel() method
-### Map_Audio
-###UI
