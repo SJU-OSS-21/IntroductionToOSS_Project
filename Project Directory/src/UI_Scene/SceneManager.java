@@ -101,7 +101,7 @@ class InGameScene extends BaseScene {
     @Override
     public void setGameObjectList() {
         mp = new MapPanel();
-//        mp.tileManager.resetMap();
+
         mp.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(mp, Integer.valueOf(0));
 
