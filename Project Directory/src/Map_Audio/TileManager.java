@@ -1,15 +1,16 @@
 package Map_Audio;
 
+import UI_Scene.InGameManager;
 import main.MapPanel;
+
 import javax.imageio.ImageIO;
-import javax.swing.Timer;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class TileManager {
     private final MapPanel MP;
     private final Tile[] tiles;
+
     private double scrollOffset = 0;
     private double scrollSpeed = 3.0;
 
@@ -20,12 +21,13 @@ public class TileManager {
     private final int[] tileRowIndices;
 
     private final long speedIncreaseInterval = 10_000;   // 10초
-    private long lastSpeedIncreaseTime = System.currentTimeMillis();
+    private long lastSpeedIncreaseTime;
 
-    private final int switchInterval = 50_000;           // 50초 (밀리초)
-    private final Timer switchTimer;                     // Swing Timer
+    private final long switchInterval = 50_000;         // 50초
+    private long switchElapsedTime;
+    private long lastUpdateTime;
 
-    public int nextTileIndex = 0;                        // 인스턴스 필드로 변경
+    public int nextTileIndex = 0;    // 인스턴스 필드
 
     public TileManager(MapPanel mp) {
         this.MP = mp;
@@ -37,26 +39,22 @@ public class TileManager {
         getTileImages();
         initializeTileRows();
 
-        // — Swing Timer 설정: 50초 후 첫 실행, 이후 50초마다 반복 —
-        ActionListener switchAction = e -> {
-            nextTileIndex = (nextTileIndex + 1) % tiles.length;
-            System.out.println("Switched to tile index: " + nextTileIndex);
-        };
-        switchTimer = new Timer(switchInterval, switchAction);
-        switchTimer.setRepeats(true);
-        switchTimer.start();
+        long now = System.currentTimeMillis();
+        this.lastSpeedIncreaseTime = now;
+        this.lastUpdateTime        = now;
+        this.switchElapsedTime     = 0;
     }
 
     public void resetMap() {
         scrollOffset          = 0;
         scrollSpeed           = 3.0;
-        lastSpeedIncreaseTime = System.currentTimeMillis();
         nextTileIndex         = 0;
         initializeTileRows();
 
-        // 타이머도 재시작
-        if (switchTimer.isRunning()) switchTimer.restart();
-        else                         switchTimer.start();
+        long now = System.currentTimeMillis();
+        this.lastSpeedIncreaseTime = now;
+        this.lastUpdateTime        = now;
+        this.switchElapsedTime     = 0;
     }
 
     private void initializeTileRows() {
@@ -81,8 +79,33 @@ public class TileManager {
         }
     }
 
+    /**
+     * 프레임마다 호출: pause 시에는 게임 시간(타일 전환/속도 증가/스크롤) 모두 멈춤
+     */
     public void updateScroll() {
         long now = System.currentTimeMillis();
+        boolean paused = InGameManager.getInstance().isPaused();
+
+        if (paused) {
+            // pause 동안은 게임 시간 동결: 타이머 기준 시간만 갱신
+            System.out.println("game stop");
+
+            lastUpdateTime        = now;
+            lastSpeedIncreaseTime = now;
+            return;
+        }
+
+        // — 게임 시간이 흐를 때만 dt 누적 —
+        long dt = now - lastUpdateTime;
+        lastUpdateTime = now;
+
+        // — 50초마다 타일 전환 —
+        switchElapsedTime += dt;
+        if (switchElapsedTime >= switchInterval) {
+            switchElapsedTime -= switchInterval;
+            nextTileIndex = (nextTileIndex + 1) % tiles.length;
+            System.out.println("Switched to tile index: " + nextTileIndex);
+        }
 
         // — 속도 증가 (10초마다) —
         if (now - lastSpeedIncreaseTime >= speedIncreaseInterval) {
