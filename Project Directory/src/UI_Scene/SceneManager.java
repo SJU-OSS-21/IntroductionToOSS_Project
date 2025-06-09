@@ -12,6 +12,7 @@ import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Random;
 
@@ -22,14 +23,14 @@ import static Map_Audio.SoundManager.GameOverSceneSOUNDID;
 //  아래에 있는 MainScene, InGameScene, BaseScene에 Object(Panel)을 넣어주세요
 
 class MainScene extends BaseScene {
-    final int originalTileSize = 16;
-    final int scale = 3;
-    final int tileSize = originalTileSize * scale;
-    final int maxScreenCol = 10;//(가로 타일 개수)
-    final int maxScreenRow = 20;//(세로 타일 개수)
-    final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
-    final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
-    final double FPS = 60.0;
+    private final int originalTileSize = 16;
+    private final int scale = 3;
+    private final int tileSize = originalTileSize * scale;
+    private final int maxScreenCol = 10;//(가로 타일 개수)
+    private final int maxScreenRow = 20;//(세로 타일 개수)
+    private final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
+    private final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
+    private final double FPS = 60.0;
 
     //  UI Panel
     MainUIPanel mainUIPanel;
@@ -86,7 +87,7 @@ class InGameScene extends BaseScene {
     final int screenWidth = tileSize * maxScreenCol;//가로 픽셀 개수
     final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
     final double FPS = 60.0;
-
+    public MapPanel mp;
     public InGameScene() {}
 
     @Override
@@ -99,7 +100,8 @@ class InGameScene extends BaseScene {
 
     @Override
     public void setGameObjectList() {
-        MapPanel mp = new MapPanel();
+        mp = new MapPanel();
+//        mp.tileManager.resetMap();
         mp.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(mp, Integer.valueOf(0));
 
@@ -178,10 +180,10 @@ class LoadingScene extends BaseScene {
     public void initLoading() {
         this.nextScene = SceneManager.Scene.InGame;
 
-        try {
-            URL textFontURL = getClass().getClassLoader().getResource("Fonts/high1 Wonchuri Title B.ttf");
-            if (textFontURL == null) throw new RuntimeException("폰트 파일을 찾을 수 없습니다.");
-            textFont = Font.createFont(Font.TRUETYPE_FONT, new File(textFontURL.toURI())).deriveFont(20f);
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("Fonts/high1 Wonchuri Title B.ttf")) {
+            if (is == null) throw new RuntimeException("폰트 파일을 찾을 수 없습니다.");
+            textFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(textFont);
         } catch (Exception e) {
             e.printStackTrace();
             textFont = new Font("SansSerif", Font.PLAIN, 20);
@@ -362,15 +364,19 @@ public class SceneManager {
                 break;
             case 1:
                 loadingScene = new LoadingScene(Scene.InGame);
+                SoundManager.stop(SoundManager.GameOverSceneSOUNDID);
                 SoundManager.stop(SoundManager.MainSceneSOUNDID);
                 SoundManager.stopAll();
                 curScene = loadingScene;
                 break;
             case 2:
                 gameScene = new InGameScene();
-                TileManager.nextTileIndex = 0;
+//                TileManager.initializeWhenSceneChange();
                 SoundManager.GameSceneSOUNDID = SoundManager.play(1, 0.6f);
                 curScene = gameScene;
+//                InGameScene inGameScene = (InGameScene) gameScene;
+//                MapPanel mp = inGameScene.mp;
+//                mp.tileManager.resetMap();
                 GameManager.getInstance().resetScoreAndTimer();
                 break;
             case 3:

@@ -52,7 +52,7 @@ public class PlayerPanel extends JPanel implements Runnable {
         });
 
         // 게임 루프 시작
-        startGameThread();
+//        startGameThread();
     }
 
     private void startGameThread() {
@@ -236,5 +236,6 @@ public class PlayerPanel extends JPanel implements Runnable {
 
     public void setEnemyPanel(EnemyPanel e) {
         enemyPanel = e;
+        startGameThread();
     }
 }
