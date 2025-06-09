@@ -11,19 +11,20 @@ import javax.imageio.ImageIO;
 
 public class InGameUIPanel extends UIPanel {
 
+    //  Attributes
     private int score = 0;
 
-    private float displayedHealth = 1f;       // 보간된 체력 값 (진한 빨간색)
-    private float bufferedHealth = 1f;        // 버퍼 체력 값 (연한 빨간색)
+    private float displayedHealth = 1f;       //    보간된 체력 값 (진한 빨간색)
+    private float bufferedHealth = 1f;        //    버퍼 체력 값 (연한 빨간색)
     private float targetHealth = 1f;
     private long lastUpdateTime;
 
     private int elapsedTimeInSeconds = 0;
     private final BufferedImage timerImage;
 
-    private Player player; // 플레이어 참조
+    private Player player; //   플레이어 참조
 
-    //  Manager
+    //      Manager Ref
     InGameManager inGameManager;
 
     public InGameUIPanel(int width, int height, InGameManager inGameManager) {
@@ -32,6 +33,7 @@ public class InGameUIPanel extends UIPanel {
 
         lastUpdateTime = System.currentTimeMillis();
 
+        //  Timer
         BufferedImage tempImg = null;
         try {
             URL resource = getClass().getResource("/GameRes/UIs/Timer.png");
@@ -47,6 +49,7 @@ public class InGameUIPanel extends UIPanel {
         startTimerUpdate();
     }
 
+    //  Score 갱신
     public void setScore(int score) {
         this.score = score;
         repaint();
@@ -56,9 +59,10 @@ public class InGameUIPanel extends UIPanel {
         this.player = player;
     }
 
+    //  내부 Timer
     private void startTimerUpdate() {
         new Timer(1000, e -> {
-            // InGameManager가 존재하고, 일시정지 상태가 아니어야 증가
+            //  InGameManager가 존재하고, 일시정지 상태가 아니어야 증가
             if (InGameManager.getInstance() != null && !InGameManager.getInstance().isPaused()) {
                 elapsedTimeInSeconds++;
                 repaint();
@@ -73,6 +77,7 @@ public class InGameUIPanel extends UIPanel {
 
     private boolean deathHandled = false; // 사망 처리 중복 방지용
 
+    //  체력바 보간
     private void interpolateHealth() {
         if (player != null) {
             targetHealth = Math.max(0f, Math.min(1f, player.getHpRatio()));
@@ -82,7 +87,7 @@ public class InGameUIPanel extends UIPanel {
         float delta = (currentTime - lastUpdateTime) / 1000f;
         lastUpdateTime = currentTime;
 
-        // 실제 체력: 빠르게 접근
+        //  실제 체력 : 빠르게 접근
         float speed = 1.5f;
         if (displayedHealth < targetHealth) {
             displayedHealth = Math.min(displayedHealth + speed * delta, targetHealth);
@@ -90,7 +95,7 @@ public class InGameUIPanel extends UIPanel {
             displayedHealth = Math.max(displayedHealth - speed * delta, targetHealth);
         }
 
-        // 버퍼 체력: 느리게 접근
+        //  버퍼 체력 : 느리게 접근
         float bufferSpeed = 0.5f;
         if (bufferedHealth > displayedHealth) {
             bufferedHealth = Math.max(bufferedHealth - bufferSpeed * delta, displayedHealth);
@@ -98,7 +103,7 @@ public class InGameUIPanel extends UIPanel {
             bufferedHealth = displayedHealth;
         }
 
-        // === 체력 게이지가 완전히 0이 된 후 처리 ===
+        //  체력 게이지가 완전히 0이 된 후 처리 (체력을 Player가 아니라 실질적으로 UI로 처리)
         if (displayedHealth == 0f && !deathHandled) {
             deathHandled = true;
 

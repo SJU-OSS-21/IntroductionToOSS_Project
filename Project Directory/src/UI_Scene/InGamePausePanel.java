@@ -3,11 +3,14 @@ package UI_Scene;
 import javax.swing.*;
 import java.awt.*;
 
+//  PausePanel
 public class InGamePausePanel extends UIPanel {
 
+    //  Buttons
     private final JButton mainMenuButton;
     private final JButton retryButton;
 
+    //  Res
     private static final String MAIN_MENU_IMAGE_PATH = "/GameRes/UIs/HomeBTN.png";
     private static final String RETRY_IMAGE_PATH = "/GameRes/UIs/Retry.png";
 
@@ -39,10 +42,12 @@ public class InGamePausePanel extends UIPanel {
         add(retryButton);
     }
 
+    //  For AddListener
     public JButton getMainMenuButton() {
         return mainMenuButton;
     }
 
+    //  For AddListener
     public JButton getRetryButton() {
         return retryButton;
     }

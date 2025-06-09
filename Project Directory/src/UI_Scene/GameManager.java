@@ -26,7 +26,6 @@ public class GameManager {
     public boolean isPlaying;
     public boolean isInGame;
 
-
     //  Counters
     public int timer;
     public int score;
@@ -38,14 +37,17 @@ public class GameManager {
 
     }
 
+    //  Main Frame 할당
     public void setMainFrame(JFrame mainFrame) {
         this.mainFrame = mainFrame;
     }
 
+    //  Getter
     public final JFrame getMainFrame(){
         return mainFrame;
     }
 
+    //  점수 Sync
     public void updateScore(int score){
         this.score = score;
     }
@@ -58,6 +60,7 @@ public class GameManager {
         return timer;
     }
 
+    //  재시작 시 제거
     public void resetScoreAndTimer(){
         score = 0;
         timer = 0;
