@@ -12,34 +12,61 @@ src/Main 패키지에서 Main class 클릭 후 컴파일 진행
 ## 메서드 설명
 ### Player
 - Player Class
-  - move() method -> 플레이어 이동 함수
+  - move() method
+    - 플레이어 이동 함수
   - hit() method
     - 플레이어와 적과의 충돌처리
   - updateInvincible() method
+    - 매 프레임 무적 지속 시간 경과 체크
   - getHpRatio() method
+    - 체력 UI바 만들 때 체력 비율 계산 
   - increasePlayerHP() method
+    - 플레이어 체력 1 증가
   - decreasePlayerHP() method
+    - 플레이어 체력 1 감소
   - draw() method
+    - 패널에 이미지 그리기, 깜빡이는 효과 주기
   - update() method
+    - 속도와 시간으로 위치 계산
   - getBounds() method
+    - 객체 크기 반환
 - PlayerPanel Class
   - setEnemyPanel() method
+    - 적 패널 참조 저장
   - startGameThread() method
+    - 게임 스레드 시작
   - run() method
+    - 목표 fps로 게임 update
   - updateGame() method
+    - 게임 로직 전체 업데이트
   - paintComponent() method
+    - 화면 그리기
   - checkCollisions() method
+    - 플레이어와 적 충돌 처리
   - setShotCount() method
-  - getshotCount method
+    - 충알 개수 setter
+  - getshotCount() method
+    - 총알 개수 getter
 - Bullet Class
   - isActive()  method
+    - 활성 여부 확인
   - getX() method
+    - x 위치 getter
   - getY() method
+    - y 위치 getter
 - Item Class
   - PROB_BOMB, PROB_UPGRADE, PROB_HEALTH
+    - 각 아이템 드랍 확률
   - randomDrop() method
+    - 아이템 랜덤 드랍
   - applyEffect()  method
+    - 각 아이템의 효과 적용
+  - getBounds()
+    - 충돌 판정용 경계 반환
   - isActive() method
+    - 활성 여부 반환
+  - update()
+    - 아이템 이동 업데이트
 ### Enemy
 - Enemy Class
   - init() method
