@@ -3,7 +3,6 @@ package Player_Item.Panel;
 
 import Enemies.Enemy;
 import Enemies.EnemyPanel;
-import Map_Audio.SoundManager;
 import Player_Item.InputController;
 import Player_Item.Model.Item;
 import Player_Item.Model.Player;
@@ -41,7 +40,7 @@ public class PlayerPanel extends JPanel implements Runnable {
         setPreferredSize(new Dimension(panelWidth, panelHeight));
 
         // 플레이어 초기 위치
-        player = new Player("player_normal.png", "player_hit.png", panelWidth/2, panelHeight-100);
+        player = new Player("GameRes/player_normal.png", "GameRes/player_hit.png", panelWidth/2, panelHeight-100);
 
         // 키 입력 설정
         input = new InputController();
@@ -117,7 +116,7 @@ public class PlayerPanel extends JPanel implements Runnable {
                         for (int i = 0; i < shotCount; i++) {
                             int offsetX = (startIdx + i) * bulletSpacing;
                             System.out.println("player shooting ");
-                            bullets.add(new Bullet("bullet2.png", centerX + offsetX, y));
+                            bullets.add(new Bullet("GameRes/bullet2.png", centerX + offsetX, y));
                         }
                     }
                     lastFireTime = nowTime;

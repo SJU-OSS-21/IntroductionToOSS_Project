@@ -61,14 +61,14 @@ public class MainUIPanel extends UIPanel {
         startButton = new JButton("Start");
         startButton.setForeground(Color.BLACK);
         int startY = height / 2 + 60; // ⬅ 기존보다 60px 아래로
-        applyImageToButton(startButton, "UIs/DefaultRectBTN.png", centerX, startY, buttonWidth, mainFont.deriveFont(30f));
+        applyImageToButton(startButton, "GameRes/UIs/DefaultRectBTN.png", centerX, startY, buttonWidth, mainFont.deriveFont(30f));
         add(startButton);
 
         // === Exit 버튼 ===
         exitButton = new JButton("Exit");
         exitButton.setForeground(Color.BLACK);
         int exitY = startButton.getY() + startButton.getHeight() + 35;
-        applyImageToButton(exitButton, "UIs/DefaultRectBTN.png", centerX, exitY, buttonWidth, mainFont.deriveFont(33f));
+        applyImageToButton(exitButton, "GameRes/UIs/DefaultRectBTN.png", centerX, exitY, buttonWidth, mainFont.deriveFont(33f));
         add(exitButton);
 
 

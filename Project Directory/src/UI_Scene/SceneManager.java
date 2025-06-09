@@ -2,23 +2,14 @@ package UI_Scene;
 
 import Enemies.EnemyPanel;
 import Map_Audio.SoundManager;
-import Map_Audio.TileManager;
 import Player_Item.Panel.PlayerPanel;
-import main.GamePanel;
-import main.GamePanel2;
 import main.MapPanel;
 
-import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Random;
-
-import static Map_Audio.SoundManager.MainSceneSOUNDID;
-import static Map_Audio.SoundManager.GameSceneSOUNDID;
-import static Map_Audio.SoundManager.GameOverSceneSOUNDID;
 
 //  아래에 있는 MainScene, InGameScene, BaseScene에 Object(Panel)을 넣어주세요
 
@@ -51,7 +42,7 @@ class MainScene extends BaseScene {
         mp.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(mp, Integer.valueOf(0));
 
-        UIPlayerPanel playerUI = new UIPlayerPanel("player_normal.png", screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
+        UIPlayerPanel playerUI = new UIPlayerPanel("GameRes/player_normal.png", screenWidth / 2, screenHeight / 2, screenWidth, screenHeight);
         playerUI.setBounds(0, 0, screenWidth, screenHeight);
         this.add(playerUI, Integer.valueOf(2));
     }
@@ -180,7 +171,7 @@ class LoadingScene extends BaseScene {
     public void initLoading() {
         this.nextScene = SceneManager.Scene.InGame;
 
-        try (InputStream is = getClass().getClassLoader().getResourceAsStream("Fonts/high1 Wonchuri Title B.ttf")) {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("GameRes/Fonts/high1 Wonchuri Title B.ttf")) {
             if (is == null) throw new RuntimeException("폰트 파일을 찾을 수 없습니다.");
             textFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(textFont);
