@@ -1,5 +1,6 @@
 package Map_Audio;
 
+import UI_Scene.InGameManager;
 import main.MapPanel;
 
 import javax.imageio.ImageIO;
@@ -7,92 +8,121 @@ import java.awt.*;
 import java.io.IOException;
 
 public class TileManager {
-    MapPanel MP;
-    Tile[] tiles;
+    private final MapPanel MP;
+    private final Tile[] tiles;
 
-    // 1) scrollOffset을 double로 변경
     private double scrollOffset = 0;
-
-    // 2) scrollSpeed를 double로 변경 (초기값 2.0)
-    private double scrollSpeed = 5.0;
+    private double scrollSpeed = 3.0;
 
     private final int topBuffer = 5;
     private final int bottomBuffer = 5;
     private final int visibleRows;
     private final int totalRows;
+    private final int[] tileRowIndices;
 
-    private int[] tileRowIndices;
+    private final long speedIncreaseInterval = 10_000;   // 10초
+    private long lastSpeedIncreaseTime;
 
-    // --- 타일 변경 관련 타이머 변수 ---
-    private long lastSwitchTime = System.currentTimeMillis();
-    private final long switchInterval = 30000;  // 30초마다 맵 변경
-    public static int nextTileIndex = 0;
+    private final long switchInterval = 50_000;         // 50초
+    private long switchElapsedTime;
+    private long lastUpdateTime;
 
-    // 3) “속도 증가”용 타이머 변수 추가
-    private long lastSpeedIncreaseTime = System.currentTimeMillis();
-    private final long speedIncreaseInterval = 10000; // 10초마다
+    public int nextTileIndex = 0;    // 인스턴스 필드
 
     public TileManager(MapPanel mp) {
         this.MP = mp;
-        this.visibleRows = MP.maxScreenRow;
-        this.totalRows = topBuffer + visibleRows + bottomBuffer;
+        this.visibleRows    = mp.maxScreenRow;
+        this.totalRows      = topBuffer + visibleRows + bottomBuffer;
         this.tileRowIndices = new int[totalRows];
-        this.tiles = new Tile[3];
+        this.tiles          = new Tile[3];
 
         getTileImages();
         initializeTileRows();
+
+        long now = System.currentTimeMillis();
+        this.lastSpeedIncreaseTime = now;
+        this.lastUpdateTime        = now;
+        this.switchElapsedTime     = 0;
+    }
+
+    public void resetMap() {
+        scrollOffset          = 0;
+        scrollSpeed           = 3.0;
+        nextTileIndex         = 0;
+        initializeTileRows();
+
+        long now = System.currentTimeMillis();
+        this.lastSpeedIncreaseTime = now;
+        this.lastUpdateTime        = now;
+        this.switchElapsedTime     = 0;
     }
 
     private void initializeTileRows() {
-        // 초기에는 전부 0번(예: grass)로 채워놓거나,
-        // 원하는 패턴이 있으면 직접 채워넣어도 됩니다.
         for (int i = 0; i < totalRows; i++) {
             tileRowIndices[i] = 0;
         }
     }
 
-    public void getTileImages() {
+    private void getTileImages() {
         try {
             tiles[0] = new Tile();
-            tiles[0].image = ImageIO.read(getClass().getClassLoader().getResource("grass.png"));
+            tiles[0].image = ImageIO.read(
+                    getClass().getClassLoader().getResource("grass.png"));
             tiles[1] = new Tile();
-            tiles[1].image = ImageIO.read(getClass().getClassLoader().getResource("sand.png"));
+            tiles[1].image = ImageIO.read(
+                    getClass().getClassLoader().getResource("sand.png"));
             tiles[2] = new Tile();
-            tiles[2].image = ImageIO.read(getClass().getClassLoader().getResource("water.png"));
+            tiles[2].image = ImageIO.read(
+                    getClass().getClassLoader().getResource("water.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * 프레임마다 호출: pause 시에는 게임 시간(타일 전환/속도 증가/스크롤) 모두 멈춤
+     */
     public void updateScroll() {
         long now = System.currentTimeMillis();
+        boolean paused = InGameManager.getInstance().isPaused();
 
-        // 4) “10초가 지났으면” scrollSpeed를 10% 증가
+        if (paused) {
+            // pause 동안은 게임 시간 동결: 타이머 기준 시간만 갱신
+            System.out.println("game stop");
+
+            lastUpdateTime        = now;
+            lastSpeedIncreaseTime = now;
+            return;
+        }
+
+        // — 게임 시간이 흐를 때만 dt 누적 —
+        long dt = now - lastUpdateTime;
+        lastUpdateTime = now;
+
+        // — 50초마다 타일 전환 —
+        switchElapsedTime += dt;
+        if (switchElapsedTime >= switchInterval) {
+            switchElapsedTime -= switchInterval;
+            nextTileIndex = (nextTileIndex + 1) % tiles.length;
+            System.out.println("Switched to tile index: " + nextTileIndex);
+        }
+
+        // — 속도 증가 (10초마다) —
         if (now - lastSpeedIncreaseTime >= speedIncreaseInterval) {
-            scrollSpeed *= 1.1; // 기존 속도의 10% 추가 (ex. 2.0 → 2.2)
+            scrollSpeed *= 1.1;
             lastSpeedIncreaseTime = now;
         }
 
-        // 5) 먼저 scrollOffset 갱신 (double 간 차감)
+        // — 스크롤 오프셋 갱신 —
         scrollOffset -= scrollSpeed;
 
-        // 6) “30초가 지났으면” 다음 번에 들어올 타일 인덱스를 미리 준비해 둔다.
-        if (now - lastSwitchTime >= switchInterval) {
-            nextTileIndex = (nextTileIndex + 1) % 3;
-            lastSwitchTime = now;
-        }
-
-        // 7) scrollOffset이 -tileSize 이하가 되면, 한 행씩 내려주고
-        //    그때마다 새롭게 들어올 행(0번 인덱스)은 nextTileIndex로 설정
+        // — 화면 밖으로 나간 만큼 한 행씩 밀어내기 —
         while (scrollOffset <= -MP.tileSize) {
             scrollOffset += MP.tileSize;
             shiftRowsDownWithNewIndex(nextTileIndex);
         }
     }
 
-    /**
-     * 행을 한 칸씩 아래로 내리고, 새로 들어올 맨 위 행에는 newIndex를 넣어준다.
-     */
     private void shiftRowsDownWithNewIndex(int newIndex) {
         for (int i = totalRows - 1; i > 0; i--) {
             tileRowIndices[i] = tileRowIndices[i - 1];
@@ -102,13 +132,13 @@ public class TileManager {
 
     public void draw(Graphics2D g2) {
         int cols = MP.maxScreenCol;
-
         for (int row = 0; row < totalRows; row++) {
             int tileIndex = tileRowIndices[row];
             for (int col = 0; col < cols; col++) {
                 int x = col * MP.tileSize;
-                // scrollOffset이 double이므로, 그리기 시 int로 캐스팅
-                int y = row * MP.tileSize - (int) scrollOffset - topBuffer * MP.tileSize;
+                int y = row * MP.tileSize
+                        - (int) scrollOffset
+                        - topBuffer * MP.tileSize;
                 g2.drawImage(
                         tiles[tileIndex].image,
                         x, y,
