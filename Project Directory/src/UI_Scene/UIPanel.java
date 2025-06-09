@@ -2,8 +2,6 @@ package UI_Scene;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.net.URL;
 
 public abstract class UIPanel extends JPanel {
 
@@ -22,7 +20,7 @@ public abstract class UIPanel extends JPanel {
     protected void loadFonts() {
         try {
             // Main 타이틀용 폰트 (크고 스타일리시한 폰트)
-            try (var is = getClass().getClassLoader().getResourceAsStream("Fonts/Ethnocentric Rg.otf")) {
+            try (var is = getClass().getClassLoader().getResourceAsStream("GameRes/Fonts/Ethnocentric Rg.otf")) {
                 if (is != null) {
                     mainFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(36f);
                     GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(mainFont);
@@ -30,7 +28,7 @@ public abstract class UIPanel extends JPanel {
             }
 
             // 본문용 폰트 (가독성 위주)
-            try (var is = getClass().getClassLoader().getResourceAsStream("Fonts/Ubuntu-Regular.ttf")) {
+            try (var is = getClass().getClassLoader().getResourceAsStream("GameRes/Fonts/Ubuntu-Regular.ttf")) {
                 if (is != null) {
                     textFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
                     GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(textFont);
@@ -38,7 +36,7 @@ public abstract class UIPanel extends JPanel {
             }
 
             // UI 전용 폰트
-            try (var is = getClass().getClassLoader().getResourceAsStream("Fonts/high1 Wonchuri Title B.ttf")) {
+            try (var is = getClass().getClassLoader().getResourceAsStream("GameRes/Fonts/high1 Wonchuri Title B.ttf")) {
                 if (is != null) {
                     uiFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(20f);
                     GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(uiFont);
