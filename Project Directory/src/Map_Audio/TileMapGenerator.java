@@ -15,16 +15,16 @@ public class TileMapGenerator {
     private double scrollOffset = 0;
     private double scrollSpeed = 3.0;
 
-    private final int topBuffer = 5;
-    private final int bottomBuffer = 5;
-    private final int visibleRows;
-    private final int totalRows;
-    private final int[] tileRowIndices;
+    private final int topBuffer = 5;//타일 위쪽 여유공간
+    private final int bottomBuffer = 5;//타일 아래쪽 여유공간
+    private final int visibleRows;//현재 보이는 영역
+    private final int totalRows;//버퍼 + 보이는 줄
+    private final int[] tileRowIndices;//시간 지나면 타일 종류 변경
 
-    private final long speedIncreaseInterval = 10_000;   // 10초
+    private final long speedIncreaseInterval = 10_000;// 10초 마다 시간 증가
     private long lastSpeedIncreaseTime;
 
-    private final long switchInterval = 50_000;         // 50초
+    private final long switchInterval = 50_000;// 50초마다 타일 변경
     private long switchElapsedTime;
     private long lastUpdateTime;
 
@@ -46,25 +46,13 @@ public class TileMapGenerator {
         this.switchElapsedTime = 0;
     }
 
-    public void resetMap() {
-        scrollOffset = 0;
-        scrollSpeed = 3.0;
-        nextTileIndex = 0;
-        initializeTileRows();
-
-        long now = System.currentTimeMillis();
-        this.lastSpeedIncreaseTime = now;
-        this.lastUpdateTime = now;
-        this.switchElapsedTime = 0;
-    }
-
-    private void initializeTileRows() {
+    private void initializeTileRows() {//타일 행 초기화
         for (int i = 0; i < totalRows; i++) {
             tileRowIndices[i] = 0;
         }
     }
 
-    private void getTileImages() {
+    private void getTileImages() {//리소스에서 이미지 가져오기(타일용)
         try {
             tiles[0] = new Tile();
             tiles[0].image = ImageIO.read(
@@ -80,10 +68,7 @@ public class TileMapGenerator {
         }
     }
 
-    /**
-     * 프레임마다 호출: pause 시에는 게임 시간(타일 전환/속도 증가/스크롤) 모두 멈춤
-     */
-    public void updateScroll() {
+    public void updateScroll() {//프레임마다 호출: pause 시에는 게임 시간(타일 전환/속도 증가/스크롤) 모두 멈춤
         long now = System.currentTimeMillis();
         boolean paused = InGameManager.getInstance().isPaused();
 
@@ -124,7 +109,7 @@ public class TileMapGenerator {
         }
     }
 
-    private void shiftRowsDownWithNewIndex(int newIndex) {
+    private void shiftRowsDownWithNewIndex(int newIndex) {//밀어내기
         for (int i = totalRows - 1; i > 0; i--) {
             tileRowIndices[i] = tileRowIndices[i - 1];
         }

@@ -10,13 +10,11 @@ public class MapPanel extends JPanel implements Runnable {
     final int scale = 3;//3배로 키워서 사용
     public final int tileSize = resPixelSize * scale;//실제 게임 타일 사이즈
 
-    public final int maxScreenCol = 10;
-    public final int maxScreenRow = 20;
-    final int screenWidth = tileSize * maxScreenCol;
-    final int screenHeight = tileSize * maxScreenRow;
-    final double FPS = 60.0;
+    public final int maxScreenCol = 10;//가로 타일개수
+    public final int maxScreenRow = 20;//세로 타일 개수
+    final double FPS = 60.0;//항상 60프레임 유지
 
-    public TileMapGenerator tileMapGenerator = new TileMapGenerator(this);
+    public TileMapGenerator tileMapGenerator = new TileMapGenerator(this);//tilemapGenerator 갖고오기
     Thread gameThread;
 
     public MapPanel(int screenWidth, int screenHeight) {
@@ -37,17 +35,17 @@ public class MapPanel extends JPanel implements Runnable {
         double delta = 0;
         long lastTime = System.nanoTime();
 
-        while (gameThread != null) {
+        while (gameThread != null) {//delta time 기법으로 update 호출
             long now = System.nanoTime();
             delta += (now - lastTime) / drawInterval;
             lastTime = now;
 
-            if (delta >= 1) {
+            if (delta >= 1) {//델타타임만큼 보정
                 // 항상 호출: 내부에서 pause 체크하여 타일 전환 및 스크롤 정지
                 tileMapGenerator.updateScroll();
-                repaint();
                 delta--;
             }
+            repaint();//보정 후 렌더링
 
             // CPU 사용량 완화
             try {
