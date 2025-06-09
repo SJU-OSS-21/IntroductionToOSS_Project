@@ -17,7 +17,7 @@ public class MapPanel extends JPanel implements Runnable {
     final int screenHeight = tileSize * maxScreenRow;//세로 픽셀 개수
     final double FPS = 60.0;
 
-    TileManager tileManager = new TileManager(this);
+    public TileManager tileManager = new TileManager(this);
     KeyInputSystem keyIS = new KeyInputSystem();
     Thread gameThread;
 
@@ -85,30 +85,15 @@ public class MapPanel extends JPanel implements Runnable {
                 drawCount++;
             }
             if (timer >= 1000000000) {
-//                System.out.println("FPS : " + drawCount);
                 drawCount = 0;
                 timer = 0;
             }
-//            System.out.println("Game Thread Running");
-//            Update();
-//            repaint();
+
         }
     }
 
     public void Update() {
         tileManager.updateScroll(); // 배경 스크롤 업데이트
-//        if (keyIS.isUp) {
-//            playerY -= playerSpeed;
-//        }
-//        if (keyIS.isDown) {
-//            playerY += playerSpeed;
-//        }
-//        if (keyIS.isLeft) {
-//            playerX -= playerSpeed;
-//        }
-//        if (keyIS.isRight) {
-//            playerX += playerSpeed;
-//        }
     }
 
     public void paintComponent(Graphics g) {
