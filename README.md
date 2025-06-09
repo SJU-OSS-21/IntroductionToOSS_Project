@@ -12,8 +12,9 @@ src/Main 패키지에서 Main class 클릭 후 컴파일 진행
 ## 메서드 설명
 ### Player
 - Player Class
-  - move() method
+  - move() method -> 플레이어 이동 함수
   - hit() method
+    - 플레이어와 적과의 충돌처리
   - updateInvincible() method
   - getHpRatio() method
   - increasePlayerHP() method
