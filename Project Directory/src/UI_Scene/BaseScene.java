@@ -5,40 +5,17 @@ import java.awt.*;
 import java.util.Vector;
 
 public abstract class BaseScene extends JLayeredPane {
-//    //  Properties
-//    private int width;
-//    private int height;
-//
-//    //  Identifier - NOTE : Be careful to use public var.
-//    public int sid;
-//    public String name;
 
     //  Objects
     public Vector<Object> gameObjectList;
-
-    //  TODO : Map Elements
 
     //  Scene UI Set
     public JPanel sceneUI;
 
 
-//    //  Non-Abstract Functions
-//    public int getAndSetWidth() {
-//        return width;
-//    }
-//
-//    public int getAndSetHeight() {
-//        return height;
-//    }
-
     //  Constructor
     protected BaseScene(){
         //  호출 타이밍 문제로 Do Nothing -> SceneManager에서 초기화
-
-//        setScene();
-//        setGameObjectList();
-        //  Init 타이밍 문제로 명시적 선언 요함
-//        setUISet();
     }
 
     //  Abstract Functions
@@ -58,6 +35,4 @@ public abstract class BaseScene extends JLayeredPane {
         setGameObjectList();
         setUISet();
     }
-
-//SceneManager.curScene.startGameThread();
 }
