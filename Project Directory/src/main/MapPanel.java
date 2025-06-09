@@ -1,30 +1,27 @@
 package main;
 
-import Map_Audio.TileManager;
-import UI_Scene.InGameManager;
+import Map_Audio.TileMapGenerator;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MapPanel extends JPanel implements Runnable {
-    final int originalTileSize = 16;
-    final int scale = 3;
-    public final int tileSize = originalTileSize * scale;
+    final int resPixelSize = 16;//사용 타일 애셋 16*16
+    final int scale = 3;//3배로 키워서 사용
+    public final int tileSize = resPixelSize * scale;//실제 게임 타일 사이즈
+
     public final int maxScreenCol = 10;
     public final int maxScreenRow = 20;
     final int screenWidth = tileSize * maxScreenCol;
     final int screenHeight = tileSize * maxScreenRow;
     final double FPS = 60.0;
 
-    public TileManager tileManager = new TileManager(this);
-    KeyInputSystem keyIS = new KeyInputSystem();
+    public TileMapGenerator tileMapGenerator = new TileMapGenerator(this);
     Thread gameThread;
 
-    public MapPanel() {
+    public MapPanel(int screenWidth, int screenHeight) {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setDoubleBuffered(true);
-        this.addKeyListener(keyIS);
-        this.setFocusable(true);
         this.startGameThread();
         setOpaque(false);
     }
@@ -47,7 +44,7 @@ public class MapPanel extends JPanel implements Runnable {
 
             if (delta >= 1) {
                 // 항상 호출: 내부에서 pause 체크하여 타일 전환 및 스크롤 정지
-                tileManager.updateScroll();
+                tileMapGenerator.updateScroll();
                 repaint();
                 delta--;
             }
@@ -65,7 +62,7 @@ public class MapPanel extends JPanel implements Runnable {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        tileManager.draw(g2d);
+        tileMapGenerator.draw(g2d);
         g2d.dispose();
     }
 }

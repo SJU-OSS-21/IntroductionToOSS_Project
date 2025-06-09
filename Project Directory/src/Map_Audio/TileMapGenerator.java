@@ -7,9 +7,10 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.IOException;
 
-public class TileManager {
+
+public class TileMapGenerator {
     private final MapPanel MP;
-    private final Tile[] tiles;
+    private final Tile[] tiles;//타일 배열
 
     private double scrollOffset = 0;
     private double scrollSpeed = 3.0;
@@ -29,32 +30,32 @@ public class TileManager {
 
     public int nextTileIndex = 0;    // 인스턴스 필드
 
-    public TileManager(MapPanel mp) {
+    public TileMapGenerator(MapPanel mp) {
         this.MP = mp;
-        this.visibleRows    = mp.maxScreenRow;
-        this.totalRows      = topBuffer + visibleRows + bottomBuffer;
+        this.visibleRows = mp.maxScreenRow;
+        this.totalRows = topBuffer + visibleRows + bottomBuffer;
         this.tileRowIndices = new int[totalRows];
-        this.tiles          = new Tile[3];
+        this.tiles = new Tile[3];
 
         getTileImages();
         initializeTileRows();
 
         long now = System.currentTimeMillis();
         this.lastSpeedIncreaseTime = now;
-        this.lastUpdateTime        = now;
-        this.switchElapsedTime     = 0;
+        this.lastUpdateTime = now;
+        this.switchElapsedTime = 0;
     }
 
     public void resetMap() {
-        scrollOffset          = 0;
-        scrollSpeed           = 3.0;
-        nextTileIndex         = 0;
+        scrollOffset = 0;
+        scrollSpeed = 3.0;
+        nextTileIndex = 0;
         initializeTileRows();
 
         long now = System.currentTimeMillis();
         this.lastSpeedIncreaseTime = now;
-        this.lastUpdateTime        = now;
-        this.switchElapsedTime     = 0;
+        this.lastUpdateTime = now;
+        this.switchElapsedTime = 0;
     }
 
     private void initializeTileRows() {
@@ -90,7 +91,7 @@ public class TileManager {
             // pause 동안은 게임 시간 동결: 타이머 기준 시간만 갱신
             System.out.println("game stop");
 
-            lastUpdateTime        = now;
+            lastUpdateTime = now;
             lastSpeedIncreaseTime = now;
             return;
         }
