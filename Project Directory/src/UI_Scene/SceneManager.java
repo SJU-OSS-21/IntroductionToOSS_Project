@@ -38,7 +38,7 @@ class MainScene extends BaseScene {
     // TODO :  Panel 여기에 설치
     @Override
     public void setGameObjectList() {
-        MapPanel mp = new MapPanel();
+        MapPanel mp = new MapPanel(screenWidth,screenHeight);
         mp.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(mp, Integer.valueOf(0));
 
@@ -91,7 +91,7 @@ class InGameScene extends BaseScene {
 
     @Override
     public void setGameObjectList() {
-        mp = new MapPanel();
+        mp = new MapPanel(screenWidth, screenHeight);
 
         mp.setBounds(new Rectangle(0, 0, screenWidth, screenHeight));
         this.add(mp, Integer.valueOf(0));
